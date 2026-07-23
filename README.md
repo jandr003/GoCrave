@@ -1,4 +1,4 @@
-# GoCrave# GoCrave
+# GoCrave
 
 GoCrave is an Android food ordering application built with Java and XML. It allows users to browse food items, add them to their cart, and place orders through a simple and user-friendly interface.
 
