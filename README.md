@@ -20,5 +20,5 @@ GoCrave is an Android food ordering application built with Java and XML. It allo
 
 ## Requirements
 
-- Android 10 (API 29) or later
+- Android 10 (API 29) 
 - Internet Connection
