@@ -1,0 +1,9 @@
+- [x] Add dependencies to `pubspec.yaml` (`intl_phone_field`, `google_fonts`)
+- [x] Implement `LoginScreen` UI in `lib/screens/login_screen.dart`
+    - [x] Top bar (Back button + English selector)
+    - [x] Header text (Welcome to GoCrave)
+    - [x] Phone number input with country picker
+    - [x] Continue button
+    - [x] Terms and Privacy Policy footer
+- [x] Update `lib/main.dart` to set `LoginScreen` as home and configure Poppins font
+- [x] Verify UI layout and functionality
