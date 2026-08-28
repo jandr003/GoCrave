@@ -1,42 +1,43 @@
-# Implementation Plan - GoCrave Login Screen
+# Implementation Plan - Get Started (Onboarding) Screen
 
-This plan outlines the steps to implement the Login UI as seen in the provided image for the `login_screen.dart` file.
+I-a-add natin ang **Onboarding Screen** (Get Started) para sa mga bagong user ng GoCrave. Lalabas lang ito sa unang pagkakataon na buksan ang app.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> I will be adding the `intl_phone_field` and `google_fonts` packages to `pubspec.yaml` to achieve the look and functionality shown in the image (country picker and specific typography).
+> Gagamit tayo ng `shared_preferences` package para maalala ng app kung napanood na ng user ang onboarding. Ito ay para hindi na ito paulit-ulit na lumitaw.
 
 ## Proposed Changes
 
 ### Dependencies
 
 #### [MODIFY] [pubspec.yaml](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/pubspec.yaml)
-- Add `google_fonts: ^6.1.0`
-- Add `intl_phone_field: ^3.2.0`
+- Magdagdag ng `shared_preferences: ^2.2.2`.
 
-### Core Screen Implementation
-
-#### [MODIFY] [login_screen.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/screens/login_screen.dart)
-- Implement `LoginScreen` as a `StatelessWidget`.
-- **Top Bar**: Use a `SafeArea` and `Row` for the back button and the "English" language selector.
-- **Header**: Large bold text "Welcome to GoCrave" and a grey subtitle.
-- **Phone Input Section**:
-    - Label "Phone number*" with a red asterisk.
-    - Custom `intl_phone_field` styling to match the image (flag icon, country code in a box, and underlined text field).
-- **Continue Button**: A rounded button with a light grey background and orange text.
-- **Footer**: `RichText` to handle the "Terms of Service & Privacy Policy" clickable links.
-
-### Project Setup
+### Core Logic
 
 #### [MODIFY] [main.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/main.dart)
-- Set `LoginScreen` as the `home` widget.
-- Update `ThemeData` to use a clean font (e.g., Poppins or Roboto) via `google_fonts`.
+- Gawing `async` ang `main()` function.
+- I-check ang `SharedPreferences` para malaman kung `isFirstTime` ang user.
+- I-set ang `home` widget base sa result (Onboarding vs. Login).
+
+### Screens
+
+#### [NEW] [onboarding_screen.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/screens/onboarding_screen.dart)
+- Inimplement ang `OnboardingScreen` bilang `StatefulWidget`.
+- **Slide Show**: Gamit ang `PageView` para sa smooth na pag-slide ng images at text.
+- **Content**:
+    - **Full Screen Background**: Images na may food themes (gagamit muna tayo ng high-quality network images).
+    - **Text Overlay**: Title ("Get Fastest Delivery in 30 Minutes 🍕") at Subtitle na may dark gradient background para mababasa.
+- **Dot Indicators**: Tatlong dots sa gitna na nagbabago ang width/color depende sa active page.
+- **Click To Start Button**: Rounded white button na may black text. Kapag pinindot:
+    - I-save sa `SharedPreferences` na tapos na ang onboarding.
+    - Mag-navigate papuntang `LoginScreen`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Verify that the layout matches the provided image.
-- Ensure the phone number field correctly displays the country picker (defaulting to Philippines).
-- Check that the "Continue" button is clickable.
-- Verify the "Terms of Service & Privacy Policy" text layout.
+1. I-uninstall at i-reinstall ang app (o i-clear data) para makita ang Onboarding Screen.
+2. I-swipe ang slides at i-check kung smooth ang animation at dot indicators.
+3. Pindutin ang "Click To Start" at siguraduhin na dadalhin ka sa Login Screen.
+4. I-restart ang app at i-verify na direkta na itong pumupunta sa Login Screen (hindi na dapat lumabas ang Onboarding).

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'verification_method_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -17,7 +18,6 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              // Top Bar: Back Button and Language Selector
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -58,7 +58,6 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 48),
-              // Header Text
               Text(
                 'Welcome to GoCrave',
                 style: GoogleFonts.poppins(
@@ -76,7 +75,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              // Phone Number Label
               RichText(
                 text: TextSpan(
                   text: 'Phone number',
@@ -163,12 +161,18 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 48),
-              // Continue Button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const VerificationMethodScreen(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[100],
                     elevation: 0,
@@ -187,7 +191,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              // Footer
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 24.0),
@@ -220,9 +223,9 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-// Extension or helper for custom decoration if needed, 
-// but IntlPhoneField has built-in decoration.
-// I'll adjust the flag container manually if it doesn't look like the image.
-// In the image, the +63 and flag are inside a light grey rounded box.
-// The current IntlPhoneField implementation might need a bit of tweaking 
-// or a custom wrapper for that specific look.
+// NOTE: I'll add an extension or helper for custom decoration here if needed.
+// Even though IntlPhoneField has built-in decoration, I'm adjusting the 
+// flag container manually to make sure it matches the design perfectly.
+// The +63 and flag should be inside a light grey rounded box as per the 
+// GoCrave UI specs, so I might need to tweak the current implementation.
+
