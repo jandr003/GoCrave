@@ -19,7 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    // Start at a high page number for seamless infinite scroll
+    // start at a high number for the infinite scroll loop
     const initialPage = 6 * 500;
     _pageController = PageController(initialPage: initialPage);
     _currentPage = initialPage;
@@ -31,8 +31,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       _pageController.animateToPage(
         _pageController.page!.toInt() + 1,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOutQuart,
+        duration: const Duration(milliseconds: 1200),
+        curve: Curves.easeInOutCubic,
       );
     });
   }
@@ -78,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ];
 
   void _onFinish() async {
-    // Commented out for development so onboarding always shows
+    // stop onboarding from hiding so i can keep testing it
     // final prefs = await SharedPreferences.getInstance();
     // await prefs.setBool('isFirstTime', false);
     if (mounted) {
@@ -92,6 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           AnimatedBuilder(
@@ -112,39 +113,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (_pageController.hasClients && _pageController.page != null) {
                     page = _pageController.page!;
                   }
-                  
-                  // Parallax effect: offset the image slightly opposite to the scroll
-                  double parallaxOffset = (index - page) * 100;
 
-                  return Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      ClipRect(
-                        child: Transform.translate(
-                          offset: Offset(parallaxOffset, 0),
-                          child: Image.network(
+                  // transition values
+                  final double position = index - page;
+                  final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
+                  final double scale = 1.0 + (position.abs() * 0.1); // small zoom as it slides
+
+                  return Opacity(
+                    opacity: opacity,
+                    child: Transform.scale(
+                      scale: scale,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
                             _onboardingData[dataIndex]['image']!,
                             fit: BoxFit.cover,
                             height: double.infinity,
                             width: double.infinity,
-                            alignment: Alignment( (index - page) * 0.5, 0),
+                            alignment: Alignment(position * 0.6, 0.0),
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white.withOpacity(0.5),
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[900],
+                                child: const Icon(Icons.error_outline,
+                                    color: Colors.white24, size: 40),
+                              );
+                            },
                           ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.8),
-                            ],
-                            stops: const [0.5, 1.0],
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.8),
+                                ],
+                                stops: const [0.5, 1.0],
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   );
                 },
               );
@@ -195,11 +218,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           (index) {
                             double selectedness = 0.0;
                             if (_pageController.hasClients && _pageController.page != null) {
-                              // Modulo the current page to match dots
+                              // match the dots to the current page
                               double normalizedPage = _pageController.page! % _onboardingData.length;
                               selectedness = (1.0 - (index - normalizedPage).abs()).clamp(0.0, 1.0);
                               
-                              // Handle wrap-around selectedness for dots
+                              // handle the dot wrap around
                               double altSelectedness = (1.0 - (index - (normalizedPage - _onboardingData.length)).abs()).clamp(0.0, 1.0);
                               selectedness = selectedness > altSelectedness ? selectedness : altSelectedness;
 

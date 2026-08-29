@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+import '../widgets/success_transition_overlay.dart';
 import 'notification_history_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -17,17 +18,20 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final focusNode = FocusNode();
   bool _showNotification = false;
   bool _isBellPressed = false;
+  bool _isLoading = false;
+  bool _isSuccessTransition = false;
 
   @override
   void initState() {
     super.initState();
-    // Show notification almost immediately (0.5s delay for smooth entrance)
+
+    // show the message almost right away
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
           _showNotification = true;
         });
-        // Auto-hide after 5s
+        // hide it after 5 seconds
         Timer(const Duration(seconds: 5), () {
           if (mounted) {
             setState(() {
@@ -78,7 +82,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back_ios, color: Colors.grey, size: 20),
+                        icon: const Icon(Icons.arrow_back_ios,
+                            color: Colors.grey, size: 20),
                         onPressed: () => Navigator.pop(context),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -92,13 +97,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 await Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) => 
-                                      const NotificationHistoryScreen(),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        const NotificationHistoryScreen(),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
                                       const begin = Offset(0.0, 1.0);
                                       const end = Offset.zero;
                                       const curve = Curves.easeInOut;
-                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
                                       return SlideTransition(
                                         position: animation.drive(tween),
                                         child: child,
@@ -111,11 +119,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             },
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (Widget child, Animation<double> animation) {
-                                return ScaleTransition(scale: animation, child: child);
+                              transitionBuilder: (Widget child,
+                                  Animation<double> animation) {
+                                return ScaleTransition(
+                                    scale: animation, child: child);
                               },
                               child: Icon(
-                                _isBellPressed ? Icons.notifications : Icons.notifications_none,
+                                _isBellPressed
+                                    ? Icons.notifications
+                                    : Icons.notifications_none,
                                 key: ValueKey<bool>(_isBellPressed),
                                 color: primaryColor,
                                 size: 22,
@@ -161,7 +173,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  // Pinput Widget
+                  // the otp input widget
                   Center(
                     child: Pinput(
                       length: 5,
@@ -171,6 +183,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       separatorBuilder: (index) => const SizedBox(width: 8),
                       hapticFeedbackType: HapticFeedbackType.lightImpact,
                       obscureText: true,
+                      onCompleted: (pin) {
+                        _handleVerification();
+                      },
                       obscuringWidget: Container(
                         width: 12,
                         height: 12,
@@ -200,13 +215,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       ),
                       focusedPinTheme: defaultPinTheme.copyWith(
                         decoration: defaultPinTheme.decoration!.copyWith(
-                          border: Border.all(color: primaryColor.withOpacity(0.5)),
+                          border: Border.all(
+                              color: primaryColor.withOpacity(0.5)),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // Try another way button
+                  // button to go back
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -224,6 +240,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ],
               ),
             ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.3),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.deepOrangeAccent,
+                    strokeWidth: 6,
+                  ),
+                ),
+              ),
+            if (_isSuccessTransition)
+              SuccessTransitionOverlay(
+                onContinue: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+              ),
             AnimatedPositioned(
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,
@@ -247,6 +279,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ),
       ),
     );
+  }
+
+  void _handleVerification() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // simulate the check delay
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        _isSuccessTransition = true;
+      });
+    }
   }
 
   Widget _buildMockNotification() {

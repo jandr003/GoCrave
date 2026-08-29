@@ -92,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // Phone Number Input
+              // phone input part
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -223,9 +223,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-// NOTE: I'll add an extension or helper for custom decoration here if needed.
-// Even though IntlPhoneField has built-in decoration, I'm adjusting the 
-// flag container manually to make sure it matches the design perfectly.
-// The +63 and flag should be inside a light grey rounded box as per the 
-// GoCrave UI specs, so I might need to tweak the current implementation.
+// just a note: i might need to fix the flag design later. 
+// the library design is okay but i want it to match my exact 
+// specs with that light grey box for the flag and code.
 

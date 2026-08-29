@@ -7,7 +7,7 @@ import 'screens/onboarding_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-  final isFirstTime = true; // Temporarily forced to true for development
+  final isFirstTime = true; // force this to true for dev
 
   runApp(MyApp(isFirstTime: isFirstTime));
 }
