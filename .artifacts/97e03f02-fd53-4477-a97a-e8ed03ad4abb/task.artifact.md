@@ -1,8 +1,5 @@
-- [x] Add `shared_preferences` dependency to `pubspec.yaml`
-- [x] Create `lib/screens/onboarding_screen.dart`
-    - [x] Define onboarding data (images, titles, subtitles)
-    - [x] Implement `PageView` for slideshow
-    - [x] Implement custom dot indicators
-    - [x] Add "Click to Start" button with `SharedPreferences` logic
-- [x] Update `lib/main.dart` to handle initial routing logic
-- [x] Verify onboarding flow and persistence
+- [x] Expand `_onboardingData` to 6 categories in `onboarding_screen.dart`
+- [x] Implement infinite scroll logic in `PageController` and `PageView.builder`
+- [x] Update dot indicators to reflect 6 items and use modulo logic
+- [x] Verify auto-slide animation always moves forward
+- [x] Final verification of UI and interaction

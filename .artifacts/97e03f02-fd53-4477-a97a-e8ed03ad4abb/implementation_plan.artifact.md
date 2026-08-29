@@ -1,43 +1,32 @@
-# Implementation Plan - Get Started (Onboarding) Screen
+# Implementation Plan - 6-Slide Infinite Onboarding
 
-I-a-add natin ang **Onboarding Screen** (Get Started) para sa mga bagong user ng GoCrave. Lalabas lang ito sa unang pagkakataon na buksan ang app.
-
-## User Review Required
-
-> [!IMPORTANT]
-> Gagamit tayo ng `shared_preferences` package para maalala ng app kung napanood na ng user ang onboarding. Ito ay para hindi na ito paulit-ulit na lumitaw.
+I-a-update natin ang Onboarding Screen para magkaroon ng 6 na slides na kumakatawan sa iba't ibang food categories. Gagawin din nating "infinite forward scroll" ang logic para laging pakanan ang galaw.
 
 ## Proposed Changes
 
-### Dependencies
-
-#### [MODIFY] [pubspec.yaml](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/pubspec.yaml)
-- Magdagdag ng `shared_preferences: ^2.2.2`.
-
-### Core Logic
-
-#### [MODIFY] [main.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/main.dart)
-- Gawing `async` ang `main()` function.
-- I-check ang `SharedPreferences` para malaman kung `isFirstTime` ang user.
-- I-set ang `home` widget base sa result (Onboarding vs. Login).
-
 ### Screens
 
-#### [NEW] [onboarding_screen.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/screens/onboarding_screen.dart)
-- Inimplement ang `OnboardingScreen` bilang `StatefulWidget`.
-- **Slide Show**: Gamit ang `PageView` para sa smooth na pag-slide ng images at text.
-- **Content**:
-    - **Full Screen Background**: Images na may food themes (gagamit muna tayo ng high-quality network images).
-    - **Text Overlay**: Title ("Get Fastest Delivery in 30 Minutes 🍕") at Subtitle na may dark gradient background para mababasa.
-- **Dot Indicators**: Tatlong dots sa gitna na nagbabago ang width/color depende sa active page.
-- **Click To Start Button**: Rounded white button na may black text. Kapag pinindot:
-    - I-save sa `SharedPreferences` na tapos na ang onboarding.
-    - Mag-navigate papuntang `LoginScreen`.
+#### [MODIFY] [onboarding_screen.dart](file:///Users/macbookpro/AndroidStudioProjects/GoCrave/lib/screens/onboarding_screen.dart)
+- **Data Expansion**: Magdagdag ng 6 na items sa `_onboardingData` (Fast Food, Home Style, Vegetarian, Snacks, Desserts, Drinks) na may high-quality representative images.
+- **Infinite Scroll Logic**:
+    - Baguhin ang `itemCount` sa `10000` (effectively infinite).
+    - Gamitin ang `index % _onboardingData.length` para sa pagkuha ng data.
+    - I-set ang initial page ng `PageController` sa gitna (e.g., `_onboardingData.length * 500`) para sa seamless infinite scroll.
+- **Auto-Slide Adjustment**: Siguraduhin na ang timer ay laging nag-a-`animateToPage` sa `nextPage` (pakanan lang).
+- **Dot Indicators**: I-update ang dots para maging 6 at ang logic para gamitin ang modulo operator (`index % 6`).
+
+## 6 Categories Data
+1. **Fast Food**: "Quick & Tasty Meals 🍔" - Crispy burgers and fries.
+2. **Home Style**: "Taste of Home 🍲" - Classic Chicken Adobo and warm meals.
+3. **Vegetarian**: "Healthy & Fresh 🥗" - Nutritious green bowls and salads.
+4. **Snacks**: "Perfect Mid-day Bites 🍟" - Street foods and quick snacks.
+5. **Desserts**: "Sweet Cravings Satisfied 🍰" - Cakes, ice cream, and sweets.
+6. **Drinks**: "Refreshingly Cool 🥤" - Shakes, juices, and milk teas.
 
 ## Verification Plan
 
 ### Manual Verification
-1. I-uninstall at i-reinstall ang app (o i-clear data) para makita ang Onboarding Screen.
-2. I-swipe ang slides at i-check kung smooth ang animation at dot indicators.
-3. Pindutin ang "Click To Start" at siguraduhin na dadalhin ka sa Login Screen.
-4. I-restart ang app at i-verify na direkta na itong pumupunta sa Login Screen (hindi na dapat lumabas ang Onboarding).
+- I-verify kung ang slideshow ay kusa at smooth na gumagalaw pakanan.
+- I-check kung pagkatapos ng ika-6 na slide, ang susunod ay ang 1st slide pa rin na pakanan ang galaw.
+- Siguraduhin na ang 6 dots ay sumasabay nang tama.
+- I-verify ang linaw ng mga bagong images.

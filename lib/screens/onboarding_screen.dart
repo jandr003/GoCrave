@@ -12,32 +12,28 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
+  late final PageController _pageController;
   int _currentPage = 0;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    // Start at a high page number for seamless infinite scroll
+    const initialPage = 6 * 500;
+    _pageController = PageController(initialPage: initialPage);
+    _currentPage = initialPage;
     _startTimer();
   }
 
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (_currentPage < _onboardingData.length - 1) {
-        _pageController.animateToPage(
-          _currentPage + 1,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOutQuart,
-        );
-      } else {
-        _pageController.animateToPage(
-          0,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOutQuart,
-        );
-      }
+      _pageController.animateToPage(
+        _pageController.page!.toInt() + 1,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOutQuart,
+      );
     });
   }
 
@@ -50,19 +46,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String>> _onboardingData = [
     {
-      'title': 'Get Fastest Delivery in 30 Minutes 🍕',
-      'subtitle': 'Pick your desired food item from the menu there are more than 200 items.',
-      'image': 'https://img.freepik.com/free-photo/delicious-pizza-indoors_23-2150873870.jpg',
+      'title': 'Quick & Tasty Meals 🍔',
+      'subtitle': 'Crispy burgers and fries delivered to your doorstep.',
+      'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Fresh Ingredients & Great Taste 🥗',
-      'subtitle': 'We only use the freshest ingredients to ensure the best quality for your cravings.',
-      'image': 'https://img.freepik.com/free-photo/fresh-salad-with-vegetables-meat_23-2148515516.jpg',
+      'title': 'Taste of Home 🍲',
+      'subtitle': 'Hearty home-cooked meals and warm flavors for the family.',
+      'image': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Easy Tracking & Live Status 🛵',
-      'subtitle': 'Track your order in real-time and get notified at every step of the delivery.',
-      'image': 'https://img.freepik.com/free-photo/delivery-man-scooter-delivering-food_23-2149103444.jpg',
+      'title': 'Healthy & Fresh 🥗',
+      'subtitle': 'Nutritious green bowls and salads for a better you.',
+      'image': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop',
+    },
+    {
+      'title': 'Perfect Mid-day Bites 🍟',
+      'subtitle': 'Street foods and quick snacks to fuel your day.',
+      'image': 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=1000&auto=format&fit=crop',
+    },
+    {
+      'title': 'Sweet Cravings Satisfied 🍰',
+      'subtitle': 'Cakes, ice cream, and sweets to end your meal right.',
+      'image': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=1000&auto=format&fit=crop',
+    },
+    {
+      'title': 'Refreshingly Cool 🥤',
+      'subtitle': 'Shakes, juices, and milk teas for a perfect break.',
+      'image': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1000&auto=format&fit=crop',
     },
   ];
 
@@ -88,7 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             builder: (context, child) {
               return PageView.builder(
                 controller: _pageController,
-                itemCount: _onboardingData.length,
+                itemCount: 10000,
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
@@ -96,6 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   _startTimer();
                 },
                 itemBuilder: (context, index) {
+                  final dataIndex = index % _onboardingData.length;
                   double page = 0.0;
                   if (_pageController.hasClients && _pageController.page != null) {
                     page = _pageController.page!;
@@ -111,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: Transform.translate(
                           offset: Offset(parallaxOffset, 0),
                           child: Image.network(
-                            _onboardingData[index]['image']!,
+                            _onboardingData[dataIndex]['image']!,
                             fit: BoxFit.cover,
                             height: double.infinity,
                             width: double.infinity,
@@ -148,10 +160,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 500),
                     child: Column(
-                      key: ValueKey<int>(_currentPage),
+                      key: ValueKey<int>(_currentPage % _onboardingData.length),
                       children: [
                         Text(
-                          _onboardingData[_currentPage]['title']!,
+                          _onboardingData[_currentPage % _onboardingData.length]['title']!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 28,
@@ -161,7 +173,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _onboardingData[_currentPage]['subtitle']!,
+                          _onboardingData[_currentPage % _onboardingData.length]['subtitle']!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
@@ -183,8 +195,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           (index) {
                             double selectedness = 0.0;
                             if (_pageController.hasClients && _pageController.page != null) {
-                              selectedness = (1.0 - (index - _pageController.page!).abs()).clamp(0.0, 1.0);
-                            } else if (index == _currentPage) {
+                              // Modulo the current page to match dots
+                              double normalizedPage = _pageController.page! % _onboardingData.length;
+                              selectedness = (1.0 - (index - normalizedPage).abs()).clamp(0.0, 1.0);
+                              
+                              // Handle wrap-around selectedness for dots
+                              double altSelectedness = (1.0 - (index - (normalizedPage - _onboardingData.length)).abs()).clamp(0.0, 1.0);
+                              selectedness = selectedness > altSelectedness ? selectedness : altSelectedness;
+
+                            } else if (index == (_currentPage % _onboardingData.length)) {
                               selectedness = 1.0;
                             }
 
