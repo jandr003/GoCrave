@@ -1,5 +1,0 @@
-- [x] Expand `_onboardingData` to 6 categories in `onboarding_screen.dart`
-- [x] Implement infinite scroll logic in `PageController` and `PageView.builder`
-- [x] Update dot indicators to reflect 6 items and use modulo logic
-- [x] Verify auto-slide animation always moves forward
-- [x] Final verification of UI and interaction
