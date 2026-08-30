@@ -78,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ];
 
   void _onFinish() async {
-    // stop onboarding from hiding so i can keep testing it
+    // force onboarding to stay for now while testing
     // final prefs = await SharedPreferences.getInstance();
     // await prefs.setBool('isFirstTime', false);
     if (mounted) {
@@ -114,10 +114,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     page = _pageController.page!;
                   }
 
-                  // transition values
+                  // transition settings
                   final double position = index - page;
                   final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
-                  final double scale = 1.0 + (position.abs() * 0.1); // small zoom as it slides
+                  final double scale = 1.0 + (position.abs() * 0.1); // zoom effect as we slide
 
                   return Opacity(
                     opacity: opacity,
@@ -218,11 +218,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           (index) {
                             double selectedness = 0.0;
                             if (_pageController.hasClients && _pageController.page != null) {
-                              // match the dots to the current page
+                              // current dot index
                               double normalizedPage = _pageController.page! % _onboardingData.length;
                               selectedness = (1.0 - (index - normalizedPage).abs()).clamp(0.0, 1.0);
                               
-                              // handle the dot wrap around
+                              // fix dot wrap around
                               double altSelectedness = (1.0 - (index - (normalizedPage - _onboardingData.length)).abs()).clamp(0.0, 1.0);
                               selectedness = selectedness > altSelectedness ? selectedness : altSelectedness;
 
@@ -259,7 +259,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                       child: Text(
-                        'Click To Start',
+                        'Get Started',
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

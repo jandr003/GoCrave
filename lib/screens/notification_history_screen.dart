@@ -28,7 +28,7 @@ class NotificationHistoryScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              // will add clear logic here later
+              // add the clear all logic here later
             },
             child: Text(
               'Clear All',

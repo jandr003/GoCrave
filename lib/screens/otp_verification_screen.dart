@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 import '../widgets/success_transition_overlay.dart';
+import 'main_nav_wrapper.dart';
 import 'notification_history_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -25,13 +26,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
 
-    // show the message almost right away
+    // show the notification right away
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
           _showNotification = true;
         });
-        // hide it after 5 seconds
+        // auto hide after 5 secs
         Timer(const Duration(seconds: 5), () {
           if (mounted) {
             setState(() {
@@ -173,7 +174,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  // the otp input widget
+                  // the pin input
                   Center(
                     child: Pinput(
                       length: 5,
@@ -183,8 +184,24 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       separatorBuilder: (index) => const SizedBox(width: 8),
                       hapticFeedbackType: HapticFeedbackType.lightImpact,
                       obscureText: true,
+                      validator: (value) {
+                        return value == widget.initialOtp
+                            ? null
+                            : 'Incorrect OTP code. Please try again.';
+                      },
+                      errorTextStyle: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      errorPinTheme: defaultPinTheme.copyWith(
+                        decoration: defaultPinTheme.decoration!.copyWith(
+                          border: Border.all(color: Colors.redAccent),
+                          color: Colors.red.withOpacity(0.05),
+                        ),
+                      ),
                       onCompleted: (pin) {
-                        _handleVerification();
+                        _handleVerification(pin);
                       },
                       obscuringWidget: Container(
                         width: 12,
@@ -222,7 +239,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // button to go back
+                  // go back button
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -253,7 +270,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             if (_isSuccessTransition)
               SuccessTransitionOverlay(
                 onContinue: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MainNavWrapper()),
+                    (route) => false,
+                  );
                 },
               ),
             AnimatedPositioned(
@@ -281,12 +303,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 
-  void _handleVerification() async {
+  void _handleVerification(String pin) async {
+    if (pin != widget.initialOtp) return;
+
     setState(() {
       _isLoading = true;
     });
 
-    // simulate the check delay
+    // simulate the network delay
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {

@@ -92,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // phone input part
+              // phone input section
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -223,7 +223,6 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-// just a note: i might need to fix the flag design later. 
-// the library design is okay but i want it to match my exact 
-// specs with that light grey box for the flag and code.
+// fix the flag box later to match the design.
+// the library is okay but i want that light grey rounded look.
 
