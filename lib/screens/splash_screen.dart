@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_screen.dart';
@@ -15,42 +16,83 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  
-  // sequence of animations
-  late Animation<double> _iconFadeAnimation;
-  late Animation<double> _textRevealAnimation;
-  late Animation<double> _textFadeAnimation;
+
+  // timing settings
+  late Animation<double> _iconPopScale;
+  late Animation<double> _iconPopFade;
+  late Animation<double> _circleReveal;
+  late Animation<double> _finalLogoReveal;
+  late Animation<double> _finalLogoFade;
+
+  double _maxScreenRadius = 0;
+  late final List<Widget> _staticImages;
 
   @override
   void initState() {
     super.initState();
-    
-    // splash timing
+
+    _staticImages = [
+      Image.asset(
+        'assets/images/gocrave_app_logo.png',
+        width: 140,
+        height: 140,
+        fit: BoxFit.contain,
+        key: const ValueKey('logo_pop'),
+      ),
+      Image.asset(
+        'assets/images/gocrave_app_logo.png',
+        width: 100, // app icon size
+        height: 100,
+        fit: BoxFit.contain,
+        key: const ValueKey('logo_final_icon'),
+      ),
+      Image.asset(
+        'assets/images/gocrave_official_logo.png',
+        width: 350, // official wordmark size
+        height: 120,
+        fit: BoxFit.contain,
+        key: const ValueKey('logo_final_text'),
+      ),
+    ];
+
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 3000),
     );
 
-    // show icon
-    _iconFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    // icon pop reveal
+    _iconPopFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.3, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.2, curve: Curves.easeIn),
+      ),
+    );
+    _iconPopScale = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.3, curve: Curves.easeOutBack),
       ),
     );
 
-    // icon slides left while name reveals
-    _textRevealAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    // orange boom effect
+    _circleReveal = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.4, 0.9, curve: Curves.easeInOutQuart),
+        curve: const Interval(0.35, 0.6, curve: Curves.easeInOutQuart),
       ),
     );
 
-    _textFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    // horizontal reveal
+    _finalLogoReveal = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.4, 0.6, curve: Curves.easeIn),
+        curve: const Interval(0.65, 0.9, curve: Curves.easeInOutQuart),
+      ),
+    );
+    _finalLogoFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.65, 0.75, curve: Curves.easeIn),
       ),
     );
 
@@ -59,8 +101,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startTransitionTimer() {
-    // wait for sequence and go to next
-    Timer(const Duration(milliseconds: 3500), () {
+    // wait for sequence and go to next screen
+    Timer(const Duration(milliseconds: 6500), () {
       _checkPersistence();
     });
   }
@@ -102,51 +144,107 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    const orangeColor = Color(0xFFFF5622);
+
+    if (_maxScreenRadius == 0) {
+      final size = MediaQuery.of(context).size;
+      _maxScreenRadius = sqrt(size.width * size.width + size.height * size.height);
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // icon
-                Opacity(
-                  opacity: _iconFadeAnimation.value,
-                  child: Image.asset(
-                    'assets/images/gocrave_app_logo.png',
-                    width: 70, // icon size as per youtube style proportions
-                    height: 70,
-                    fit: BoxFit.contain,
+      body: Stack(
+        children: [
+          // orange circle expansion
+          RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _circleReveal,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: CircleRevealPainter(
+                    progress: _circleReveal.value,
+                    color: orangeColor,
+                    maxRadius: _maxScreenRadius,
                   ),
-                ),
-                
-                // typed reveal
-                // icon slides left
-                ClipRect(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: _textRevealAnimation.value,
-                    child: Opacity(
-                      opacity: _textFadeAnimation.value,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: Image.asset(
-                          'assets/images/gocrave_official_logo.png',
-                          width: 160,
-                          height: 60,
-                          fit: BoxFit.contain,
+                  size: Size.infinite,
+                );
+              },
+            ),
+          ),
+
+          // center part
+          Center(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                final isOrangeBg = _circleReveal.value > 0.8;
+                final reveal = _finalLogoReveal.value;
+
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // initial icon pop
+                    if (!isOrangeBg)
+                      Opacity(
+                        opacity: _iconPopFade.value,
+                        child: Transform.scale(
+                          scale: _iconPopScale.value,
+                          child: _staticImages[0],
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+
+                    // perfectly centered horizontal lockup
+                    if (isOrangeBg)
+                      Opacity(
+                        opacity: _finalLogoFade.value,
+                        child: ColorFiltered(
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
+                          child: ClipRect(
+                            child: Align(
+                              alignment: Alignment.center,
+                              widthFactor: reveal,
+                              child: _staticImages[2],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+class CircleRevealPainter extends CustomPainter {
+  final double progress;
+  final Color color;
+  final double maxRadius;
+
+  CircleRevealPainter({
+    required this.progress,
+    required this.color,
+    required this.maxRadius,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0) return;
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = maxRadius * progress;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(center, radius, paint);
+  }
+
+  @override
+  bool shouldRepaint(CircleRevealPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
