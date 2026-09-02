@@ -117,12 +117,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   // transition settings
                   final double position = index - page;
                   final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
-                  final double scale = 1.0 + (position.abs() * 0.1); // zoom effect as we slide
+                  final double screenWidth = MediaQuery.of(context).size.width;
 
-                  return Opacity(
-                    opacity: opacity,
-                    child: Transform.scale(
-                      scale: scale,
+                  return Transform.translate(
+                    offset: Offset(-position * screenWidth, 0),
+                    child: Opacity(
+                      opacity: opacity,
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -131,7 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             fit: BoxFit.cover,
                             height: double.infinity,
                             width: double.infinity,
-                            alignment: Alignment(position * 0.6, 0.0),
+                            alignment: Alignment(position * 0.2, 0.0), // subtler parallax
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(
@@ -218,24 +218,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           (index) {
                             double selectedness = 0.0;
                             if (_pageController.hasClients && _pageController.page != null) {
-                              // current dot index
                               double normalizedPage = _pageController.page! % _onboardingData.length;
-                              selectedness = (1.0 - (index - normalizedPage).abs()).clamp(0.0, 1.0);
+                              double distance = (index - normalizedPage).abs();
                               
-                              // fix dot wrap around
-                              double altSelectedness = (1.0 - (index - (normalizedPage - _onboardingData.length)).abs()).clamp(0.0, 1.0);
-                              selectedness = selectedness > altSelectedness ? selectedness : altSelectedness;
+                              // handle wrap around for infinite scroll
+                              if (distance > _onboardingData.length / 2) {
+                                distance = (distance - _onboardingData.length).abs();
+                              }
 
+                              selectedness = (1.0 - distance).clamp(0.0, 1.0);
                             } else if (index == (_currentPage % _onboardingData.length)) {
                               selectedness = 1.0;
                             }
 
+                            // liquid stretching effect
+                            final double dotWidth = 8 + (28 * selectedness);
+
                             return Container(
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               height: 8,
-                              width: 8 + (16 * selectedness),
+                              width: dotWidth,
                               decoration: BoxDecoration(
-                                color: Color.lerp(Colors.white38, Colors.white, selectedness),
+                                color: selectedness > 0.5 
+                                  ? Colors.white 
+                                  : Colors.white.withOpacity(0.3 + (0.7 * selectedness)),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             );

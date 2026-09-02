@@ -40,7 +40,21 @@ class DashboardScreen extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                            const Icon(Icons.keyboard_arrow_down, size: 20),
+                            InkWell(
+                              onTap: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Location selection coming soon!'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: const Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Icon(Icons.keyboard_arrow_down, size: 20),
+                              ),
+                            ),
                           ],
                         ),
                       ],

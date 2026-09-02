@@ -48,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen>
       ),
       Image.asset(
         'assets/images/gocrave_official_logo.png',
-        width: 350, // official wordmark size
-        height: 120,
+        width: 600, // even bigger official wordmark
+        height: 200,
         fit: BoxFit.contain,
         key: const ValueKey('logo_final_text'),
       ),
