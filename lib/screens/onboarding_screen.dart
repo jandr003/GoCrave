@@ -46,32 +46,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String>> _onboardingData = [
     {
-      'title': 'Quick & Tasty Meals 🍔',
+      'title': 'Quick & Tasty Meals',
       'subtitle': 'Crispy burgers and fries delivered to your doorstep.',
       'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Taste of Home 🍲',
+      'title': 'Taste of Home',
       'subtitle': 'Hearty home-cooked meals and warm flavors for the family.',
       'image': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Healthy & Fresh 🥗',
+      'title': 'Healthy & Fresh',
       'subtitle': 'Nutritious green bowls and salads for a better you.',
       'image': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Perfect Mid-day Bites 🍟',
+      'title': 'Perfect Mid-day Bites',
       'subtitle': 'Street foods and quick snacks to fuel your day.',
       'image': 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Sweet Cravings Satisfied 🍰',
+      'title': 'Sweet Cravings Satisfied',
       'subtitle': 'Cakes, ice cream, and sweets to end your meal right.',
       'image': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=1000&auto=format&fit=crop',
     },
     {
-      'title': 'Refreshingly Cool 🥤',
+      'title': 'Refreshingly Cool',
       'subtitle': 'Shakes, juices, and milk teas for a perfect break.',
       'image': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1000&auto=format&fit=crop',
     },
@@ -114,7 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     page = _pageController.page!;
                   }
 
-                  // transition settings
+                  // Calculate frame-by-frame transition progress
                   final double position = index - page;
                   final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
                   final double screenWidth = MediaQuery.of(context).size.width;

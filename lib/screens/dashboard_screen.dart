@@ -1,8 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  String _selectedLocation = 'Manila, Philippines';
+
+  final List<String> _locations = [
+    'Manila, Philippines',
+    'Makati City, PH',
+    'Quezon City, PH',
+    'Taguig City, PH',
+    'Pasig City, PH',
+    'Mandaluyong City, PH',
+    'Parañaque City, PH',
+    'Pasay City, PH',
+    'Alabang, Muntinlupa',
+  ];
+
+  void _showLocationPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Select Delivery Location',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _locations.length,
+                  itemBuilder: (context, index) {
+                    final isSelected = _locations[index] == _selectedLocation;
+                    return ListTile(
+                      onTap: () {
+                        setState(() {
+                          _selectedLocation = _locations[index];
+                        });
+                        Navigator.pop(context);
+                      },
+                      leading: Icon(
+                        Icons.location_on,
+                        color: isSelected ? Colors.deepOrangeAccent : Colors.grey,
+                      ),
+                      title: Text(
+                        _locations[index],
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                          color: isSelected ? Colors.deepOrangeAccent : Colors.black,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? const Icon(Icons.check_circle, color: Colors.deepOrangeAccent)
+                          : null,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +96,7 @@ class DashboardScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                // location and profile info
+                // Header section with delivery location and notification toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -33,7 +113,7 @@ class DashboardScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Manila, Philippines',
+                              _selectedLocation,
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -41,14 +121,7 @@ class DashboardScreen extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Location selection coming soon!'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
+                              onTap: _showLocationPicker,
                               borderRadius: BorderRadius.circular(12),
                               child: const Padding(
                                 padding: EdgeInsets.all(4.0),
@@ -70,7 +143,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
-                // search bar for food
+                // Search field for browsing food items
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 56,
@@ -96,10 +169,10 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // main promo banner
+                // Promotional banner for new users
                 Container(
                   width: double.infinity,
-                  height: 160,
+                  constraints: const BoxConstraints(minHeight: 160),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFFFE9920), Color(0xFFFF5622)],
@@ -164,7 +237,7 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // category picker
+                // Horizontal category selection list
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -201,7 +274,7 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // show popular stuff here
+                // List of popular items in the user's vicinity
                 Text(
                   'Popular Near You',
                   style: GoogleFonts.poppins(
@@ -262,7 +335,8 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFoodCard(String title, String subtitle, String price, String rating, String imageUrl) {
+  Widget _buildFoodCard(
+      String title, String subtitle, String price, String rating, String imageUrl) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(

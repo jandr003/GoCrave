@@ -26,7 +26,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
 
-    // show the notification right away
+    // Trigger mock notification simulation on entry
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
@@ -239,7 +239,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // go back button
+                  // Option to navigate back and choose a different verification method
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -310,7 +310,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       _isLoading = true;
     });
 
-    // simulate the network delay
+    // Network simulation delay for processing verification
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
