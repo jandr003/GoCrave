@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
+import 'profile_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
   const MainNavWrapper({super.key});
@@ -16,7 +17,7 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
     const DashboardScreen(),
     const Center(child: Text('Search Screen', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Orders Screen', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))),
+    const ProfileScreen(),
   ];
 
   @override
