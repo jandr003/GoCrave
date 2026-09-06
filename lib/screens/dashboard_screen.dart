@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'browse_menu_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -215,28 +216,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 24),
                 // Search field for browsing food items
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.search, color: Colors.grey),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'What are you craving for?',
-                            hintStyle: GoogleFonts.poppins(color: Colors.grey),
-                            border: InputBorder.none,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BrowseMenuScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.search, color: Colors.grey),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'What are you craving for?',
+                            style: GoogleFonts.poppins(color: Colors.grey),
                           ),
                         ),
-                      ),
-                      const Icon(Icons.tune, color: Colors.deepOrangeAccent),
-                    ],
+                        const Icon(Icons.tune, color: Colors.deepOrangeAccent),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),

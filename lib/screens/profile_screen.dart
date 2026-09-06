@@ -16,17 +16,13 @@ class ProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                // Header: Name and Avatar
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'John Andrew',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                    Image.asset(
+                      'assets/images/gocrave_official_logo.png',
+                      height: 100,
+                      fit: BoxFit.contain,
                     ),
                     const CircleAvatar(
                       radius: 28,
@@ -37,7 +33,6 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32),
-                // Personal Dropdown
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   decoration: BoxDecoration(
@@ -62,7 +57,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                // Action Grid: Favorite, Wallet, Orders
                 Row(
                   children: [
                     _buildActionCard('Favorite', Icons.book_outlined, Colors.blueAccent),
@@ -73,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32),
-                // Menu List
                 _buildMenuItem(
                   icon: Icons.card_giftcard,
                   title: 'Promotions',
