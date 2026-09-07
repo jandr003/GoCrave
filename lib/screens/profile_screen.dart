@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/gocrave_official_logo.png',
-                      height: 100,
+                      height: 140,
                       fit: BoxFit.contain,
                     ),
                     const CircleAvatar(

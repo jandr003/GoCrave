@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'category_detail_screen.dart';
+import '../data/food_data.dart';
 
 class BrowseMenuScreen extends StatelessWidget {
-  const BrowseMenuScreen({super.key});
+  final bool showBackButton;
+  const BrowseMenuScreen({super.key, this.showBackButton = true});
 
   final List<Map<String, String>> categories = const [
     {
@@ -50,10 +53,12 @@ class BrowseMenuScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: showBackButton 
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+              onPressed: () => Navigator.pop(context),
+            )
+          : null,
         title: Text(
           'Browse Menu',
           style: GoogleFonts.poppins(
@@ -69,7 +74,6 @@ class BrowseMenuScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            // Search Bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 56,
@@ -105,7 +109,7 @@ class BrowseMenuScreen extends StatelessWidget {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  return _buildCategoryCard(category);
+                  return _buildCategoryCard(context, category);
                 },
               ),
             ),
@@ -115,61 +119,86 @@ class BrowseMenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(Map<String, String> category) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        image: DecorationImage(
-          image: NetworkImage(category['image']!),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.3),
-            BlendMode.darken,
-          ),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    category['icon']!,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  category['title']!,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  category['subtitle']!,
-                  style: GoogleFonts.poppins(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+  Widget _buildCategoryCard(BuildContext context, Map<String, String> category) {
+    return InkWell(
+      onTap: () {
+        final filteredItems = allFoodItems
+            .where((item) => item['category'] == category['title'])
+            .toList();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetailScreen(
+              categoryName: category['title']!,
+              foodItems: filteredItems,
             ),
           ),
-        ],
+        );
+      },
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          image: DecorationImage(
+            image: NetworkImage(category['image']!),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.25),
+              BlendMode.darken,
+            ),
+          ),
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      category['icon']!,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          category['title']!,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            height: 1.1,
+                          ),
+                        ),
+                        Text(
+                          category['subtitle']!,
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white.withOpacity(0.9),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'profile_screen.dart';
+import 'browse_menu_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
   const MainNavWrapper({super.key});
@@ -12,13 +13,19 @@ class MainNavWrapper extends StatefulWidget {
 class _MainNavWrapperState extends State<MainNavWrapper> {
   int _currentIndex = 0;
 
-  // main app screens
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const Center(child: Text('Search Screen', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Orders Screen', style: TextStyle(fontSize: 24))),
-    const ProfileScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      DashboardScreen(onSearchTap: () => setState(() => _currentIndex = 1)),
+      BrowseMenuScreen(showBackButton: false),
+      const Center(child: Text('Orders Screen', style: TextStyle(fontSize: 24))),
+      const Center(child: Text('Favorite Screen', style: TextStyle(fontSize: 24))),
+      ProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,6 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
         index: _currentIndex,
         children: _screens,
       ),
-      // the bottom bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -46,14 +52,19 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            activeIcon: Icon(Icons.search, weight: 800),
-            label: 'Search',
+            icon: Icon(Icons.fastfood_outlined),
+            activeIcon: Icon(Icons.fastfood),
+            label: 'Food',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt_long_outlined),
             activeIcon: Icon(Icons.receipt_long),
-            label: 'Orders',
+            label: 'Order',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorite',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

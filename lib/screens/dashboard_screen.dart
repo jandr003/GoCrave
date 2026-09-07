@@ -2,9 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'browse_menu_screen.dart';
+import 'category_detail_screen.dart';
+import '../widgets/food_card.dart';
+import '../data/food_data.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  final VoidCallback onSearchTap;
+  const DashboardScreen({super.key, required this.onSearchTap});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -168,37 +172,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                // Header section with delivery location and notification toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          'Deliver to',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.grey[500],
-                          ),
+                        Image.asset(
+                          'assets/images/gocrave_app_logo.png',
+                          height: 45,
+                          fit: BoxFit.contain,
                         ),
-                        Row(
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _selectedLocation,
+                              'Deliver to',
                               style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                fontSize: 12,
+                                color: Colors.grey[500],
                               ),
                             ),
-                            InkWell(
-                              onTap: _showLocationPicker,
-                              borderRadius: BorderRadius.circular(12),
-                              child: const Padding(
-                                padding: EdgeInsets.all(4.0),
-                                child: Icon(Icons.keyboard_arrow_down, size: 20),
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  _selectedLocation,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: _showLocationPicker,
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Icon(Icons.keyboard_arrow_down, size: 20),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -215,16 +228,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                // Search field for browsing food items
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BrowseMenuScreen(),
-                      ),
-                    );
-                  },
+                  onTap: widget.onSearchTap,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     height: 56,
@@ -248,7 +253,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // Promotional slideshow featuring category-specific offers
                 SizedBox(
                   height: 220,
                   width: double.infinity,
@@ -365,7 +369,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // Horizontal category selection list
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -389,22 +392,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  height: 100,
+                  height: 120,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      _buildCategoryItem('Burgers', Icons.lunch_dining),
-                      _buildCategoryItem('Pizza', Icons.local_pizza),
-                      _buildCategoryItem('Salads', Icons.eco),
-                      _buildCategoryItem('Drinks', Icons.local_cafe),
-                      _buildCategoryItem('Sweets', Icons.cake),
+                      _buildCategoryItem(
+                        'Fast Food',
+                        '🍔',
+                        'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
+                      ),
+                      _buildCategoryItem(
+                        'Home-Style',
+                        '🍲',
+                        'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=600&auto=format&fit=crop',
+                      ),
+                      _buildCategoryItem(
+                        'Vegetarian',
+                        '🥗',
+                        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop',
+                      ),
+                      _buildCategoryItem(
+                        'Drinks',
+                        '🥤',
+                        'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop',
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
-                // List of popular items in the user's vicinity
                 Text(
-                  'Popular Near You',
+                  'Explore More Cravings',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -412,20 +429,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _buildFoodCard(
-                  'Juicy Beef Burger',
-                  'Classic Burgers & Fries',
-                  '₱185.00',
-                  '4.8',
-                  'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500&auto=format&fit=crop',
-                ),
-                _buildFoodCard(
-                  'Pepperoni Feast',
-                  'New York Style Pizza',
-                  '₱450.00',
-                  '4.9',
-                  'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=500&auto=format&fit=crop',
-                ),
+                ...allFoodItems.map((item) {
+                  return FoodCard(
+                    title: item['title']!,
+                    subtitle: item['subtitle']!,
+                    price: item['price']!,
+                    rating: item['rating']!,
+                    imageUrl: item['image']!,
+                  );
+                }).toList(),
                 const SizedBox(height: 20),
               ],
             ),
@@ -435,114 +447,69 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildCategoryItem(String label, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(right: 20),
-      child: Column(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(icon, color: Colors.deepOrangeAccent, size: 28),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
+  Widget _buildCategoryItem(String label, String emoji, String imageUrl) {
+    return InkWell(
+      onTap: () {
+        final filteredItems = allFoodItems
+            .where((item) => item['category'] == label)
+            .toList();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetailScreen(
+              categoryName: label,
+              foodItems: filteredItems,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFoodCard(
-      String title, String subtitle, String price, String rating, String imageUrl) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            child: Image.network(
-              imageUrl,
-              height: 160,
-              width: double.infinity,
-              fit: BoxFit.cover,
+        );
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 140,
+        margin: const EdgeInsets.only(right: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          image: DecorationImage(
+            image: NetworkImage(imageUrl),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.3),
+              BlendMode.darken,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 18),
-                        const SizedBox(width: 4),
-                        Text(
-                          rating,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
+                child: Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  label,
                   style: GoogleFonts.poppins(
                     fontSize: 13,
-                    color: Colors.grey[500],
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  price,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.deepOrangeAccent,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
