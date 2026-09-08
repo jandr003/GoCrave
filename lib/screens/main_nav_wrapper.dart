@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'profile_screen.dart';
 import 'browse_menu_screen.dart';
+import 'orders_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
   const MainNavWrapper({super.key});

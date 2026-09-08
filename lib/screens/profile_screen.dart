@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'login_screen.dart';
+import 'wallet_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -59,11 +62,16 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 Row(
                   children: [
-                    _buildActionCard('Favorite', Icons.book_outlined, Colors.blueAccent),
+                    _buildActionCard(context, 'Favorite', Icons.book_outlined, Colors.blueAccent, () {}),
                     const SizedBox(width: 16),
-                    _buildActionCard('Wallet', Icons.account_balance_wallet, Colors.orangeAccent),
+                    _buildActionCard(context, 'Wallet', Icons.account_balance_wallet, Colors.orangeAccent, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const WalletScreen()),
+                      );
+                    }),
                     const SizedBox(width: 16),
-                    _buildActionCard('Orders', Icons.shopping_basket, Colors.green),
+                    _buildActionCard(context, 'Orders', Icons.shopping_basket, Colors.green, () {}),
                   ],
                 ),
                 const SizedBox(height: 32),
@@ -95,6 +103,39 @@ class ProfileScreen extends StatelessWidget {
                   subtitle: 'Order your favorites anytime and enjoy fast, easy delivery.',
                 ),
                 const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('isLoggedIn', false);
+                      if (context.mounted) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                          (route) => false,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red[50],
+                      foregroundColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      'Sign Out',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -103,27 +144,31 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionCard(String label, IconData icon, Color iconColor) {
+  Widget _buildActionCard(BuildContext context, String label, IconData icon, Color iconColor, VoidCallback onTap) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 32, color: iconColor),
-            const SizedBox(height: 12),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: [
+              Icon(icon, size: 32, color: iconColor),
+              const SizedBox(height: 12),
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

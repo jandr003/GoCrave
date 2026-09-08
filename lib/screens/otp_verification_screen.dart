@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/success_transition_overlay.dart';
 import 'main_nav_wrapper.dart';
 import 'notification_history_screen.dart';
@@ -26,13 +27,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
 
-    // Trigger mock notification simulation on entry
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
           _showNotification = true;
         });
-        // auto hide after 5 secs
         Timer(const Duration(seconds: 5), () {
           if (mounted) {
             setState(() {
@@ -157,6 +156,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ],
                   ),
                   const SizedBox(height: 48),
+                  const SizedBox(height: 48),
                   Text(
                     'Verify Your Number',
                     style: GoogleFonts.poppins(
@@ -174,7 +174,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  // the pin input
                   Center(
                     child: Pinput(
                       length: 5,
@@ -239,7 +238,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // Option to navigate back and choose a different verification method
+                  // go back button
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -310,8 +309,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       _isLoading = true;
     });
 
-    // Network simulation delay for processing verification
     await Future.delayed(const Duration(seconds: 2));
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
 
     if (mounted) {
       setState(() {

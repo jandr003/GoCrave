@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_screen.dart';
 import 'login_screen.dart';
 import 'main_nav_wrapper.dart';
+import 'verification_method_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -117,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (isFirstTime) {
       _navigate(const OnboardingScreen());
     } else if (isLoggedIn) {
-      _navigate(const MainNavWrapper());
+      _navigate(VerificationMethodScreen());
     } else {
       _navigate(const LoginScreen());
     }
@@ -183,7 +184,6 @@ class _SplashScreenState extends State<SplashScreen>
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    // initial icon pop
                     if (!isOrangeBg)
                       Opacity(
                         opacity: _iconPopFade.value,

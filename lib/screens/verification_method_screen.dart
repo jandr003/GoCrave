@@ -27,7 +27,7 @@ class VerificationMethodScreen extends StatelessWidget {
                     constraints: const BoxConstraints(),
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.black,
                       shape: BoxShape.circle,
                     ),

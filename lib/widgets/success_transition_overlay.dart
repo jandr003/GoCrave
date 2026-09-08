@@ -79,7 +79,6 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
       height: double.infinity,
       child: Stack(
         children: [
-          // explosion effect
           Positioned.fill(
             child: AnimatedBuilder(
               animation: _particleController,

@@ -114,7 +114,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     page = _pageController.page!;
                   }
 
-                  // Calculate frame-by-frame transition progress
                   final double position = index - page;
                   final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
                   final double screenWidth = MediaQuery.of(context).size.width;
@@ -231,7 +230,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               selectedness = 1.0;
                             }
 
-                            // liquid stretching effect
                             final double dotWidth = 8 + (28 * selectedness);
 
                             return Container(

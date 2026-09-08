@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
-import 'sign_up_screen.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 40),
                 Text(
-                  'Welcome to GoCrave',
+                  'Create Account',
                   style: GoogleFonts.poppins(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -45,44 +46,46 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Log in to your account and start craving.',
+                  'Join the GoCrave community today.',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.grey[600],
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
                 
-                // Email / Username
-                _buildLabel('Email or Username'),
-                const SizedBox(height: 8),
-                _buildTextField(hint: 'john.andrew@gmail.com'),
-                const SizedBox(height: 24),
-                
-                // Password
+                // First & Last Name Row
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildLabel('Password'),
-                    Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: primaryColor,
-                      ),
+                    Expanded(
+                      child: _buildTextField(label: 'First Name', hint: 'John'),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildTextField(label: 'Last Name', hint: 'Andrew'),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
+                _buildTextField(label: 'Email', hint: 'example@gmail.com'),
+                const SizedBox(height: 20),
                 _buildTextField(
+                  label: 'Password',
                   hint: '••••••••',
-                  obscure: _obscurePassword,
                   isPassword: true,
+                  obscure: _obscurePassword,
                   onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
                 ),
+                const SizedBox(height: 20),
+                _buildTextField(
+                  label: 'Confirm Password',
+                  hint: '••••••••',
+                  isPassword: true,
+                  obscure: _obscureConfirmPassword,
+                  onToggle: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                ),
                 
-                const SizedBox(height: 48),
+                const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -104,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Login',
+                      'Sign Up',
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -112,10 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                
                 const SizedBox(height: 32),
                 Center(
                   child: Text(
-                    'Or log in with',
+                    'Or sign up with',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: Colors.grey[500],
@@ -131,16 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
                       );
                     },
                     child: RichText(
                       text: TextSpan(
                         style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[600]),
                         children: const [
-                          TextSpan(text: "Don't have an account? "),
+                          TextSpan(text: 'Already have an account? '),
                           TextSpan(
-                            text: 'Sign Up',
+                            text: 'Login',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.bold,
@@ -160,48 +164,51 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: GoogleFonts.poppins(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.black,
-      ),
-    );
-  }
-
   Widget _buildTextField({
+    required String label,
     required String hint,
-    bool obscure = false,
     bool isPassword = false,
+    bool obscure = false,
     VoidCallback? onToggle,
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        obscureText: obscure,
-        style: GoogleFonts.poppins(fontSize: 16),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: GoogleFonts.poppins(color: Colors.grey[400]),
-          border: InputBorder.none,
-          suffixIcon: isPassword
-              ? IconButton(
-                  icon: Icon(
-                    obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    color: Colors.grey,
-                    size: 20,
-                  ),
-                  onPressed: onToggle,
-                )
-              : null,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
         ),
-      ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: TextField(
+            obscureText: obscure,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: GoogleFonts.poppins(color: Colors.grey[400]),
+              border: InputBorder.none,
+              suffixIcon: isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      onPressed: onToggle,
+                    )
+                  : null,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -209,16 +216,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildSocialIcon(Icons.g_mobiledata),
+        _buildSocialIcon('assets/images/google_logo.png', Colors.white), // Assuming icons exist or use placeholders
         const SizedBox(width: 20),
-        _buildSocialIcon(Icons.facebook),
+        _buildSocialIcon('assets/images/facebook_logo.png', Colors.blueAccent),
         const SizedBox(width: 20),
-        _buildSocialIcon(Icons.chat),
+        _buildSocialIcon('assets/images/whatsapp_logo.png', Colors.green),
       ],
     );
   }
 
-  Widget _buildSocialIcon(IconData icon) {
+  Widget _buildSocialIcon(String path, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -233,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      child: Icon(icon, size: 24, color: Colors.grey[700]),
+      child: const Icon(Icons.circle, size: 24, color: Colors.grey),
     );
   }
 }
