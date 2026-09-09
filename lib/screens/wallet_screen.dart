@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
+import '../widgets/branded_card.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
@@ -48,13 +49,9 @@ class WalletScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              BrandedCard(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE64A19),
-                  borderRadius: BorderRadius.circular(32),
-                ),
+                baseColor: const Color(0xFFE64A19),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
