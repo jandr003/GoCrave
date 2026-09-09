@@ -12,150 +12,239 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
+  bool _isAgreed = false;
+  final Color brandColor = const Color(0xFFFF5622);
+  
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailFocus.addListener(() => setState(() {}));
+    _passwordFocus.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Colors.deepOrangeAccent;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 40),
-                Center(
-                  child: Image.asset(
-                    'assets/images/gocrave_official_logo.png',
-                    height: 60,
-                    fit: BoxFit.contain,
-                  ),
+      backgroundColor: brandColor,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: size.height * 0.4,
+            child: Center(
+              child: Hero(
+                tag: 'official_logo',
+                child: Image.asset(
+                  'assets/images/gocrave_official_logo.png',
+                  width: 240,
+                  fit: BoxFit.contain,
+                  color: Colors.white,
                 ),
-                const SizedBox(height: 32),
-                Text(
-                  'Welcome to GoCrave',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+              ),
+            ),
+          ),
+
+          Positioned.fill(
+            top: size.height * 0.32,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  topRight: Radius.circular(60),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Log in to your account and start craving.',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                const SizedBox(height: 40),
-                
-                // Email / Username
-                _buildLabel('Email or Username'),
-                const SizedBox(height: 8),
-                _buildTextField(hint: 'john.andrew@gmail.com'),
-                const SizedBox(height: 24),
-                
-                // Password
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildLabel('Email Address'),
+                    const SizedBox(height: 8),
+                    _buildTextField(
+                      hint: 'Enter your email address',
+                      focusNode: _emailFocus,
+                    ),
+                    const SizedBox(height: 24),
+                    
                     _buildLabel('Password'),
-                    Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: primaryColor,
-                      ),
+                    const SizedBox(height: 8),
+                    _buildTextField(
+                      hint: 'Enter your password',
+                      obscure: _obscurePassword,
+                      isPassword: true,
+                      focusNode: _passwordFocus,
+                      onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                _buildTextField(
-                  hint: '••••••••',
-                  obscure: _obscurePassword,
-                  isPassword: true,
-                  onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
-                ),
-                
-                const SizedBox(height: 48),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const VerificationMethodScreen(),
+                    
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        child: Text(
+                          'Forgot password?',
+                          style: GoogleFonts.poppins(
+                            color: brandColor,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Center(
-                  child: Text(
-                    'Or log in with',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                _buildSocialRow(),
-                const SizedBox(height: 32),
-                
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUpScreen()),
-                      );
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[600]),
-                        children: const [
-                          TextSpan(text: "Don't have an account? "),
-                          TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
+
+                    const SizedBox(height: 8),
+
+                    GestureDetector(
+                      onTap: () => setState(() => _isAgreed = !_isAgreed),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: _isAgreed ? brandColor : Colors.grey[300]!,
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _isAgreed ? brandColor : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                                children: [
+                                  const TextSpan(text: "I've read and agreed to "),
+                                  TextSpan(
+                                    text: 'User Agreement',
+                                    style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                                  ),
+                                  const TextSpan(text: ' & '),
+                                  TextSpan(
+                                    text: 'Privacy Policy',
+                                    style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
+
+                    const SizedBox(height: 40),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const VerificationMethodScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: brandColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          'Sign in',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+                    Center(
+                      child: Text(
+                        'other ways to sign in',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildSocialButton(Icons.g_mobiledata),
+                        const SizedBox(width: 24),
+                        _buildSocialButton(Icons.facebook),
+                      ],
+                    ),
+
+                    const SizedBox(height: 32),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[600]),
+                            children: [
+                              const TextSpan(text: "Don't have an account? "),
+                              TextSpan(
+                                text: 'Sign Up',
+                                style: TextStyle(
+                                  color: brandColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -165,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
       text,
       style: GoogleFonts.poppins(
         fontSize: 14,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.bold,
         color: Colors.black,
       ),
     );
@@ -173,28 +262,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTextField({
     required String hint,
+    required FocusNode focusNode,
     bool obscure = false,
     bool isPassword = false,
     VoidCallback? onToggle,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xFFFBFBFB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
       child: TextField(
+        focusNode: focusNode,
         obscureText: obscure,
-        style: GoogleFonts.poppins(fontSize: 16),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(color: Colors.grey[400]),
+          hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),
           border: InputBorder.none,
           suffixIcon: isPassword
               ? IconButton(
                   icon: Icon(
                     obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    color: Colors.grey,
+                    color: Colors.grey[400],
                     size: 20,
                   ),
                   onPressed: onToggle,
@@ -205,35 +296,16 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSocialRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildSocialIcon(Icons.g_mobiledata),
-        const SizedBox(width: 20),
-        _buildSocialIcon(Icons.facebook),
-        const SizedBox(width: 20),
-        _buildSocialIcon(Icons.chat),
-      ],
-    );
-  }
-
-  Widget _buildSocialIcon(IconData icon) {
+  Widget _buildSocialButton(IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         border: Border.all(color: Colors.grey[200]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
-      child: Icon(icon, size: 24, color: Colors.grey[700]),
+      child: Icon(icon, size: 28, color: Colors.black87),
     );
   }
 }

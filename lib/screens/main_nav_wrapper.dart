@@ -22,7 +22,7 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
     _screens = [
       DashboardScreen(onSearchTap: () => setState(() => _currentIndex = 1)),
       BrowseMenuScreen(showBackButton: false),
-      const Center(child: Text('Orders Screen', style: TextStyle(fontSize: 24))),
+      const OrdersScreen(),
       const Center(child: Text('Favorite Screen', style: TextStyle(fontSize: 24))),
       ProfileScreen(),
     ];

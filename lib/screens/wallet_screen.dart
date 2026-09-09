@@ -144,7 +144,6 @@ class WalletScreen extends StatelessWidget {
       ),
     );
   }
-  }
 
   Widget _buildOrderCard({
     required String orderId,

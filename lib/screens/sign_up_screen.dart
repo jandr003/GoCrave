@@ -13,234 +13,276 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isAgreed = false;
+  final Color brandColor = const Color(0xFFFF5622);
+
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailFocus.addListener(() => setState(() {}));
+    _passwordFocus.addListener(() => setState(() {}));
+    _confirmPasswordFocus.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    _confirmPasswordFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Colors.deepOrangeAccent;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 40),
-                Center(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 48),
+              Center(
+                child: Hero(
+                  tag: 'official_logo',
                   child: Image.asset(
                     'assets/images/gocrave_official_logo.png',
-                    height: 60,
+                    height: 80,
                     fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: 40),
-                Text(
-                  'Create Account',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Join the GoCrave community today.',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                const SizedBox(height: 32),
-                
-                // First & Last Name Row
-                Row(
+              ),
+              const SizedBox(height: 60),
+
+              _buildLabel('Email Address'),
+              const SizedBox(height: 8),
+              _buildTextField(
+                hint: 'Enter your email address',
+                focusNode: _emailFocus,
+              ),
+              const SizedBox(height: 24),
+              
+              _buildLabel('Password'),
+              const SizedBox(height: 8),
+              _buildTextField(
+                hint: 'Enter your password',
+                obscure: _obscurePassword,
+                isPassword: true,
+                focusNode: _passwordFocus,
+                onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
+              ),
+              const SizedBox(height: 24),
+
+              _buildLabel('Confirm Password'),
+              const SizedBox(height: 8),
+              _buildTextField(
+                hint: 'Enter your password',
+                obscure: _obscureConfirmPassword,
+                isPassword: true,
+                focusNode: _confirmPasswordFocus,
+                onToggle: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              GestureDetector(
+                onTap: () => setState(() => _isAgreed = !_isAgreed),
+                child: Row(
                   children: [
-                    Expanded(
-                      child: _buildTextField(label: 'First Name', hint: 'John'),
+                    Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: _isAgreed ? brandColor : Colors.grey[300]!,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _isAgreed ? brandColor : Colors.transparent,
+                          ),
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
-                      child: _buildTextField(label: 'Last Name', hint: 'Andrew'),
+                      child: RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                          children: [
+                            const TextSpan(text: "I've read and agreed to "),
+                            TextSpan(
+                              text: 'User Agreement',
+                              style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                            ),
+                            const TextSpan(text: ' and '),
+                            TextSpan(
+                              text: 'Privacy Policy',
+                              style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                _buildTextField(label: 'Email', hint: 'example@gmail.com'),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  label: 'Password',
-                  hint: '••••••••',
-                  isPassword: true,
-                  obscure: _obscurePassword,
-                  onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  label: 'Confirm Password',
-                  hint: '••••••••',
-                  isPassword: true,
-                  obscure: _obscureConfirmPassword,
-                  onToggle: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
-                ),
-                
-                const SizedBox(height: 40),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const VerificationMethodScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      elevation: 0,
+              ),
+
+              const SizedBox(height: 48),
+
+              // Sign Up Button
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const VerificationMethodScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: brandColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Text(
-                      'Sign Up',
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    elevation: 0,
                   ),
-                ),
-                
-                const SizedBox(height: 32),
-                Center(
                   child: Text(
-                    'Or sign up with',
+                    'Sign Up',
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.grey[500],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                _buildSocialRow(),
-                const SizedBox(height: 32),
-                
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      );
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[600]),
-                        children: const [
-                          TextSpan(text: 'Already have an account? '),
-                          TextSpan(
-                            text: 'Login',
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+              ),
+              
+              const SizedBox(height: 32),
+              Center(
+                child: Text(
+                  'other ways to sign up',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.grey[400],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Social Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildSocialButton(Icons.g_mobiledata),
+                  const SizedBox(width: 24),
+                  _buildSocialButton(Icons.facebook),
+                ],
+              ),
+
+              const SizedBox(height: 40),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[600]),
+                      children: [
+                        const TextSpan(text: 'Already have an account? '),
+                        TextSpan(
+                          text: 'Sign in',
+                          style: TextStyle(
+                            color: brandColor,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
     );
   }
 
   Widget _buildTextField({
-    required String label,
     required String hint,
-    bool isPassword = false,
+    required FocusNode focusNode,
     bool obscure = false,
+    bool isPassword = false,
     VoidCallback? onToggle,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: TextField(
-            obscureText: obscure,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: GoogleFonts.poppins(color: Colors.grey[400]),
-              border: InputBorder.none,
-              suffixIcon: isPassword
-                  ? IconButton(
-                      icon: Icon(
-                        obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                        color: Colors.grey,
-                        size: 20,
-                      ),
-                      onPressed: onToggle,
-                    )
-                  : null,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildSocialIcon('assets/images/google_logo.png', Colors.white), // Assuming icons exist or use placeholders
-        const SizedBox(width: 20),
-        _buildSocialIcon('assets/images/facebook_logo.png', Colors.blueAccent),
-        const SizedBox(width: 20),
-        _buildSocialIcon('assets/images/whatsapp_logo.png', Colors.green),
-      ],
-    );
-  }
-
-  Widget _buildSocialIcon(String path, Color color) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFBFBFB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
+      ),
+      child: TextField(
+        focusNode: focusNode,
+        obscureText: obscure,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),
+          border: InputBorder.none,
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                    color: Colors.grey[400],
+                    size: 20,
+                  ),
+                  onPressed: onToggle,
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton(IconData icon) {
+    return Container(
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         border: Border.all(color: Colors.grey[200]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
-      child: const Icon(Icons.circle, size: 24, color: Colors.grey),
+      child: Icon(icon, size: 28, color: Colors.black87),
     );
   }
 }
