@@ -38,11 +38,10 @@ class BrandedCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         child: Stack(
           children: [
-            // The organic wave pattern background
             Positioned.fill(
               child: CustomPaint(
                 painter: _WavyPatternPainter(
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withOpacity(0.15), // Increased from 0.08 for better visibility
                 ),
               ),
             ),
@@ -69,7 +68,6 @@ class _WavyPatternPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.fill;
 
-    // Draw top-right blob
     final path1 = Path();
     path1.moveTo(size.width * 0.6, 0);
     path1.quadraticBezierTo(
@@ -105,7 +103,7 @@ class _WavyPatternPainter extends CustomPainter {
     path2.close();
     
     final paint2 = Paint()
-      ..color = color.withOpacity(color.opacity * 0.6)
+      ..color = color.withOpacity(color.opacity * 0.8)
       ..style = PaintingStyle.fill;
       
     canvas.drawPath(path2, paint2);

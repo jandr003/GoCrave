@@ -123,20 +123,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+                              color: _isAgreed ? brandColor : Colors.transparent,
                               border: Border.all(
                                 color: _isAgreed ? brandColor : Colors.grey[300]!,
                                 width: 1.5,
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(2),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: _isAgreed ? brandColor : Colors.transparent,
-                                ),
-                              ),
-                            ),
+                            child: _isAgreed 
+                              ? const Icon(Icons.check, size: 14, color: Colors.white) 
+                              : null,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -208,8 +203,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildSocialButton(Icons.g_mobiledata),
-                        const SizedBox(width: 24),
+                        const SizedBox(width: 20),
                         _buildSocialButton(Icons.facebook),
+                        const SizedBox(width: 20),
+                        _buildSocialButton(Icons.chat_bubble_outline), // WhatsApp placeholder
                       ],
                     ),
 

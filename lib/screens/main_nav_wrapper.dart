@@ -20,10 +20,17 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
   void initState() {
     super.initState();
     _screens = [
-      DashboardScreen(onSearchTap: () => setState(() => _currentIndex = 1)),
-      BrowseMenuScreen(showBackButton: false),
+      DashboardScreen(
+        onSearchTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BrowseMenuScreen(showBackButton: true)),
+          );
+        },
+      ),
+      const Center(child: Text('Favorites Screen', style: TextStyle(fontSize: 24))),
       const OrdersScreen(),
-      const Center(child: Text('Favorite Screen', style: TextStyle(fontSize: 24))),
+      const Center(child: Text('Cart Screen', style: TextStyle(fontSize: 24))),
       ProfileScreen(),
     ];
   }
@@ -53,19 +60,19 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fastfood_outlined),
-            activeIcon: Icon(Icons.fastfood),
-            label: 'Food',
+            icon: Icon(Icons.favorite_outline),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt_long_outlined),
             activeIcon: Icon(Icons.receipt_long),
-            label: 'Order',
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            activeIcon: Icon(Icons.favorite),
-            label: 'Favorite',
+            icon: Icon(Icons.shopping_cart_outlined),
+            activeIcon: Icon(Icons.shopping_cart),
+            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

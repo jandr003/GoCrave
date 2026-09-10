@@ -53,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   tag: 'official_logo',
                   child: Image.asset(
                     'assets/images/gocrave_official_logo.png',
-                    height: 80,
+                    height: 120, // Increased from 80
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -100,20 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 22,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        color: _isAgreed ? brandColor : Colors.transparent,
                         border: Border.all(
                           color: _isAgreed ? brandColor : Colors.grey[300]!,
                           width: 1.5,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _isAgreed ? brandColor : Colors.transparent,
-                          ),
-                        ),
-                      ),
+                      child: _isAgreed 
+                        ? const Icon(Icons.check, size: 14, color: Colors.white) 
+                        : null,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -187,8 +182,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildSocialButton(Icons.g_mobiledata),
-                  const SizedBox(width: 24),
+                  const SizedBox(width: 20),
                   _buildSocialButton(Icons.facebook),
+                  const SizedBox(width: 20),
+                  _buildSocialButton(Icons.chat_bubble_outline), // WhatsApp placeholder
                 ],
               ),
 
