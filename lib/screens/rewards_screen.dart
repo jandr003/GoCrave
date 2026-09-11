@@ -15,19 +15,27 @@ class _RewardsScreenState extends State<RewardsScreen> {
     'All',
     'Transport',
     'Shopping',
-    'Mobile Load',
+    'Food',
+    'E-Wallet',
     'Digital',
   ];
 
   final List<Map<String, dynamic>> _partners = [
-    {'name': 'Angkas', 'color': Color(0xFF000000), 'category': 'Transport', 'icon': Icons.motorcycle},
-    {'name': 'MoveIt', 'color': Color(0xFFFF6D00), 'category': 'Transport', 'icon': Icons.moped},
-    {'name': 'Shopee', 'color': Color(0xFFEE4D2D), 'category': 'Shopping', 'icon': Icons.shopping_bag},
-    {'name': 'Lazada', 'color': Color(0xFF0F146D), 'category': 'Shopping', 'icon': Icons.store},
-    {'name': 'Canva', 'color': Color(0xFF00C4CC), 'category': 'Digital', 'icon': Icons.design_services},
-    {'name': 'Smart', 'color': Color(0xFF0056FF), 'category': 'Mobile Load', 'icon': Icons.phone_android},
-    {'name': 'Globe', 'color': Color(0xFF003399), 'category': 'Mobile Load', 'icon': Icons.signal_cellular_alt},
-    {'name': 'TNT', 'color': Color(0xFFFFCC00), 'category': 'Mobile Load', 'icon': Icons.bolt},
+    {'name': 'Angkas', 'color': Color(0xFF000000), 'category': 'Transport', 'points': '800 pts', 'amount': '₱25', 'desc': 'Get ₱25 off on your next Angkas ride.'},
+    {'name': 'JoyRide', 'color': Color(0xFF003399), 'category': 'Transport', 'points': '750 pts', 'amount': '₱20', 'desc': 'Safe and affordable JoyRide discount.'},
+    {'name': 'Move It', 'color': Color(0xFFFF6D00), 'category': 'Transport', 'points': '900 pts', 'amount': '₱30', 'desc': 'Quick rides with Move It credits.'},
+    {'name': 'Grab', 'color': Color(0xFF00B14F), 'category': 'Transport', 'points': '1,500 pts', 'amount': '₱50', 'desc': 'Premium Grab transport discount.'},
+    {'name': 'Beep', 'color': Color(0xFF0F146D), 'category': 'Transport', 'points': '500 pts', 'amount': '₱15', 'desc': 'Reload your Beep card with ease.'},
+    {'name': 'Lalamove', 'color': Color(0xFFE31B23), 'category': 'Transport', 'points': '1,200 pts', 'amount': '₱40', 'desc': 'Deliver anything with Lalamove.'},
+    {'name': 'Shopee', 'color': Color(0xFFEE4D2D), 'category': 'Shopping', 'points': '1,000 pts', 'amount': '₱50', 'desc': 'Shop more with Shopee vouchers.'},
+    {'name': 'Lazada', 'color': Color(0xFF0F146D), 'category': 'Shopping', 'points': '1,000 pts', 'amount': '₱50', 'desc': 'Big savings on Lazada checkouts.'},
+    {'name': 'GCash', 'color': Color(0xFF0056FF), 'category': 'E-Wallet', 'points': '1,000 pts', 'amount': '₱50', 'desc': 'Top up your GCash wallet instantly.'},
+    {'name': 'Maya', 'color': Color(0xFF00D1FF), 'category': 'E-Wallet', 'points': '1,000 pts', 'amount': '₱50', 'desc': 'Everything and more with Maya.'},
+    {'name': 'Canva', 'color': Color(0xFF00C4CC), 'category': 'Digital', 'points': '2,000 pts', 'amount': 'Pro', 'desc': '1 Month of Canva Pro access.'},
+    {'name': 'Spotify', 'color': Color(0xFF1DB954), 'category': 'Digital', 'points': '2,500 pts', 'amount': 'Prem', 'desc': '1 Month Spotify Premium family.'},
+    {'name': 'Google Play', 'color': Color(0xFF4285F4), 'category': 'Digital', 'points': '1,500 pts', 'amount': '₱50', 'desc': 'Google Play Store credits.'},
+    {'name': 'GrabFood', 'color': Color(0xFF00B14F), 'category': 'Food', 'points': '1,200 pts', 'amount': '₱40', 'desc': 'Hungry? Grab some food credits.'},
+    {'name': 'Foodpanda', 'color': Color(0xFFD70F64), 'category': 'Food', 'points': '1,200 pts', 'amount': '₱40', 'desc': 'Enjoy meals from Foodpanda.'},
   ];
 
   @override
@@ -72,294 +80,298 @@ class _RewardsScreenState extends State<RewardsScreen> {
           const SizedBox(width: 8),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-                  // Balance Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'MY BALANCE',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[500],
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '₱500',
-                            style: GoogleFonts.poppins(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2D2D2D),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Text(
-                          'Get Rewards',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-
-                  // Category Filter Chips
-                  SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _categories.length,
-                      itemBuilder: (context, index) {
-                        final cat = _categories[index];
-                        final isSelected = _selectedCategory == cat;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: ChoiceChip(
-                            label: Text(cat),
-                            selected: isSelected,
-                            onSelected: (selected) {
-                              if (selected) setState(() => _selectedCategory = cat);
-                            },
-                            selectedColor: primaryColor,
-                            labelStyle: GoogleFonts.poppins(
-                              color: isSelected ? Colors.white : Colors.black87,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                            ),
-                            backgroundColor: Colors.white,
-                            elevation: 0,
-                            pressElevation: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: BorderSide(color: isSelected ? primaryColor : Colors.grey[200]!),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Reward Credits Section
-                  Text(
-                    'Active Vouchers',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  SizedBox(
-                    height: 180,
-                    child: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: _buildRewardCard(
-                            amount: '₱100',
-                            brandName: 'MOVEIT',
-                            brandColor: const Color(0xFFFF6D00),
-                            opacity: 0.5,
+                        Text(
+                          'MY BALANCE',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[500],
+                            letterSpacing: 1.0,
                           ),
                         ),
-                        Positioned(
-                          top: 20,
-                          left: 0,
-                          right: 0,
-                          child: _buildRewardCard(
-                            amount: '₱50',
-                            brandName: 'SHOPEE',
-                            brandColor: const Color(0xFFEE4D2D),
-                            isTop: true,
+                        const SizedBox(height: 4),
+                        Text(
+                          '₱2,450',
+                          style: GoogleFonts.poppins(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                ],
-              ),
-            ),
-
-            // Marketplace Grid
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Text(
-                'Redeem More Rewards',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.grey[800],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2D2D2D),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text(
+                        'Get Rewards',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                const SizedBox(height: 40),
+
+                // Category Filter Chips
+                SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final cat = _categories[index];
+                      final isSelected = _selectedCategory == cat;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: ChoiceChip(
+                          label: Text(cat),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            if (selected) setState(() => _selectedCategory = cat);
+                          },
+                          selectedColor: primaryColor,
+                          labelStyle: GoogleFonts.poppins(
+                            color: isSelected ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          pressElevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: isSelected ? primaryColor : Colors.grey[200]!),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+          ),
+
+          const SizedBox(height: 32),
+
+          // Rewards List
+          Expanded(
+            child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.1,
-              ),
               itemCount: filteredPartners.length,
               itemBuilder: (context, index) {
                 final partner = filteredPartners[index];
-                return _buildPartnerTile(partner);
+                return _buildPremiumRewardCard(partner);
               },
             ),
-            const SizedBox(height: 40),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildRewardCard({
-    required String amount,
-    required String brandName,
-    required Color brandColor,
-    bool isTop = false,
-    double opacity = 1.0,
-  }) {
-    return Opacity(
-      opacity: opacity,
-      child: Container(
-        height: 140,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: isTop ? [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
-            ),
-          ] : [],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    amount,
-                    style: GoogleFonts.poppins(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      color: const Color(0xFF4CAF50),
-                    ),
-                  ),
-                  Text(
-                    'View Details',
-                    style: GoogleFonts.poppins(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  brandName,
-                  style: GoogleFonts.poppins(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                    color: brandColor,
-                    height: 1.0,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget _buildPremiumRewardCard(Map<String, dynamic> partner) {
+    final Color brandColor = partner['color'] as Color;
 
-  Widget _buildPartnerTile(Map<String, dynamic> partner) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                child: Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: CustomPaint(
+                    painter: _CardWavyPainter(color: brandColor.withOpacity(0.1)),
+                  ),
+                ),
+              ),
+              
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: brandColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.stars, color: brandColor, size: 14),
+                                const SizedBox(width: 4),
+                                Text(
+                                  partner['points'],
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: brandColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            partner['amount'],
+                            style: GoogleFonts.poppins(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              color: brandColor,
+                            ),
+                          ),
+                          Text(
+                            '${partner['name']} Credits',
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            partner['desc'],
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                              height: 1.4,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        height: 140,
+                        alignment: Alignment.center,
+                        child: Text(
+                          partner['name'].toString().toUpperCase(),
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
+                            color: brandColor.withOpacity(0.4),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          // Bottom Bar
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
-              color: partner['color'].withOpacity(0.1),
-              shape: BoxShape.circle,
+              border: Border(top: BorderSide(color: Colors.grey[100]!)),
             ),
-            child: Icon(partner['icon'], color: partner['color'], size: 28),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            partner['name'],
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Redeem',
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFFFF5622),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'View Details',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_ios, color: Colors.blueAccent, size: 14),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+class _CardWavyPainter extends CustomPainter {
+  final Color color;
+  _CardWavyPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    path.moveTo(size.width * 0.7, 0);
+    path.quadraticBezierTo(
+      size.width * 0.8,
+      size.height * 0.4,
+      size.width,
+      size.height * 0.3,
+    );
+    path.lineTo(size.width, 0);
+    path.close();
+    canvas.drawPath(path, paint);
+
+    final path2 = Path();
+    path2.moveTo(size.width, size.height * 0.6);
+    path2.quadraticBezierTo(
+      size.width * 0.8,
+      size.height * 0.8,
+      size.width * 0.9,
+      size.height,
+    );
+    path2.lineTo(size.width, size.height);
+    path2.close();
+    canvas.drawPath(path2, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

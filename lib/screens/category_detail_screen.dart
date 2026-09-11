@@ -56,13 +56,7 @@ class CategoryDetailScreen extends StatelessWidget {
               itemCount: foodItems.length,
               itemBuilder: (context, index) {
                 final item = foodItems[index];
-                return FoodCard(
-                  title: item['title']!,
-                  subtitle: item['subtitle']!,
-                  price: item['price']!,
-                  rating: item['rating']!,
-                  imageUrl: item['image']!,
-                );
+                return FoodCard(foodItem: item);
               },
             ),
     );

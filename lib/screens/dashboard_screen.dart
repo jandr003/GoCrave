@@ -430,13 +430,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 20),
                 ...allFoodItems.map((item) {
-                  return FoodCard(
-                    title: item['title']!,
-                    subtitle: item['subtitle']!,
-                    price: item['price']!,
-                    rating: item['rating']!,
-                    imageUrl: item['image']!,
-                  );
+                  return FoodCard(foodItem: item);
                 }).toList(),
                 const SizedBox(height: 20),
               ],

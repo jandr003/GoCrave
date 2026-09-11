@@ -3,19 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../screens/food_details_screen.dart';
 
 class FoodCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String price;
-  final String rating;
-  final String imageUrl;
+  final Map<String, String> foodItem;
 
   const FoodCard({
     super.key,
-    required this.title,
-    required this.subtitle,
-    required this.price,
-    required this.rating,
-    required this.imageUrl,
+    required this.foodItem,
   });
 
   @override
@@ -26,13 +18,7 @@ class FoodCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => FoodDetailsScreen(
-              foodItem: {
-                'title': title,
-                'subtitle': subtitle,
-                'price': price,
-                'rating': rating,
-                'image': imageUrl,
-              },
+              foodItem: foodItem,
             ),
           ),
         );
@@ -57,7 +43,7 @@ class FoodCard extends StatelessWidget {
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               child: Image.network(
-                imageUrl,
+                foodItem['image']!,
                 height: 160,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -77,7 +63,7 @@ class FoodCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        title,
+                        foodItem['title']!,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -89,7 +75,7 @@ class FoodCard extends StatelessWidget {
                           const Icon(Icons.star, color: Colors.amber, size: 18),
                           const SizedBox(width: 4),
                           Text(
-                            rating,
+                            foodItem['rating']!,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -102,7 +88,7 @@ class FoodCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    subtitle,
+                    foodItem['subtitle']!,
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       color: Colors.grey[500],
@@ -110,7 +96,7 @@ class FoodCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    price,
+                    foodItem['price']!,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
