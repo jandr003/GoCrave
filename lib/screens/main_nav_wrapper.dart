@@ -5,20 +5,22 @@ import 'browse_menu_screen.dart';
 import 'orders_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
-  const MainNavWrapper({super.key});
+  final int initialIndex;
+  const MainNavWrapper({super.key, this.initialIndex = 0});
 
   @override
   State<MainNavWrapper> createState() => _MainNavWrapperState();
 }
 
 class _MainNavWrapperState extends State<MainNavWrapper> {
-  int _currentIndex = 0;
+  late int _currentIndex;
 
   late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex;
     _screens = [
       DashboardScreen(
         onSearchTap: () {

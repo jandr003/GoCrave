@@ -26,19 +26,16 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
   void initState() {
     super.initState();
     
-    // breathing animation
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
 
-    // particle physics
     _particleController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
     )..forward();
 
-    // start the burst
     _initializeBurst();
   }
 
@@ -48,8 +45,8 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
       final angle = _random.nextDouble() * 2 * pi;
       final speed = 0.005 + _random.nextDouble() * 0.02;
       _particles.add(Particle(
-        x: 0.5, // center x
-        y: 0.45, // center y
+        x: 0.5,
+        y: 0.45,
         vx: cos(angle) * speed,
         vy: sin(angle) * speed,
         size: 8 + _random.nextDouble() * 12,
@@ -99,7 +96,6 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(flex: 2),
-                  // breathing checkmark
                   ScaleTransition(
                     scale: Tween<double>(begin: 0.95, end: 1.1).animate(
                       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),

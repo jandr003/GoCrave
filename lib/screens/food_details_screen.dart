@@ -19,11 +19,36 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   bool _isDescriptionExpanded = false;
   final Color brandColor = const Color(0xFFFF5622);
 
+  final Set<String> _selectedExtras = {};
+  final TextEditingController _notesController = TextEditingController();
+
+  final List<Map<String, dynamic>> _extraOptions = [
+    {'name': 'More Ham', 'price': 45.0},
+    {'name': 'Spicy', 'price': 50.0},
+    {'name': 'Add Egg', 'price': 60.0},
+  ];
+
   double get _itemPrice {
     return double.tryParse(widget.foodItem['price']?.replaceAll('₱', '') ?? '0') ?? 0;
   }
 
-  double get _totalPrice => _itemPrice * _quantity;
+  double get _extrasTotal {
+    double total = 0;
+    for (var extra in _extraOptions) {
+      if (_selectedExtras.contains(extra['name'])) {
+        total += extra['price'];
+      }
+    }
+    return total;
+  }
+
+  double get _totalPrice => (_itemPrice + _extrasTotal) * _quantity;
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +63,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
             left: 0,
             right: 0,
             height: size.height * 0.45,
-            child: Container(
-              color: const Color(0xFFE0E0E0),
-              child: Image.network(
-                widget.foodItem['image']!,
-                fit: BoxFit.cover,
-              ),
+            child: Image.network(
+              widget.foodItem['image']!,
+              fit: BoxFit.cover,
             ),
           ),
-
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 20,
@@ -66,7 +87,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
               ],
             ),
           ),
-
           Positioned.fill(
             top: size.height * 0.4,
             child: Container(
@@ -79,10 +99,47 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(24, 48, 24, 140),
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 140),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Center(
+                      child: Container(
+                        height: 48,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          color: brandColor,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: brandColor.withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildQtyBtn(Icons.remove, () {
+                              if (_quantity > 1) setState(() => _quantity--);
+                            }),
+                            Text(
+                              _quantity.toString().padLeft(2, '0'),
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            _buildQtyBtn(Icons.add, () {
+                              setState(() => _quantity++);
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -111,8 +168,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-
+                    const SizedBox(height: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -143,21 +199,19 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildNutriInfo(Icons.access_time, widget.foodItem['time'] ?? '10-15 Min', Colors.redAccent),
                         _buildNutriInfo(
-                          Icons.whatshot, 
-                          widget.foodItem['spice'] ?? 'Mild', 
-                          (widget.foodItem['spice'] == 'Spicy') ? Colors.red : Colors.orangeAccent
+                          Icons.whatshot,
+                          widget.foodItem['spice'] ?? 'Mild',
+                          (widget.foodItem['spice'] == 'Spicy') ? Colors.red : Colors.orangeAccent,
                         ),
                         _buildNutriInfo(Icons.local_fire_department, widget.foodItem['kcal'] ?? '150 Kcal', Colors.red),
                       ],
                     ),
                     const SizedBox(height: 32),
-
                     Text(
                       'Toppings',
                       style: GoogleFonts.poppins(
@@ -174,12 +228,35 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         }).toList(),
                       ),
                     ),
+                    const SizedBox(height: 32),
+                    _buildSectionHeader('Add Extra Additional'),
+                    const SizedBox(height: 16),
+                    ..._extraOptions.map((extra) => _buildExtraOption(extra)).toList(),
+                    const SizedBox(height: 32),
+                    _buildSectionHeader('Add Notes'),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFBFBFB),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.grey[200]!),
+                      ),
+                      child: TextField(
+                        controller: _notesController,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          hintText: 'Write Notes',
+                          hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-
           Positioned(
             bottom: 0,
             left: 0,
@@ -196,102 +273,71 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+              child: Row(
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: brandColor,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildQtyBtn(Icons.remove, () {
-                              if (_quantity > 1) setState(() => _quantity--);
-                            }),
-                            Text(
-                              _quantity.toString().padLeft(2, '0'),
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            _buildQtyBtn(Icons.add, () {
-                              setState(() => _quantity++);
-                            }),
-                          ],
+                      Text(
+                        'Total Price',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[400],
                         ),
                       ),
-                      const Spacer(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      Row(
                         children: [
                           Text(
-                            'Total Price',
+                            '₱${_totalPrice.toInt()}',
                             style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[400],
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                '₱${_totalPrice.toInt()}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '₱${(_totalPrice * 1.2).toInt()}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: Colors.grey[400],
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                            ],
+                          const SizedBox(width: 8),
+                          Text(
+                            '₱${(_totalPrice * 1.2).toInt()}',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                              decoration: TextDecoration.lineThrough,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () => _handleOrder(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: brandColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Add to Bag',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                  const SizedBox(width: 32),
+                  Expanded(
+                    child: SizedBox(
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () => _handleOrder(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: brandColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
                           ),
-                        ],
+                          elevation: 0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Add to Bag',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -300,6 +346,80 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Text(
+      title,
+      style: GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _buildExtraOption(Map<String, dynamic> extra) {
+    final bool isSelected = _selectedExtras.contains(extra['name']);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            if (isSelected) {
+              _selectedExtras.remove(extra['name']);
+            } else {
+              _selectedExtras.add(extra['name']);
+            }
+          });
+        },
+        child: Row(
+          children: [
+            Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? brandColor : Colors.grey[300]!,
+                  width: 2,
+                ),
+              ),
+              child: isSelected
+                  ? Center(
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: brandColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 16),
+            Text(
+              extra['name'],
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              '₱${extra['price'].toInt()}',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -374,21 +494,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     for (int i = 0; i < _quantity; i++) {
       OrderManager().placeOrder(widget.foodItem);
     }
-    
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return SuccessTransitionOverlay(
-          onContinue: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const MainNavWrapper()),
-              (route) => false,
-            );
-          },
-        );
-      },
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
+      (route) => false,
     );
   }
 }
