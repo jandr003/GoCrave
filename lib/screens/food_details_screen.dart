@@ -79,7 +79,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(24, 48, 24, 120),
+                padding: const EdgeInsets.fromLTRB(24, 48, 24, 140),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -118,10 +118,10 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                       children: [
                         Text(
                           _isDescriptionExpanded
-                              ? (widget.foodItem['longDescription'] ?? 'No description available.')
+                              ? (widget.foodItem['longDescription'] ?? '')
                               : ((widget.foodItem['longDescription']?.length ?? 0) > 100
                                   ? '${widget.foodItem['longDescription']?.substring(0, 100)}...'
-                                  : (widget.foodItem['longDescription'] ?? 'No description available.')),
+                                  : (widget.foodItem['longDescription'] ?? '')),
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             color: Colors.grey[500],
@@ -174,24 +174,39 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         }).toList(),
                       ),
                     ),
-                    
-                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+            ),
+          ),
 
-                    // Moved Quantity Selector here
-                    Center(
-                      child: Container(
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Container(
                         height: 50,
-                        width: 140,
+                        width: 120,
                         decoration: BoxDecoration(
                           color: brandColor,
                           borderRadius: BorderRadius.circular(25),
-                          boxShadow: [
-                            BoxShadow(
-                              color: brandColor.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -213,94 +228,70 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(24, 20, 24, 32), // Reverted padding
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -5),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Total Price',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      Row(
+                      const Spacer(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '₱${_totalPrice.toInt()}',
+                            'Total Price',
                             style: GoogleFonts.poppins(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[400],
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '₱${(_totalPrice * 1.2).toInt()}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.grey[400],
-                              decoration: TextDecoration.lineThrough,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                '₱${_totalPrice.toInt()}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '₱${(_totalPrice * 1.2).toInt()}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Colors.grey[400],
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(width: 32),
-                  Expanded(
-                    child: SizedBox(
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: () => _handleOrder(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: brandColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          elevation: 0,
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () => _handleOrder(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: brandColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Add to Bag',
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                        elevation: 0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Add to Bag',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

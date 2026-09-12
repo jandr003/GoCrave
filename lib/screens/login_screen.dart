@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
+import 'phone_entry_screen.dart';
 import 'sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             top: 0,
             left: 0,
             right: 0,
-            height: size.height * 0.4,
+            height: size.height * 0.45,
             child: Center(
               child: Hero(
                 tag: 'official_logo',
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
 
           Positioned.fill(
-            top: size.height * 0.32,
+            top: size.height * 0.42,
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -164,11 +165,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 56,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const VerificationMethodScreen()),
-                          );
-                        },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const PhoneEntryScreen()),
+                        );
+                      },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: brandColor,
                           foregroundColor: Colors.white,
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
                     Center(
                       child: Text(
                         'other ways to sign in',
@@ -197,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -206,11 +207,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(width: 20),
                         _buildSocialButton(Icons.facebook),
                         const SizedBox(width: 20),
-                        _buildSocialButton(Icons.chat_bubble_outline), // WhatsApp placeholder
+                        _buildSocialButton(Icons.chat_bubble_outline), 
                       ],
                     ),
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24), // Reduced from 32
                     Center(
                       child: GestureDetector(
                         onTap: () {
@@ -263,6 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
     bool obscure = false,
     bool isPassword = false,
     VoidCallback? onToggle,
+    TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -274,6 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextField(
         focusNode: focusNode,
         obscureText: obscure,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),

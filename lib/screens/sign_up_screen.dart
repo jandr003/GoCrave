@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
+import 'phone_entry_screen.dart';
 import 'login_screen.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -144,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const VerificationMethodScreen()),
+                      MaterialPageRoute(builder: (context) => const PhoneEntryScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -177,7 +180,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Social Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -240,6 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool obscure = false,
     bool isPassword = false,
     VoidCallback? onToggle,
+    TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -251,6 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: TextField(
         focusNode: focusNode,
         obscureText: obscure,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),
