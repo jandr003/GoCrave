@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
-import '../widgets/success_transition_overlay.dart';
+import '../data/review_data.dart';
 import 'main_nav_wrapper.dart';
 
 class FoodDetailsScreen extends StatefulWidget {
@@ -17,42 +17,23 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   int _quantity = 1;
   bool _isFavorite = false;
   bool _isDescriptionExpanded = false;
+  int _selectedReviewStar = 5;
   final Color brandColor = const Color(0xFFFF5622);
-
-  final Set<String> _selectedExtras = {};
-  final TextEditingController _notesController = TextEditingController();
-
-  final List<Map<String, dynamic>> _extraOptions = [
-    {'name': 'More Ham', 'price': 45.0},
-    {'name': 'Spicy', 'price': 50.0},
-    {'name': 'Add Egg', 'price': 60.0},
-  ];
 
   double get _itemPrice {
     return double.tryParse(widget.foodItem['price']?.replaceAll('₱', '') ?? '0') ?? 0;
   }
 
-  double get _extrasTotal {
-    double total = 0;
-    for (var extra in _extraOptions) {
-      if (_selectedExtras.contains(extra['name'])) {
-        total += extra['price'];
-      }
-    }
-    return total;
-  }
-
-  double get _totalPrice => (_itemPrice + _extrasTotal) * _quantity;
-
-  @override
-  void dispose() {
-    _notesController.dispose();
-    super.dispose();
-  }
+  double get _totalPrice => _itemPrice * _quantity;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final itemTitle = widget.foodItem['title']!;
+    
+    final itemReviews = mockReviews.where((r) => r.foodTitle == itemTitle).toList();
+    
+    final filteredReviews = itemReviews.where((r) => r.stars == _selectedReviewStar).toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -228,30 +209,79 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         }).toList(),
                       ),
                     ),
-                    const SizedBox(height: 32),
-                    _buildSectionHeader('Add Extra Additional'),
-                    const SizedBox(height: 16),
-                    ..._extraOptions.map((extra) => _buildExtraOption(extra)).toList(),
-                    const SizedBox(height: 32),
-                    _buildSectionHeader('Add Notes'),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFBFBFB),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey[200]!),
-                      ),
-                      child: TextField(
-                        controller: _notesController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: 'Write Notes',
-                          hintStyle: GoogleFonts.poppins(color: Colors.grey[300], fontSize: 14),
-                          border: InputBorder.none,
+                    const SizedBox(height: 40),
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Reviews',
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
+                        Text(
+                          '(${itemReviews.length})',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [5, 4, 3, 2, 1].map((star) {
+                          final isSelected = _selectedReviewStar == star;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: InkWell(
+                              onTap: () => setState(() => _selectedReviewStar = star),
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: isSelected ? brandColor : Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: isSelected ? brandColor : Colors.grey[200]!),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.star, color: isSelected ? Colors.white : Colors.amber, size: 16),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      star.toString(),
+                                      style: GoogleFonts.poppins(
+                                        color: isSelected ? Colors.white : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    
+                    if (filteredReviews.isEmpty)
+                      Center(
+                        child: Text(
+                          'No reviews for this rating yet.',
+                          style: GoogleFonts.poppins(color: Colors.grey[500]),
+                        ),
+                      )
+                    else
+                      ...filteredReviews.map((review) => _buildReviewItem(review)).toList(),
                   ],
                 ),
               ),
@@ -350,76 +380,74 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Text(
-      title,
-      style: GoogleFonts.poppins(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
-    );
-  }
-
-  Widget _buildExtraOption(Map<String, dynamic> extra) {
-    final bool isSelected = _selectedExtras.contains(extra['name']);
+  Widget _buildReviewItem(Review review) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            if (isSelected) {
-              _selectedExtras.remove(extra['name']);
-            } else {
-              _selectedExtras.add(extra['name']);
-            }
-          });
-        },
-        child: Row(
-          children: [
-            Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? brandColor : Colors.grey[300]!,
-                  width: 2,
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(review.userImage),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      review.userName,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      review.date,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: isSelected
-                  ? Center(
-                      child: Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: brandColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    )
-                  : null,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              extra['name'],
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
+              Row(
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < review.stars ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                }),
               ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            review.comment,
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: Colors.grey[600],
+              height: 1.5,
             ),
-            const Spacer(),
-            Text(
-              '₱${extra['price'].toInt()}',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+          ),
+          if (review.reviewImage != null) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                review.reviewImage!,
+                height: 100,
+                width: 150,
+                fit: BoxFit.cover,
               ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

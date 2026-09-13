@@ -5,7 +5,6 @@ import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/success_transition_overlay.dart';
 import 'main_nav_wrapper.dart';
-import 'verification_success_screen.dart';
 import 'notification_history_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -239,7 +238,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // go back button
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
