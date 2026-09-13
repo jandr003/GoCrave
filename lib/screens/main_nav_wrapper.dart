@@ -3,6 +3,8 @@ import 'dashboard_screen.dart';
 import 'profile_screen.dart';
 import 'browse_menu_screen.dart';
 import 'orders_screen.dart';
+import 'favorites_screen.dart';
+import 'cart_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
   final int initialIndex;
@@ -30,9 +32,9 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
           );
         },
       ),
-      const Center(child: Text('Favorites Screen', style: TextStyle(fontSize: 24))),
+      const FavoritesScreen(),
       const OrdersScreen(),
-      const Center(child: Text('Cart Screen', style: TextStyle(fontSize: 24))),
+      const CartScreen(),
       ProfileScreen(),
     ];
   }

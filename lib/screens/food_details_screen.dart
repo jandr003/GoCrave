@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
+import '../data/favorite_manager.dart';
+import '../data/cart_manager.dart';
 import '../data/review_data.dart';
 import 'main_nav_wrapper.dart';
 
@@ -19,6 +21,12 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   bool _isDescriptionExpanded = false;
   int _selectedReviewStar = 5;
   final Color brandColor = const Color(0xFFFF5622);
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = FavoriteManager().isFavorite(widget.foodItem['title']!);
+  }
 
   double get _itemPrice {
     return double.tryParse(widget.foodItem['price']?.replaceAll('₱', '') ?? '0') ?? 0;
@@ -63,7 +71,10 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                 _buildFloatingButton(
                   icon: _isFavorite ? Icons.favorite : Icons.favorite_border,
                   iconColor: _isFavorite ? Colors.red : Colors.black,
-                  onTap: () => setState(() => _isFavorite = !_isFavorite),
+                  onTap: () {
+                    FavoriteManager().toggleFavorite(widget.foodItem);
+                    setState(() => _isFavorite = !_isFavorite);
+                  },
                 ),
               ],
             ),
@@ -519,13 +530,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   }
 
   void _handleOrder(BuildContext context) {
-    for (int i = 0; i < _quantity; i++) {
-      OrderManager().placeOrder(widget.foodItem);
-    }
+    CartManager().addItem(widget.foodItem, _quantity);
 
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
+      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 3)), // Navigate to Cart tab
       (route) => false,
     );
   }
