@@ -83,10 +83,12 @@ class CartManager extends ChangeNotifier {
     return subtotal * _discountPercentage;
   }
 
+  double get tax => _items.isEmpty ? 0 : 5.0;
+
   double get deliveryFee => _items.isEmpty ? 0 : 20.0;
 
   double get totalAmount {
-    final total = subtotal - discountAmount + deliveryFee;
+    final total = subtotal - discountAmount + deliveryFee + tax;
     return total > 0 ? total : 0;
   }
 }

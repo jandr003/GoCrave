@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
-import 'coupon_screen.dart';
-import 'main_nav_wrapper.dart';
+import 'package:gocrave/screens/coupon_screen.dart';
+import 'package:gocrave/screens/payment_screen.dart';
+import 'package:gocrave/screens/main_nav_wrapper.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -67,12 +68,10 @@ class _CartScreenState extends State<CartScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
-                  // Cart Items
                   ...cart.items.map((item) => _buildCartItemCard(item)).toList(),
 
                   const SizedBox(height: 8),
 
-                  // Promo Code
                   _buildSectionCard(
                     child: InkWell(
                       onTap: () {
@@ -120,7 +119,6 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
 
-                  // Delivery Address
                   _buildSectionCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,7 +184,6 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
 
-                  // Delivery Note
                   _buildSectionCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -421,17 +418,9 @@ class _CartScreenState extends State<CartScreen> {
           Expanded(
             child: _SwipeToCheckoutButton(
               onCompleted: () {
-                // Place orders and clear cart
-                for (var item in cart.items) {
-                  for (int i = 0; i < item.quantity; i++) {
-                    OrderManager().placeOrder(item.foodItem);
-                  }
-                }
-                cart.clearCart();
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
-                  (route) => false,
+                  MaterialPageRoute(builder: (context) => PaymentScreen()),
                 );
               },
             ),
