@@ -102,6 +102,8 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
               initialCountryCode: 'PH',
               disableLengthCheck: false,
               dropdownIconPosition: IconPosition.trailing,
+              showCountryFlag: true,
+              showDropdownIcon: false, // Hide dropdown icon to discourage changing
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               style: GoogleFonts.poppins(
@@ -121,7 +123,6 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
               ),
               languageCode: "en",
               onChanged: (phone) {
-                // handle input
               },
             ),
             const SizedBox(height: 48),

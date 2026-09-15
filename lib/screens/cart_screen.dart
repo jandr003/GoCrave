@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
+import '../data/location_manager.dart';
 import 'package:gocrave/screens/coupon_screen.dart';
 import 'package:gocrave/screens/payment_screen.dart';
+import 'package:gocrave/screens/location_picker_screen.dart';
 import 'package:gocrave/screens/main_nav_wrapper.dart';
 
 class CartScreen extends StatefulWidget {
@@ -20,11 +22,13 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     CartManager().addListener(_updateState);
+    LocationManager().addListener(_updateState);
   }
 
   @override
   void dispose() {
     CartManager().removeListener(_updateState);
+    LocationManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -120,67 +124,75 @@ class _CartScreenState extends State<CartScreen> {
                   ),
 
                   _buildSectionCard(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Delivery Address',
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LocationPickerScreen()),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Delivery Address',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Change',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: brandColor,
+                              Text(
+                                'Change',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: brandColor,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: brandColor.withOpacity(0.1),
-                                shape: BoxShape.circle,
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: brandColor.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.location_on, size: 20, color: brandColor),
                               ),
-                              child: Icon(Icons.location_on, size: 20, color: brandColor),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Metro Manila, Philippines',
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                    LocationManager().addressLine1,
                                     style: GoogleFonts.poppins(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
-                                    '1230 España Blvd, Sampaloc, Manila',
+                                    LocationManager().addressLine2,
                                     style: GoogleFonts.poppins(
                                       fontSize: 13,
                                       color: Colors.grey[500],
                                     ),
                                   ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
-                          ],
-                        ),
-                      ],
+                              const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 

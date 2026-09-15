@@ -5,6 +5,7 @@ import 'browse_menu_screen.dart';
 import 'category_detail_screen.dart';
 import '../widgets/food_card.dart';
 import '../data/food_data.dart';
+import '../data/location_manager.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback onSearchTap;
@@ -15,7 +16,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  String _selectedLocation = 'Manila, Philippines';
   late final PageController _promoController;
   Timer? _promoTimer;
   int _currentPromoPage = 0;
@@ -25,6 +25,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     _promoController = PageController(initialPage: 0);
     _startPromoTimer();
+    LocationManager().addListener(_updateState);
+  }
+
+  void _updateState() {
+    if (mounted) setState(() {});
   }
 
   void _startPromoTimer() {
@@ -45,6 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void dispose() {
     _promoTimer?.cancel();
     _promoController.dispose();
+    LocationManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -126,12 +132,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   shrinkWrap: true,
                   itemCount: _locations.length,
                   itemBuilder: (context, index) {
-                    final isSelected = _locations[index] == _selectedLocation;
+                    final isSelected = _locations[index] == LocationManager().addressLine1;
                     return ListTile(
                       onTap: () {
-                        setState(() {
-                          _selectedLocation = _locations[index];
-                        });
+                        LocationManager().updateLocation(_locations[index], 'Manila, Philippines');
                         Navigator.pop(context);
                       },
                       leading: Icon(
@@ -196,7 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Row(
                               children: [
                                 Text(
-                                  _selectedLocation,
+                                  LocationManager().addressLine1,
                                   style: GoogleFonts.poppins(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

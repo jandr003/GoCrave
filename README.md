@@ -8,10 +8,20 @@
 * **Food Categories**
 * **Product Details**
 * **Shopping Cart**
+* **Interactive Location Selection**
 * **Checkout**
 * **Order Tracking**
 * **Order History**
 * **User Profile**
+
+## 📍 Location Picker
+
+GoCrave features a high-fidelity, interactive map-based location picker to ensure accurate food deliveries within the Philippines.
+
+* **Visual Map Integration**: High-resolution satellite view of the delivery area.
+* **Interactive Pinpoint**: Drag-to-pinpoint functionality with smooth panning and a "lifting" pin animation for realistic feedback.
+* **PH-Only Localization**: Strictly locked to the Philippines (+63) and Metro Manila regions for a focused local service experience.
+
 
 ## 🛠️ Tech Stack
 
