@@ -7,6 +7,7 @@ import 'package:gocrave/screens/coupon_screen.dart';
 import 'package:gocrave/screens/payment_screen.dart';
 import 'package:gocrave/screens/location_picker_screen.dart';
 import 'package:gocrave/screens/main_nav_wrapper.dart';
+import '../widgets/swipe_button.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -428,7 +429,8 @@ class _CartScreenState extends State<CartScreen> {
           ),
           const SizedBox(width: 24),
           Expanded(
-            child: _SwipeToCheckoutButton(
+            child: SwipeButton(
+              label: 'Swipe to Checkout',
               onCompleted: () {
                 Navigator.push(
                   context,
@@ -443,75 +445,3 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-class _SwipeToCheckoutButton extends StatefulWidget {
-  final VoidCallback onCompleted;
-  const _SwipeToCheckoutButton({required this.onCompleted});
-
-  @override
-  State<_SwipeToCheckoutButton> createState() => __SwipeToCheckoutButtonState();
-}
-
-class __SwipeToCheckoutButtonState extends State<_SwipeToCheckoutButton> {
-  double _position = 0;
-  final double _buttonWidth = 240;
-  final double _thumbSize = 50;
-
-  @override
-  Widget build(BuildContext context) {
-    final double maxPosition = _buttonWidth - _thumbSize - 8;
-
-    return Container(
-      height: 60,
-      width: _buttonWidth,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFF5622),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Stack(
-        alignment: Alignment.centerLeft,
-        children: [
-          Center(
-            child: Text(
-              'Swipe to Checkout',
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 4 + _position,
-            child: GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                setState(() {
-                  _position += details.delta.dx;
-                  if (_position < 0) _position = 0;
-                  if (_position > maxPosition) _position = maxPosition;
-                });
-              },
-              onHorizontalDragEnd: (details) {
-                if (_position >= maxPosition * 0.8) {
-                  widget.onCompleted();
-                } else {
-                  setState(() {
-                    _position = 0;
-                  });
-                }
-              },
-              child: Container(
-                width: _thumbSize,
-                height: _thumbSize,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.double_arrow, color: Color(0xFFFF5622)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

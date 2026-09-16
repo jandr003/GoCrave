@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
 import 'main_nav_wrapper.dart';
+import '../widgets/swipe_button.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -67,7 +68,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             const SizedBox(height: 24),
-            // Payment Methods Card
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
               padding: const EdgeInsets.all(24),
@@ -93,7 +93,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
             const SizedBox(height: 24),
 
-            // Billing Summary Card
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
               padding: const EdgeInsets.all(24),
@@ -151,7 +150,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
             const SizedBox(height: 24),
 
-            // Estimated Time
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -212,7 +210,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               child: method['isCard']
                   ? const Icon(Icons.credit_card, size: 20, color: Colors.orange)
                   : Text(
-                      method['name'][0], // Placeholder first letter
+                      method['name'][0],
                       style: TextStyle(
                         color: method['color'],
                         fontWeight: FontWeight.bold,
@@ -328,7 +326,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
           const SizedBox(width: 24),
           Expanded(
-            child: _SwipeToPayButton(
+            child: SwipeButton(
+              label: 'Swipe to Pay',
               onCompleted: () {
                 for (var item in cart.items) {
                   for (int i = 0; i < item.quantity; i++) {
@@ -350,75 +349,3 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 }
 
-class _SwipeToPayButton extends StatefulWidget {
-  final VoidCallback onCompleted;
-  const _SwipeToPayButton({required this.onCompleted});
-
-  @override
-  State<_SwipeToPayButton> createState() => __SwipeToPayButtonState();
-}
-
-class __SwipeToPayButtonState extends State<_SwipeToPayButton> {
-  double _position = 0;
-  final double _buttonWidth = 240;
-  final double _thumbSize = 50;
-
-  @override
-  Widget build(BuildContext context) {
-    final double maxPosition = _buttonWidth - _thumbSize - 8;
-
-    return Container(
-      height: 60,
-      width: _buttonWidth,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFF5622),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Stack(
-        alignment: Alignment.centerLeft,
-        children: [
-          Center(
-            child: Text(
-              'Swipe to Pay',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 4 + _position,
-            child: GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                setState(() {
-                  _position += details.delta.dx;
-                  if (_position < 0) _position = 0;
-                  if (_position > maxPosition) _position = maxPosition;
-                });
-              },
-              onHorizontalDragEnd: (details) {
-                if (_position >= maxPosition * 0.8) {
-                  widget.onCompleted();
-                } else {
-                  setState(() {
-                    _position = 0;
-                  });
-                }
-              },
-              child: Container(
-                width: _thumbSize,
-                height: _thumbSize,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.double_arrow, color: Color(0xFFFF5622)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

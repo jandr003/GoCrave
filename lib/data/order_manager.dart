@@ -10,7 +10,13 @@ class Order {
   final String customerName;
   final String location;
   final DateTime timestamp;
-  final String status;
+  String status;
+  
+  final String riderName;
+  final String riderPhoto;
+  final String plateNumber;
+  final double rating;
+  final double progress;
 
   Order({
     required this.id,
@@ -22,7 +28,12 @@ class Order {
     required this.customerName,
     required this.location,
     required this.timestamp,
-    this.status = 'Complete',
+    this.status = 'Processing',
+    this.riderName = 'Ricardo Dalisay',
+    this.riderPhoto = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+    this.plateNumber = 'MVC 1234',
+    this.rating = 4.9,
+    this.progress = 0.45,
   });
 }
 

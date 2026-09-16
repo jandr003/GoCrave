@@ -73,7 +73,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 child: Transform.translate(
                   offset: _mapOffset,
                   child: Image.network(
-                    'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?q=80&w=2000&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1540979388789-6ece28a1696b?q=80&w=2000&auto=format&fit=crop',
                     fit: BoxFit.cover,
                   ),
                 ),
