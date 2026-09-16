@@ -38,9 +38,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final itemTitle = widget.foodItem['title']!;
-    
     final itemReviews = mockReviews.where((r) => r.foodTitle == itemTitle).toList();
-    
     final filteredReviews = itemReviews.where((r) => r.stars == _selectedReviewStar).toList();
 
     return Scaffold(
@@ -221,7 +219,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -244,7 +241,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -283,7 +279,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
                     if (filteredReviews.isEmpty)
                       Center(
                         child: Text(
@@ -534,7 +529,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 3)), // Navigate to Cart tab
+      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 3)),
       (route) => false,
     );
   }

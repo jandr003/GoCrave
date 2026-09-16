@@ -33,7 +33,7 @@ final List<Review> mockReviews = [
     userImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
     stars: 4,
     comment: 'Delicious burger but the fries were a bit cold. Still worth it!',
-    reviewImage: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=600&auto=format&fit=crop',
+    reviewImage: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=600&auto=format&fit=crop',
     date: '1 day ago',
     foodTitle: 'Juicy Beef Burger',
   ),
@@ -42,6 +42,7 @@ final List<Review> mockReviews = [
     userImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
     stars: 3,
     comment: 'It was okay, but I expected more sauce.',
+    reviewImage: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=600&auto=format&fit=crop',
     date: '2 days ago',
     foodTitle: 'Juicy Beef Burger',
   ),
@@ -60,6 +61,7 @@ final List<Review> mockReviews = [
     userImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
     stars: 4,
     comment: 'Very tasty pizza, kids loved it!',
+    reviewImage: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=600&auto=format&fit=crop',
     date: '4 days ago',
     foodTitle: 'Pepperoni Feast',
   ),
@@ -78,6 +80,7 @@ final List<Review> mockReviews = [
     userImage: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=200&auto=format&fit=crop',
     stars: 4,
     comment: 'Good adobo, but could use a bit more garlic.',
+    reviewImage: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?q=80&w=600&auto=format&fit=crop',
     date: '3 days ago',
     foodTitle: 'Chicken Adobo',
   ),
@@ -91,6 +94,15 @@ final List<Review> mockReviews = [
     date: '5 days ago',
     foodTitle: 'Quinoa Salad Bowl',
   ),
+  Review(
+    userName: 'Gerald Anderson',
+    userImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+    stars: 5,
+    comment: 'Best salad in town. Everything is organic.',
+    reviewImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop',
+    date: '1 week ago',
+    foodTitle: 'Quinoa Salad Bowl',
+  ),
 
   Review(
     userName: 'Pia Wurtzbach',
@@ -101,7 +113,6 @@ final List<Review> mockReviews = [
     date: '1 week ago',
     foodTitle: 'Nachos Supreme',
   ),
-
 
   Review(
     userName: 'Catriona Gray',
