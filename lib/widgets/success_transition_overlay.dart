@@ -4,10 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'confetti_particles.dart';
 
 class SuccessTransitionOverlay extends StatefulWidget {
+  final String title;
+  final String description;
+  final String buttonText;
   final VoidCallback onContinue;
 
   const SuccessTransitionOverlay({
     super.key,
+    required this.title,
+    required this.description,
+    required this.buttonText,
     required this.onContinue,
   });
 
@@ -70,11 +76,9 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      width: double.infinity,
-      height: double.infinity,
-      child: Stack(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
         children: [
           Positioned.fill(
             child: AnimatedBuilder(
@@ -126,7 +130,7 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
                   ),
                   const SizedBox(height: 48),
                   Text(
-                    'Verification Success',
+                    widget.title,
                     style: GoogleFonts.poppins(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -135,7 +139,7 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'When you have completed your verification. You just need to click the button below to find out the food courier automatically.',
+                    widget.description,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
@@ -157,7 +161,7 @@ class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>
                         elevation: 0,
                       ),
                       child: Text(
-                        'Find Your Food Courier',
+                        widget.buttonText,
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

@@ -267,6 +267,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
             if (_isSuccessTransition)
               SuccessTransitionOverlay(
+                title: 'Verification Success',
+                description: 'When you have completed your verification. You just need to click the button below to find out the food courier automatically.',
+                buttonText: 'Find Your Food Courier',
                 onContinue: () {
                   Navigator.pushAndRemoveUntil(
                     context,
