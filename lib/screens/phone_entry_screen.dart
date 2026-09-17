@@ -103,7 +103,7 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
               disableLengthCheck: false,
               dropdownIconPosition: IconPosition.trailing,
               showCountryFlag: true,
-              showDropdownIcon: false, // Hide dropdown icon to discourage changing
+              showDropdownIcon: false,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               style: GoogleFonts.poppins(
@@ -134,7 +134,7 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const VerificationMethodScreen(),
+                      builder: (context) => VerificationMethodScreen(isNewUser: widget.isNewUser),
                     ),
                   );
                 },

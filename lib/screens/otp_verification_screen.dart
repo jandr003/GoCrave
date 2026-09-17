@@ -271,7 +271,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MainNavWrapper(initialIndex: 0)),
+                      builder: (context) => widget.isNewUser
+                          ? const ProfileSetupScreen()
+                          : const MainNavWrapper(initialIndex: 0),
+                    ),
                     (route) => false,
                   );
                 },

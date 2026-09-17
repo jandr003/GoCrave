@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   tag: 'official_logo',
                   child: Image.asset(
                     'assets/images/gocrave_official_logo.png',
-                    height: 120, // Increased from 80
+                    height: 120,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -139,7 +139,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 48),
 
-              // Sign Up Button
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -147,7 +146,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const PhoneEntryScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const PhoneEntryScreen(isNewUser: true),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -187,7 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(width: 20),
                   _buildSocialButton(Icons.facebook),
                   const SizedBox(width: 20),
-                  _buildSocialButton(Icons.chat_bubble_outline), // WhatsApp placeholder
+                  _buildSocialButton(Icons.chat_bubble_outline),
                 ],
               ),
 

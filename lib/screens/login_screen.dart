@@ -177,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const PhoneEntryScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const PhoneEntryScreen(isNewUser: false),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
