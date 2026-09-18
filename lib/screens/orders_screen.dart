@@ -3,8 +3,29 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import 'order_tracking_screen.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
+
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  @override
+  void initState() {
+    super.initState();
+    OrderManager().addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    OrderManager().removeListener(_updateState);
+    super.dispose();
+  }
+
+  void _updateState() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {

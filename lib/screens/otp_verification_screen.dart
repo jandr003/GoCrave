@@ -6,10 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/success_transition_overlay.dart';
 import 'main_nav_wrapper.dart';
 import 'notification_history_screen.dart';
+import 'profile_setup_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String initialOtp;
-  const OtpVerificationScreen({super.key, required this.initialOtp});
+  final bool isNewUser;
+  const OtpVerificationScreen({
+    super.key,
+    required this.initialOtp,
+    this.isNewUser = false,
+  });
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();

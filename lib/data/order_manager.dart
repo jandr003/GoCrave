@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 class Order {
   final String id;
@@ -37,7 +38,7 @@ class Order {
   });
 }
 
-class OrderManager {
+class OrderManager extends ChangeNotifier {
   static final OrderManager _instance = OrderManager._internal();
   factory OrderManager() => _instance;
   OrderManager._internal();
@@ -65,6 +66,7 @@ class OrderManager {
       location: 'Brgy. San Miguel, Bulacan...',
       timestamp: DateTime.now(),
     ));
+    notifyListeners();
   }
 
   double getTotalSpent() {

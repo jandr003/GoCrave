@@ -434,7 +434,7 @@ class _CartScreenState extends State<CartScreen> {
               onCompleted: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PaymentScreen()),
+                  MaterialPageRoute(builder: (context) => const PaymentScreen()),
                 );
               },
             ),
@@ -444,4 +444,3 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 }
-

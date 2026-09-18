@@ -38,15 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: brandColor,
       body: Stack(
         children: [
-          Container(
-            height: size.height * 0.45,
-            width: double.infinity,
-            color: brandColor,
-          ),
-
           Positioned(
             top: 0,
             left: 0,
@@ -65,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-
           Positioned.fill(
             top: size.height * 0.32,
             child: Container(
@@ -78,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+                padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -132,25 +125,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
 
                     GestureDetector(
                       onTap: () => setState(() => _isAgreed = !_isAgreed),
                       child: Row(
                         children: [
                           Container(
-                            width: 22,
-                            height: 22,
+                            width: 24,
+                            height: 24,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: _isAgreed ? brandColor : Colors.transparent,
                               border: Border.all(
                                 color: _isAgreed ? brandColor : Colors.grey[300]!,
-                                width: 1.5,
+                                width: 2,
                               ),
                             ),
                             child: _isAgreed 
-                              ? const Icon(Icons.check, size: 14, color: Colors.white) 
+                              ? const Icon(Icons.check, size: 16, color: Colors.white) 
                               : null,
                           ),
                           const SizedBox(width: 12),
@@ -181,12 +174,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     SizedBox(
                       width: double.infinity,
-                      height: 56,
+                      height: 58,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const PhoneEntryScreen(isNewUser: false)),
+                            MaterialPageRoute(
+                              builder: (context) => const PhoneEntryScreen(isNewUser: false),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -207,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     Center(
                       child: Text(
                         'other ways to sign in',
@@ -217,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 16),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -230,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
                     Center(
                       child: GestureDetector(
                         onTap: () {
@@ -256,6 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -272,7 +268,6 @@ class _LoginScreenState extends State<LoginScreen> {
     bool obscure = false,
     bool isPassword = false,
     VoidCallback? onToggle,
-    TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -284,8 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextField(
         focusNode: focusNode,
         obscureText: obscure,
-        keyboardType: keyboardType,
-        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 14),

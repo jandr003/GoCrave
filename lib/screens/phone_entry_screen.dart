@@ -5,7 +5,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'verification_method_screen.dart';
 
 class PhoneEntryScreen extends StatefulWidget {
-  const PhoneEntryScreen({super.key});
+  final bool isNewUser;
+  const PhoneEntryScreen({super.key, this.isNewUser = false});
 
   @override
   State<PhoneEntryScreen> createState() => _PhoneEntryScreenState();

@@ -529,7 +529,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
+      MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 3)),
       (route) => false,
     );
   }
