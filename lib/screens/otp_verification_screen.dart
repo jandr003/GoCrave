@@ -11,10 +11,12 @@ import 'profile_setup_screen.dart';
 class OtpVerificationScreen extends StatefulWidget {
   final String initialOtp;
   final bool isNewUser;
+  final String phoneNumber;
   const OtpVerificationScreen({
     super.key,
     required this.initialOtp,
     this.isNewUser = false,
+    this.phoneNumber = '',
   });
 
   @override
@@ -281,7 +283,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => widget.isNewUser
-                          ? const ProfileSetupScreen()
+                          ? ProfileSetupScreen(phoneNumber: widget.phoneNumber)
                           : const MainNavWrapper(initialIndex: 0),
                     ),
                     (route) => false,

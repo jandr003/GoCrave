@@ -14,6 +14,7 @@ class PhoneEntryScreen extends StatefulWidget {
 
 class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
   final Color brandColor = const Color(0xFFFF5622);
+  String _fullPhoneNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +125,7 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
               ),
               languageCode: "en",
               onChanged: (phone) {
+                _fullPhoneNumber = phone.completeNumber;
               },
             ),
             const SizedBox(height: 48),
@@ -135,7 +137,10 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => VerificationMethodScreen(isNewUser: widget.isNewUser),
+                      builder: (context) => VerificationMethodScreen(
+                        isNewUser: widget.isNewUser,
+                        phoneNumber: _fullPhoneNumber,
+                      ),
                     ),
                   );
                 },

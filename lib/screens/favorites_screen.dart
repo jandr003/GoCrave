@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/favorite_manager.dart';
-import '../data/order_manager.dart';
+import '../data/cart_manager.dart';
 import 'main_nav_wrapper.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -148,7 +148,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   ),
                 ),
               ),
-              // Time Badge
               Positioned(
                 bottom: 12,
                 left: 12,
@@ -168,7 +167,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   ),
                 ),
               ),
-              // Heart Icon
               Positioned(
                 top: 12,
                 right: 12,
@@ -230,12 +228,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     const Spacer(),
                     ElevatedButton(
                       onPressed: () {
-                        OrderManager().placeOrder(item);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${item['title']} added to orders!'),
-                            backgroundColor: brandColor,
+                        CartManager().addItem(item, 1);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainNavWrapper(initialIndex: 3),
                           ),
+                          (route) => false,
                         );
                       },
                       style: ElevatedButton.styleFrom(

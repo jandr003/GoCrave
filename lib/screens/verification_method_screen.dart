@@ -5,7 +5,12 @@ import 'otp_verification_screen.dart';
 
 class VerificationMethodScreen extends StatelessWidget {
   final bool isNewUser;
-  const VerificationMethodScreen({super.key, this.isNewUser = false});
+  final String phoneNumber;
+  const VerificationMethodScreen({
+    super.key, 
+    this.isNewUser = false,
+    this.phoneNumber = '',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +69,7 @@ class VerificationMethodScreen extends StatelessWidget {
                       builder: (context) => OtpVerificationScreen(
                         initialOtp: otp,
                         isNewUser: isNewUser,
+                        phoneNumber: phoneNumber,
                       ),
                     ),
                   );
@@ -83,6 +89,7 @@ class VerificationMethodScreen extends StatelessWidget {
                       builder: (context) => OtpVerificationScreen(
                         initialOtp: otp,
                         isNewUser: isNewUser,
+                        phoneNumber: phoneNumber,
                       ),
                     ),
                   );

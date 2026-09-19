@@ -4,6 +4,7 @@ import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
 import 'main_nav_wrapper.dart';
 import '../widgets/swipe_button.dart';
+import '../widgets/order_success_sheet.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -335,10 +336,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   }
                 }
                 cart.clearCart();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
-                  (route) => false,
+                
+                showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  isDismissible: false,
+                  builder: (context) => const OrderSuccessSheet(),
                 );
               },
             ),
