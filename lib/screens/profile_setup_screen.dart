@@ -29,12 +29,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   final List<String> _avatars = [
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Felix',
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Jack',
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Oliver',
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Aneka',
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Zoe',
-    'https://api.dicebear.com/7.x/adventurer/png?seed=Sara',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Felix&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Pepper&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Buddy&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Willow&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Aria&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=Zoe&scale=120',
   ];
 
   @override

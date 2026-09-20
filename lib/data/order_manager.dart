@@ -47,7 +47,7 @@ class OrderManager extends ChangeNotifier {
 
   List<Order> get orders => List.unmodifiable(_orders);
 
-  void placeOrder(Map<String, String> foodItem) {
+  Order placeOrder(Map<String, String> foodItem) {
     final random = Random();
     final orderId = '#GOC${random.nextInt(90000) + 10000}';
     
@@ -55,7 +55,7 @@ class OrderManager extends ChangeNotifier {
     double deliveryFee = 20.0;
     double total = itemPrice + deliveryFee;
 
-    _orders.insert(0, Order(
+    final newOrder = Order(
       id: orderId,
       title: foodItem['title'] ?? 'Unknown Item',
       subtitle: foodItem['subtitle'] ?? '',
@@ -65,8 +65,11 @@ class OrderManager extends ChangeNotifier {
       customerName: 'John Andrew',
       location: 'Brgy. San Miguel, Bulacan...',
       timestamp: DateTime.now(),
-    ));
+    );
+
+    _orders.insert(0, newOrder);
     notifyListeners();
+    return newOrder;
   }
 
   double getTotalSpent() {

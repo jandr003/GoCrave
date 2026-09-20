@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../screens/main_nav_wrapper.dart';
+import '../data/order_manager.dart';
+import '../screens/order_tracking_screen.dart';
 
 class OrderSuccessSheet extends StatelessWidget {
-  const OrderSuccessSheet({super.key});
+  final Order? order;
+  const OrderSuccessSheet({super.key, this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +92,21 @@ class OrderSuccessSheet extends StatelessWidget {
             height: 56,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
-                  (route) => false,
-                );
+                if (order != null) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderTrackingScreen(order: order!),
+                    ),
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
+                    (route) => false,
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFE9ECEF),

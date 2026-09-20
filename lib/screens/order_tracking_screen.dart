@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import 'chat_screen.dart';
+import 'main_nav_wrapper.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
   final Order order;
@@ -19,12 +20,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> with SingleTi
   final Color brandColor = const Color(0xFFFF5622);
 
   final List<Offset> _routePoints = [
-    const Offset(0.15, 0.25),
-    const Offset(0.15, 0.45),
-    const Offset(0.45, 0.45),
-    const Offset(0.45, 0.65),
-    const Offset(0.85, 0.65),
-    const Offset(0.85, 0.75),
+    const Offset(0.15, 0.4),
+    const Offset(0.25, 0.5),
+    const Offset(0.5, 0.5),
+    const Offset(0.6, 0.4),
+    const Offset(0.85, 0.55),
   ];
 
   @override
@@ -48,201 +48,226 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 18),
-              onPressed: () => Navigator.pop(context),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          onPressed: () => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
+            (route) => false,
+          ),
+        ),
+        title: Text(
+          'Track Your Order',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              shape: BoxShape.circle,
             ),
+            child: const Icon(Icons.shopping_basket, color: Colors.black, size: 20),
           ),
-        ),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.access_time, size: 16, color: Colors.orange),
-              const SizedBox(width: 8),
-              Text(
-                'Arriving in 12 mins',
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: true,
+        ],
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.4,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1540979388789-6ece28a1696b?q=80&w=2000&auto=format&fit=crop',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-
-          Positioned.fill(
-            child: CustomPaint(
-              painter: RoutePainter(points: _routePoints, color: brandColor),
-            ),
-          ),
-
-          _buildMapMarker(
-            position: _routePoints.first,
-            icon: Icons.storefront,
-            label: 'GoCrave',
-            subLabel: 'Preparing your order',
-          ),
-
-          _buildMapMarker(
-            position: _routePoints.last,
-            icon: Icons.home,
-            label: 'Your Location',
-            subLabel: 'Arriving soon',
-          ),
-
-          AnimatedBuilder(
-            animation: _progressAnimation,
-            builder: (context, child) {
-              final position = _calculatePositionOnPath(_progressAnimation.value);
-              return Positioned(
-                left: position.dx * size.width - 25,
-                top: position.dy * size.height - 25,
-                child: Column(
-                  children: [
-                    _buildStatusBubble('On the Way', 'Your rider is nearby'),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
-                      ),
-                      child: Icon(Icons.delivery_dining, color: brandColor, size: 30),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, -5),
+                color: const Color(0xFFF8F9FA),
+                borderRadius: BorderRadius.circular(32),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Estimated Delivery',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '20-25 min',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Your order is on the way.',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildStepItem(Icons.restaurant, 'Order Placed', true),
+                      _buildStepConnector(true),
+                      _buildStepItem(Icons.outdoor_grill, 'Preparing', true),
+                      _buildStepConnector(true),
+                      _buildStepItem(Icons.delivery_dining, 'On the Way', true),
+                      _buildStepConnector(false),
+                      _buildStepItem(Icons.check, 'Delivered', false),
+                    ],
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+            ),
+
+            Container(
+              height: 300,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                color: Colors.blue[50],
+              ),
+              child: Stack(
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundImage: NetworkImage(widget.order.riderPhoto),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: Image.network(
+                      'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop',
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                      opacity: const AlwaysStoppedAnimation(0.3),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: RoutePainter(points: _routePoints, color: brandColor),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.order.riderName,
-                              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Row(
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundImage: NetworkImage(widget.order.riderPhoto),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.order.plateNumber,
+                                  widget.order.riderName,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 13,
-                                    color: Colors.grey[600],
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                const Icon(Icons.star, color: Colors.amber, size: 14),
                                 Text(
-                                  widget.order.rating.toString(),
-                                  style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold),
+                                  'Your Rider',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: Colors.grey[500],
+                                  ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          _buildActionBtn(Icons.phone_outlined, Colors.green, () {}),
-                          const SizedBox(width: 12),
-                          _buildActionBtn(Icons.chat_bubble_outline, brandColor, () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                  name: widget.order.riderName,
-                                  image: widget.order.riderPhoto,
-                                ),
-                              ),
-                            );
-                          }),
+                          ),
+                          _buildSmallActionBtn(Icons.chat_bubble_outline, brandColor),
+                          const SizedBox(width: 8),
+                          _buildSmallActionBtn(Icons.phone_outlined, Colors.green),
                         ],
                       ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFEDE6).withOpacity(0.5),
+                borderRadius: BorderRadius.circular(32),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Order Details',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_up, color: Colors.grey),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  _buildOrderItem(widget.order.title, widget.order.subtitle, 'x1', widget.order.price),
+                  const SizedBox(height: 12),
+                  _buildOrderItem('Potato Croquettes', 'Fruit-powered boost', 'x1', '₱95.20'),
+                  
+                  const SizedBox(height: 24),
+                  const Divider(),
+                  const SizedBox(height: 24),
+                  
+                  _buildTimelineItem('GoCrave', 'San Miguel Bulacan', true, isStart: true),
+                  _buildTimelineItem('Delivery Address', 'National Road San Miguel Bulacan', false, isEnd: true),
+                  
                   const SizedBox(height: 24),
                   Container(
-                    width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF8F9FA),
-                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: brandColor.withOpacity(0.1),
-                            shape: BoxShape.circle,
+                            color: Colors.orange[50],
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Icon(Icons.delivery_dining, color: brandColor, size: 20),
+                          child: const Icon(Icons.shopping_bag, color: Colors.orange),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -250,12 +275,19 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> with SingleTi
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Order Status',
-                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500], fontWeight: FontWeight.w500),
+                                'Thank you!',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: brandColor,
+                                ),
                               ),
                               Text(
-                                'Rider is picking up your food',
-                                style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black87),
+                                "We're preparing your order with care.\nSit tight while we get it to you!",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  color: Colors.grey[500],
+                                ),
                               ),
                             ],
                           ),
@@ -263,96 +295,152 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> with SingleTi
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
                 ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildMapMarker({
-    required Offset position,
-    required IconData icon,
-    required String label,
-    required String subLabel,
-  }) {
-    final size = MediaQuery.of(context).size;
-    return Positioned(
-      left: position.dx * size.width - 25,
-      top: position.dy * size.height - 25,
-      child: Column(
-        children: [
-          _buildStatusBubble(label, subLabel),
-          const SizedBox(height: 4),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
-            ),
-            child: Icon(icon, color: brandColor, size: 30),
+  Widget _buildStepItem(IconData icon, String label, bool isCompleted) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isCompleted ? brandColor : Colors.grey[300],
+            shape: BoxShape.circle,
           ),
-        ],
+          child: Icon(icon, color: Colors.white, size: 20),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label.split(' ').join('\n'),
+          textAlign: TextAlign.center,
+          style: GoogleFonts.poppins(
+            fontSize: 9,
+            fontWeight: isCompleted ? FontWeight.bold : FontWeight.normal,
+            color: isCompleted ? brandColor : Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStepConnector(bool isCompleted) {
+    return Expanded(
+      child: Container(
+        height: 2,
+        margin: const EdgeInsets.only(bottom: 25),
+        color: isCompleted ? brandColor : Colors.grey[300],
       ),
     );
   }
 
-  Widget _buildStatusBubble(String title, String subtitle) {
+  Widget _buildSmallActionBtn(IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, color: color, size: 20),
+    );
+  }
+
+  Widget _buildOrderItem(String title, String subtitle, String qty, String price) {
+    return Container(
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Text(
-            title,
-            style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: brandColor),
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.fastfood, color: Colors.orange),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[400]),
+                ),
+              ],
+            ),
           ),
           Text(
-            subtitle,
-            style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[600]),
+            '$qty • $price',
+            style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
   }
 
-  Offset _calculatePositionOnPath(double t) {
-    if (t <= 0) return _routePoints.first;
-    if (t >= 1) return _routePoints.last;
-
-    final double segmentT = t * (_routePoints.length - 1);
-    final int index = segmentT.floor();
-    final double localT = segmentT - index;
-
-    final Offset start = _routePoints[index];
-    final Offset end = _routePoints[index + 1];
-
-    return Offset(
-      start.dx + (end.dx - start.dx) * localT,
-      start.dy + (end.dy - start.dy) * localT,
-    );
-  }
-
-  Widget _buildActionBtn(IconData icon, Color color, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+  Widget _buildTimelineItem(String title, String subtitle, bool isActive, {bool isStart = false, bool isEnd = false}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: isActive ? brandColor : Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+            ),
+            if (!isEnd)
+              Container(
+                width: 2,
+                height: 40,
+                color: brandColor,
+              ),
+          ],
         ),
-        child: Icon(icon, color: color, size: 22),
-      ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                subtitle,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: Colors.grey[400],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -367,9 +455,8 @@ class RoutePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color
-      ..strokeWidth = 6.0
+      ..strokeWidth = 3.0
       ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke;
 
     final path = Path();

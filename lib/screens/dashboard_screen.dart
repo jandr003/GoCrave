@@ -6,6 +6,7 @@ import 'category_detail_screen.dart';
 import '../widgets/food_card.dart';
 import '../data/food_data.dart';
 import '../data/location_manager.dart';
+import '../data/user_profile.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback onSearchTap;
@@ -26,6 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _promoController = PageController(initialPage: 0);
     _startPromoTimer();
     LocationManager().addListener(_updateState);
+    UserProfile().addListener(_updateState);
   }
 
   void _updateState() {
@@ -51,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _promoTimer?.cancel();
     _promoController.dispose();
     LocationManager().removeListener(_updateState);
+    UserProfile().removeListener(_updateState);
     super.dispose();
   }
 
@@ -221,13 +224,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        shape: BoxShape.circle,
+                    GestureDetector(
+                      onTap: () {
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage: UserProfile().profilePic.isNotEmpty
+                              ? NetworkImage(UserProfile().profilePic)
+                              : null,
+                          child: UserProfile().profilePic.isEmpty
+                              ? const Icon(Icons.person, color: Colors.grey)
+                              : null,
+                        ),
                       ),
-                      child: const Icon(Icons.notifications_outlined, color: Colors.black),
                     ),
                   ],
                 ),

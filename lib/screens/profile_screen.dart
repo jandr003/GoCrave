@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../data/user_profile.dart';
 import 'login_screen.dart';
 import 'wallet_screen.dart';
 import 'rewards_screen.dart';
+import 'app_preferences_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    UserProfile().addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    UserProfile().removeListener(_updateState);
+    super.dispose();
+  }
+
+  void _updateState() {
+    if (mounted) setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = UserProfile();
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -28,11 +53,15 @@ class ProfileScreen extends StatelessWidget {
                       height: 140,
                       fit: BoxFit.contain,
                     ),
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 28,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop'),
+                      backgroundColor: Colors.grey[100],
+                      backgroundImage: user.profilePic.isNotEmpty
+                          ? NetworkImage(user.profilePic)
+                          : null,
+                      child: user.profilePic.isEmpty
+                          ? const Icon(Icons.person, color: Colors.grey)
+                          : null,
                     ),
                   ],
                 ),
@@ -46,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Personal',
+                        user.fullName.isNotEmpty ? user.fullName : 'Personal',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -98,6 +127,12 @@ class ProfileScreen extends StatelessWidget {
                 _buildMenuItem(
                   icon: Icons.settings_outlined,
                   title: 'App Preferences',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AppPreferencesScreen()),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.phone_outlined,

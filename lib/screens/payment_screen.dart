@@ -330,9 +330,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: SwipeButton(
               label: 'Swipe to Pay',
               onCompleted: () {
+                Order? lastOrder;
                 for (var item in cart.items) {
                   for (int i = 0; i < item.quantity; i++) {
-                    OrderManager().placeOrder(item.foodItem);
+                    lastOrder = OrderManager().placeOrder(item.foodItem);
                   }
                 }
                 cart.clearCart();
@@ -341,7 +342,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   context: context,
                   backgroundColor: Colors.transparent,
                   isDismissible: false,
-                  builder: (context) => const OrderSuccessSheet(),
+                  builder: (context) => OrderSuccessSheet(order: lastOrder),
                 );
               },
             ),
