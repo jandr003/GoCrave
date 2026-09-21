@@ -7,6 +7,8 @@ import '../widgets/food_card.dart';
 import '../data/food_data.dart';
 import '../data/location_manager.dart';
 import '../data/user_profile.dart';
+import '../data/coin_manager.dart';
+import '../widgets/daily_reward_modal.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback onSearchTap;
@@ -28,6 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _startPromoTimer();
     LocationManager().addListener(_updateState);
     UserProfile().addListener(_updateState);
+    CoinManager().addListener(_updateState);
   }
 
   void _updateState() {
@@ -54,6 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _promoController.dispose();
     LocationManager().removeListener(_updateState);
     UserProfile().removeListener(_updateState);
+    CoinManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -182,48 +186,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/gocrave_app_logo.png',
-                          height: 45,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Deliver to',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                            Row(
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/gocrave_app_logo.png',
+                            height: 45,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  LocationManager().addressLine1,
+                                  'Deliver to',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    fontSize: 12,
+                                    color: Colors.grey[500],
                                   ),
                                 ),
                                 InkWell(
                                   onTap: _showLocationPicker,
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(4.0),
-                                    child: Icon(Icons.keyboard_arrow_down, size: 20),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          LocationManager().addressLine1,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const Icon(Icons.keyboard_arrow_down, size: 20),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 12),
                     GestureDetector(
                       onTap: () {
                       },

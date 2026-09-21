@@ -6,6 +6,9 @@ import 'login_screen.dart';
 import 'wallet_screen.dart';
 import 'rewards_screen.dart';
 import 'app_preferences_screen.dart';
+import 'support_screen.dart';
+import 'feedback_screen.dart';
+import '../data/coin_manager.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,11 +22,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     UserProfile().addListener(_updateState);
+    CoinManager().addListener(_updateState);
   }
 
   @override
   void dispose() {
     UserProfile().removeListener(_updateState);
+    CoinManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -101,7 +106,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     }),
                     const SizedBox(width: 16),
-                    _buildActionCard(context, 'Orders', Icons.shopping_basket, Colors.green, () {}),
+                    _buildActionCard(context, 'Coins', Icons.monetization_on, Colors.amber, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RewardsScreen()),
+                      );
+                    }),
                   ],
                 ),
                 const SizedBox(height: 32),
@@ -123,6 +133,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildMenuItem(
                   icon: Icons.chat_bubble_outline,
                   title: 'Send Feedback',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const FeedbackScreen()),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.settings_outlined,
@@ -137,6 +153,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildMenuItem(
                   icon: Icons.phone_outlined,
                   title: 'Support',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SupportScreen()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
                 _buildMenuItem(

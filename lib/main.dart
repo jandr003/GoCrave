@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
+import 'data/coin_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await CoinManager().init();
   runApp(const MyApp());
 }
 

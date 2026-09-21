@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../data/coin_manager.dart';
+import '../widgets/daily_reward_modal.dart';
 
 class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
@@ -10,6 +12,22 @@ class RewardsScreen extends StatefulWidget {
 
 class _RewardsScreenState extends State<RewardsScreen> {
   String _selectedCategory = 'All';
+
+  @override
+  void initState() {
+    super.initState();
+    CoinManager().addListener(_updateState);
+  }
+
+  @override
+  void dispose() {
+    CoinManager().removeListener(_updateState);
+    super.dispose();
+  }
+
+  void _updateState() {
+    if (mounted) setState(() {});
+  }
 
   final List<String> _categories = [
     'All',
@@ -42,6 +60,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
   Widget build(BuildContext context) {
     const bgColor = Color(0xFFF9F7F4);
     const primaryColor = Color(0xFFFF5622);
+    final coinManager = CoinManager();
 
     final filteredPartners = _selectedCategory == 'All'
         ? _partners
@@ -89,52 +108,130 @@ class _RewardsScreenState extends State<RewardsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'MY BALANCE',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[500],
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '₱2,450',
-                          style: GoogleFonts.poppins(
-                            fontSize: 36,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF2D2D2D), Color(0xFF1A1A1A)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2D2D2D),
-                        borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(32),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
-                      child: Text(
-                        'Get Rewards',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'CRAVE COINS',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[500],
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.monetization_on, color: Colors.amber, size: 28),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    coinManager.totalCoins.toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                builder: (context) => const DailyRewardModal(),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.amber.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                              ),
+                              child: Text(
+                                'Check-in Now',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      const Divider(color: Colors.white10),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Exchange coins for coupons',
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              color: Colors.grey[400],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text("1,000 Coins required to exchange for ₱25 Voucher."),
+                                  backgroundColor: primaryColor,
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            ),
+                            child: Text(
+                              'Exchange',
+                              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+                
                 const SizedBox(height: 40),
 
-                // Category Filter Chips
                 SizedBox(
                   height: 40,
                   child: ListView.builder(
@@ -176,7 +273,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
 
           const SizedBox(height: 32),
 
-          // Rewards List
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -310,7 +406,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
             ],
           ),
           
-          // Bottom Bar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
 import 'phone_entry_screen.dart';
 import 'sign_up_screen.dart';
+import '../widgets/agreement_modal.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -128,10 +129,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 12),
 
                     GestureDetector(
-                      onTap: () => setState(() => _isAgreed = !_isAgreed),
+                      onTap: () async {
+                        if (_isAgreed) {
+                          setState(() => _isAgreed = false);
+                        } else {
+                          final result = await showModalBottomSheet<bool>(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => const AgreementModal(),
+                          );
+                          if (result == true) {
+                            setState(() => _isAgreed = true);
+                          }
+                        }
+                      },
                       child: Row(
                         children: [
-                          Container(
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
@@ -155,12 +171,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const TextSpan(text: "I've read and agreed to "),
                                   TextSpan(
                                     text: 'User Agreement',
-                                    style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      color: brandColor, 
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                   const TextSpan(text: ' & '),
                                   TextSpan(
                                     text: 'Privacy Policy',
-                                    style: TextStyle(color: brandColor, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      color: brandColor, 
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -177,6 +201,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 58,
                       child: ElevatedButton(
                         onPressed: () {
+                          if (!_isAgreed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please read and agree to the terms first."),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                            return;
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -187,6 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: brandColor,
                           foregroundColor: Colors.white,
+                          disabledBackgroundColor: brandColor.withOpacity(0.5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
