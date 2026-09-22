@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
 import 'phone_entry_screen.dart';
 import 'sign_up_screen.dart';
+import 'forgot_password_screen.dart';
 import '../widgets/agreement_modal.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -111,7 +112,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                         ),

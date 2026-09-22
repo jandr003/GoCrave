@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../notification_manager.dart';
 import 'otp_verification_screen.dart';
+import '../widgets/whatsapp_icon.dart';
 
 class VerificationMethodScreen extends StatelessWidget {
   final bool isNewUser;
@@ -58,7 +59,7 @@ class VerificationMethodScreen extends StatelessWidget {
               const SizedBox(height: 40),
               _buildMethodOption(
                 context,
-                icon: Icons.folder,
+                iconWidget: const Icon(Icons.folder, color: Colors.orangeAccent, size: 24),
                 iconColor: Colors.orangeAccent,
                 label: 'OTP via SMS',
                 onTap: () {
@@ -78,7 +79,7 @@ class VerificationMethodScreen extends StatelessWidget {
               const SizedBox(height: 16),
               _buildMethodOption(
                 context,
-                icon: Icons.chat,
+                iconWidget: const WhatsAppIcon(size: 24),
                 iconColor: Colors.green,
                 label: 'OTP via WhatsApp',
                 onTap: () {
@@ -104,7 +105,7 @@ class VerificationMethodScreen extends StatelessWidget {
 
   Widget _buildMethodOption(
     BuildContext context, {
-    required IconData icon,
+    required Widget iconWidget,
     required Color iconColor,
     required String label,
     required VoidCallback onTap,
@@ -134,7 +135,7 @@ class VerificationMethodScreen extends StatelessWidget {
                 color: iconColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: iconColor, size: 24),
+              child: iconWidget,
             ),
             const SizedBox(width: 16),
             Expanded(
