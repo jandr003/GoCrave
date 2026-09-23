@@ -12,6 +12,8 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final heroTag = 'food-img-${foodItem['title']}';
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -19,11 +21,14 @@ class FoodCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => FoodDetailsScreen(
               foodItem: foodItem,
+              heroTag: heroTag,
             ),
           ),
         );
       },
       borderRadius: BorderRadius.circular(24),
+      splashColor: Colors.deepOrangeAccent.withOpacity(0.1),
+      highlightColor: Colors.deepOrangeAccent.withOpacity(0.05),
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
@@ -42,15 +47,27 @@ class FoodCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              child: Image.network(
-                foodItem['image']!,
-                height: 160,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+              child: Hero(
+                tag: heroTag,
+                child: Image.network(
+                  foodItem['image']!,
                   height: 160,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                    if (wasSynchronouslyLoaded) return child;
+                    return AnimatedOpacity(
+                      opacity: frame == null ? 0 : 1,
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeOut,
+                      child: child,
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 160,
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                  ),
                 ),
               ),
             ),

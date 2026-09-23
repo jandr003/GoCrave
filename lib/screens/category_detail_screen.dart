@@ -52,6 +52,7 @@ class CategoryDetailScreen extends StatelessWidget {
               ),
             )
           : ListView.builder(
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               padding: const EdgeInsets.all(20),
               itemCount: foodItems.length,
               itemBuilder: (context, index) {

@@ -100,6 +100,7 @@ class BrowseMenuScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Expanded(
               child: GridView.builder(
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.85,

@@ -8,8 +8,13 @@ import 'main_nav_wrapper.dart';
 
 class FoodDetailsScreen extends StatefulWidget {
   final Map<String, String> foodItem;
+  final String? heroTag;
 
-  const FoodDetailsScreen({super.key, required this.foodItem});
+  const FoodDetailsScreen({
+    super.key,
+    required this.foodItem,
+    this.heroTag,
+  });
 
   @override
   State<FoodDetailsScreen> createState() => _FoodDetailsScreenState();
@@ -40,6 +45,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     final itemTitle = widget.foodItem['title']!;
     final itemReviews = mockReviews.where((r) => r.foodTitle == itemTitle).toList();
     final filteredReviews = itemReviews.where((r) => r.stars == _selectedReviewStar).toList();
+    final effectiveHeroTag = widget.heroTag ?? 'food-img-${widget.foodItem['title']}';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -50,9 +56,21 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
             left: 0,
             right: 0,
             height: size.height * 0.45,
-            child: Image.network(
-              widget.foodItem['image']!,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: effectiveHeroTag,
+              child: Image.network(
+                widget.foodItem['image']!,
+                fit: BoxFit.cover,
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  if (wasSynchronouslyLoaded) return child;
+                  return AnimatedOpacity(
+                    opacity: frame == null ? 0 : 1,
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeOut,
+                    child: child,
+                  );
+                },
+              ),
             ),
           ),
           Positioned(

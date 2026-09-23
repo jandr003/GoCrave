@@ -44,8 +44,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         final nextPage = (_currentPromoPage + 1) % _promoData.length;
         _promoController.animateToPage(
           nextPage,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOutQuart,
+          duration: const Duration(milliseconds: 700),
+          curve: Curves.easeInOutCubic,
         );
       }
     });
@@ -177,6 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -296,6 +297,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   width: double.infinity,
                   child: PageView.builder(
                     controller: _promoController,
+                    physics: const BouncingScrollPhysics(),
                     onPageChanged: (index) {
                       setState(() {
                         _currentPromoPage = index;
@@ -390,6 +392,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           child: Image.network(
                                             item['image']!,
                                             fit: BoxFit.cover,
+                                            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                                              if (wasSynchronouslyLoaded) return child;
+                                              return AnimatedOpacity(
+                                                opacity: frame == null ? 0 : 1,
+                                                duration: const Duration(milliseconds: 300),
+                                                curve: Curves.easeOut,
+                                                child: child,
+                                              );
+                                            },
                                             errorBuilder: (context, error, stackTrace) =>
                                                 const Icon(Icons.restaurant, size: 50, color: Colors.grey),
                                           ),
@@ -405,6 +416,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       );
                     },
                   ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_promoData.length, (index) {
+                    final isSelected = index == _currentPromoPage;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      height: 6,
+                      width: isSelected ? 20 : 6,
+                      decoration: BoxDecoration(
+                        color: isSelected ? Colors.deepOrangeAccent : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    );
+                  }),
                 ),
                 const SizedBox(height: 32),
                 Row(
@@ -433,6 +462,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   height: 120,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
                     children: [
                       _buildCategoryItem(
                         'Fast Food',

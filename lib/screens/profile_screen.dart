@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/user_profile.dart';
+import '../data/coin_manager.dart';
+import '../widgets/agreement_modal.dart';
 import 'login_screen.dart';
 import 'wallet_screen.dart';
 import 'rewards_screen.dart';
 import 'app_preferences_screen.dart';
 import 'support_screen.dart';
 import 'feedback_screen.dart';
-import '../data/coin_manager.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,14 +37,222 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (mounted) setState(() {});
   }
 
+  void _showAboutGoCraveModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.78,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/gocrave_app_logo.png',
+                        height: 70,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF3E0),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          'Version 1.0.4 (Build 2026.09)',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFFFF5622),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Order your favorite food anytime and enjoy fast, reliable delivery across the Philippines.',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          color: Colors.grey[600],
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      const Divider(height: 1, color: Color(0xFFEEEEEE)),
+                      const SizedBox(height: 12),
+                      _buildAboutTile(
+                        icon: Icons.article_outlined,
+                        title: 'Terms of Service & Privacy Policy',
+                        subtitle: 'Read our platform agreement and data policy',
+                        onTap: () {
+                          Navigator.pop(context);
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => const AgreementModal(),
+                          );
+                        },
+                      ),
+                      _buildAboutTile(
+                        icon: Icons.system_update_rounded,
+                        title: 'Check for Updates',
+                        subtitle: 'You are on the latest version',
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'GoCrave is up to date! (v1.0.4)',
+                                style: GoogleFonts.poppins(),
+                              ),
+                              backgroundColor: const Color(0xFFFF5622),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildAboutTile(
+                        icon: Icons.star_outline_rounded,
+                        title: 'Rate GoCrave',
+                        subtitle: 'Love GoCrave? Leave us a rating',
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Thank you for loving GoCrave! ⭐⭐⭐⭐⭐',
+                                style: GoogleFonts.poppins(),
+                              ),
+                              backgroundColor: Colors.green,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildAboutTile(
+                        icon: Icons.code_rounded,
+                        title: 'Open Source Licenses',
+                        subtitle: 'Third-party software libraries and licenses',
+                        onTap: () {
+                          showLicensePage(
+                            context: context,
+                            applicationName: 'GoCrave',
+                            applicationVersion: 'v1.0.4',
+                            applicationIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset('assets/images/gocrave_app_logo.png', height: 40),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        '© 2026 GoCrave Inc. All rights reserved.\nMade with ❤️ in the Philippines',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 11,
+                          color: Colors.grey[400],
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAboutTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF3E0),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, size: 20, color: const Color(0xFFFF5622)),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = UserProfile();
-    
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
@@ -165,6 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: Icons.info_outline,
                   title: 'About GoCrave',
                   subtitle: 'Order your favorites anytime and enjoy fast, easy delivery.',
+                  onTap: () => _showAboutGoCraveModal(context),
                 ),
                 const SizedBox(height: 24),
                 SizedBox(
