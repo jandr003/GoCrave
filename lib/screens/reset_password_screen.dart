@@ -12,15 +12,72 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final Color brandColor = const Color(0xFFFF5622);
   bool _obscureNew = true;
   bool _obscureConfirm = true;
-  
+
   final TextEditingController _newPassController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _newPassController.addListener(_onPasswordChanged);
+    _confirmPassController.addListener(_onPasswordChanged);
+  }
+
+  void _onPasswordChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
   void dispose() {
+    _newPassController.removeListener(_onPasswordChanged);
+    _confirmPassController.removeListener(_onPasswordChanged);
     _newPassController.dispose();
     _confirmPassController.dispose();
     super.dispose();
+  }
+
+  String get _newPass => _newPassController.text;
+  String get _confirmPass => _confirmPassController.text;
+
+  bool get _hasMinLength => _newPass.length >= 8;
+  bool get _hasUppercase => RegExp(r'[A-Z]').hasMatch(_newPass);
+  bool get _hasLowercase => RegExp(r'[a-z]').hasMatch(_newPass);
+  bool get _hasDigit => RegExp(r'[0-9]').hasMatch(_newPass);
+  bool get _hasSpecialChar => RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(_newPass);
+  bool get _passwordsMatch => _newPass.isNotEmpty && _newPass == _confirmPass;
+
+  bool get _isAllRequirementsMet =>
+      _hasMinLength &&
+      _hasUppercase &&
+      _hasLowercase &&
+      _hasDigit &&
+      _hasSpecialChar &&
+      _passwordsMatch;
+
+  int get _metCount {
+    int count = 0;
+    if (_hasMinLength) count++;
+    if (_hasUppercase) count++;
+    if (_hasLowercase) count++;
+    if (_hasDigit) count++;
+    if (_hasSpecialChar) count++;
+    return count;
+  }
+
+  double get _strengthProgress => _metCount / 5.0;
+
+  Color get _strengthColor {
+    if (_newPass.isEmpty) return Colors.grey[300]!;
+    if (_metCount <= 2) return Colors.redAccent;
+    if (_metCount <= 4) return Colors.orangeAccent;
+    return Colors.green;
+  }
+
+  String get _strengthText {
+    if (_newPass.isEmpty) return 'Enter Password';
+    if (_metCount <= 2) return 'Weak';
+    if (_metCount <= 4) return 'Medium';
+    return 'Strong';
   }
 
   @override
@@ -39,9 +96,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
       body: Column(
         children: [
-          // Header Section
           Container(
-            height: size.height * 0.15,
+            height: size.height * 0.12,
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
@@ -50,36 +106,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 Text(
                   'Set New Password',
                   style: GoogleFonts.poppins(
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
-                  'Choose a strong password',
+                  'Choose a strong password to protect your account',
                   style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 13,
+                    color: Colors.white.withOpacity(0.85),
                   ),
                 ),
               ],
             ),
           ),
-          
+
           Expanded(
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                  topRight: Radius.circular(60),
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,14 +147,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     _buildTextField(
                       hint: 'Enter new password',
                       controller: _newPassController,
                       obscure: _obscureNew,
                       onToggle: () => setState(() => _obscureNew = !_obscureNew),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     Text(
                       'Confirm Password',
                       style: GoogleFonts.poppins(
@@ -107,52 +163,142 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     _buildTextField(
                       hint: 'Confirm new password',
                       controller: _confirmPassController,
                       obscure: _obscureConfirm,
                       onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
                     ),
-                    const SizedBox(height: 48),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 58,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_newPassController.text.isEmpty || _confirmPassController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Please fill in both fields"),
-                                behavior: SnackBarBehavior.floating,
+                    const SizedBox(height: 24),
+
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF9F9FB),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: const Color(0xFFEEEEEE)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Password Strength',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            );
-                            return;
-                          }
-                          if (_newPassController.text != _confirmPassController.text) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Passwords do not match!"),
-                                behavior: SnackBarBehavior.floating,
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: _strengthColor.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  _strengthText,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: _strengthColor == Colors.grey[300]!
+                                        ? Colors.grey
+                                        : _strengthColor,
+                                  ),
+                                ),
                               ),
-                            );
-                            return;
-                          }
-                          _showSuccessDialog();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: brandColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            ],
                           ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          'Update Password',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                          const SizedBox(height: 10),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: LinearProgressIndicator(
+                              value: _strengthProgress,
+                              backgroundColor: Colors.grey[200],
+                              color: _strengthColor,
+                              minHeight: 6,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            'Password Requirements:',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          _buildCheckItem('At least 8 characters long', _hasMinLength),
+                          _buildCheckItem('At least 1 uppercase letter (A-Z)', _hasUppercase),
+                          _buildCheckItem('At least 1 lowercase letter (a-z)', _hasLowercase),
+                          _buildCheckItem('At least 1 number (0-9)', _hasDigit),
+                          _buildCheckItem('At least 1 special character (@#\$%^&*!)', _hasSpecialChar),
+                          _buildCheckItem('Confirm Password matches New Password', _passwordsMatch),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    GestureDetector(
+                      onTap: !_isAllRequirementsMet
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Please fulfill all password requirements above.',
+                                    style: GoogleFonts.poppins(),
+                                  ),
+                                  backgroundColor: Colors.redAccent,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              );
+                            }
+                          : null,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: _isAllRequirementsMet
+                              ? () {
+                                  _showSuccessDialog();
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: brandColor,
+                            disabledBackgroundColor: Colors.grey[300],
+                            foregroundColor: Colors.white,
+                            disabledForegroundColor: Colors.grey[500],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: _isAllRequirementsMet ? 4 : 0,
+                            shadowColor: brandColor.withOpacity(0.4),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                _isAllRequirementsMet ? Icons.check_circle_rounded : Icons.lock_outline,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Update Password',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -163,6 +309,44 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCheckItem(String label, bool isMet) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: isMet ? Colors.green.withOpacity(0.06) : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: Icon(
+                isMet ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
+                key: ValueKey<bool>(isMet),
+                size: 18,
+                color: isMet ? Colors.green : Colors.grey[400],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                label,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: isMet ? FontWeight.w600 : FontWeight.w500,
+                  color: isMet ? const Color(0xFF2E7D32) : Colors.grey[600],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

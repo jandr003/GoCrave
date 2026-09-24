@@ -10,6 +10,8 @@ import 'rewards_screen.dart';
 import 'app_preferences_screen.dart';
 import 'support_screen.dart';
 import 'feedback_screen.dart';
+import 'profile_setup_screen.dart';
+import 'admin_dashboard_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -138,15 +140,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildAboutTile(
                         icon: Icons.star_outline_rounded,
                         title: 'Rate GoCrave',
-                        subtitle: 'Love GoCrave? Leave us a rating',
+                        subtitle: 'Leave us a rating on Google Play',
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                'Thank you for loving GoCrave! ⭐⭐⭐⭐⭐',
+                                'Thank you for rating GoCrave!',
                                 style: GoogleFonts.poppins(),
                               ),
-                              backgroundColor: Colors.green,
+                              backgroundColor: const Color(0xFFFF5622),
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -173,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        '© 2026 GoCrave Inc. All rights reserved.\nMade with ❤️ in the Philippines',
+                        '© 2026 GoCrave Inc. All rights reserved.\nMade in the Philippines.',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 11,
@@ -267,40 +269,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 140,
                       fit: BoxFit.contain,
                     ),
-                    CircleAvatar(
-                      radius: 28,
-                      backgroundColor: Colors.grey[100],
-                      backgroundImage: user.profilePic.isNotEmpty
-                          ? NetworkImage(user.profilePic)
-                          : null,
-                      child: user.profilePic.isEmpty
-                          ? const Icon(Icons.person, color: Colors.grey)
-                          : null,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileSetupScreen(isEditing: true),
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 28,
+                        backgroundColor: Colors.grey[100],
+                        backgroundImage: user.profilePic.isNotEmpty
+                            ? NetworkImage(user.profilePic)
+                            : null,
+                        child: user.profilePic.isEmpty
+                            ? const Icon(Icons.person, color: Colors.grey)
+                            : null,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 32),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        user.fullName.isNotEmpty ? user.fullName : 'Personal',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileSetupScreen(isEditing: true),
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.person_outline, size: 20, color: Colors.black),
-                      const Spacer(),
-                      const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                    ],
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          user.fullName.isNotEmpty ? user.fullName : 'Personal',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.person_outline, size: 20, color: Colors.black),
+                        const Spacer(),
+                        const Icon(Icons.edit_outlined, size: 18, color: Colors.grey),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -366,6 +389,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const SupportScreen()),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.admin_panel_settings_outlined,
+                  title: 'Admin Control Panel',
+                  subtitle: 'Logged in as Admin01 • Manage sales, orders & menu',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminDashboardScreen(adminEmail: 'Admin01'),
+                      ),
                     );
                   },
                 ),

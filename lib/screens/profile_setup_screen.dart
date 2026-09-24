@@ -5,7 +5,13 @@ import '../data/user_profile.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   final String? phoneNumber;
-  const ProfileSetupScreen({super.key, this.phoneNumber});
+  final bool isEditing;
+
+  const ProfileSetupScreen({
+    super.key,
+    this.phoneNumber,
+    this.isEditing = false,
+  });
 
   @override
   State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
@@ -16,14 +22,28 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-  
+
   String _selectedGender = 'Male';
   String? _selectedAvatarUrl;
 
   @override
   void initState() {
     super.initState();
-    if (widget.phoneNumber != null) {
+    final user = UserProfile();
+
+    if (widget.isEditing || user.fullName.isNotEmpty) {
+      _nameController.text = user.fullName;
+      _phoneController.text = user.phoneNumber;
+      _dobController.text = user.dateOfBirth;
+      if (user.gender.isNotEmpty) {
+        _selectedGender = user.gender;
+      }
+      if (user.profilePic.isNotEmpty) {
+        _selectedAvatarUrl = user.profilePic;
+      }
+    }
+
+    if (widget.phoneNumber != null && _phoneController.text.isEmpty) {
       _phoneController.text = widget.phoneNumber!;
     }
   }
@@ -78,8 +98,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: widget.isEditing
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
+                onPressed: () => Navigator.pop(context),
+              )
+            : null,
         title: Text(
-          'Set Up Profile',
+          widget.isEditing ? 'Edit Profile' : 'Set Up Profile',
           style: GoogleFonts.poppins(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -186,20 +212,20 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             _buildInputField('Full Name', 'Enter your full name', _nameController),
             const SizedBox(height: 20),
             _buildInputField(
-              'Phone Number', 
-              '0912 345 6789', 
-              _phoneController, 
+              'Phone Number',
+              '0912 345 6789',
+              _phoneController,
               keyboardType: TextInputType.phone,
-              readOnly: widget.phoneNumber != null,
+              readOnly: widget.phoneNumber != null && !widget.isEditing,
               suffixIcon: widget.phoneNumber != null ? Icons.verified : null,
               suffixIconColor: widget.phoneNumber != null ? Colors.green : brandColor,
             ),
             const SizedBox(height: 20),
             _buildInputField(
-              'Date of Birth', 
-              'MM/DD/YYYY', 
-              _dobController, 
-              readOnly: true, 
+              'Date of Birth',
+              'MM/DD/YYYY',
+              _dobController,
+              readOnly: true,
               onTap: () => _selectDate(context),
               suffixIcon: Icons.calendar_today,
             ),
@@ -241,13 +267,30 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     profilePic: _selectedAvatarUrl ?? '',
                   );
 
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainNavWrapper(initialIndex: 0),
-                    ),
-                    (route) => false,
-                  );
+                  if (widget.isEditing) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Profile updated successfully!',
+                          style: GoogleFonts.poppins(),
+                        ),
+                        backgroundColor: brandColor,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainNavWrapper(initialIndex: 0),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: brandColor,
@@ -258,7 +301,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   elevation: 0,
                 ),
                 child: Text(
-                  'Get Started',
+                  widget.isEditing ? 'Save Changes' : 'Get Started',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -274,11 +317,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Widget _buildInputField(
-    String label, 
-    String hint, 
-    TextEditingController controller, 
-    {TextInputType keyboardType = TextInputType.text, bool readOnly = false, VoidCallback? onTap, IconData? suffixIcon, Color? suffixIconColor}
-  ) {
+    String label,
+    String hint,
+    TextEditingController controller, {
+    TextInputType keyboardType = TextInputType.text,
+    bool readOnly = false,
+    VoidCallback? onTap,
+    IconData? suffixIcon,
+    Color? suffixIconColor,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -304,7 +351,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             readOnly: readOnly,
             onTap: onTap,
             style: GoogleFonts.poppins(
-              fontSize: 15, 
+              fontSize: 15,
               fontWeight: FontWeight.w500,
               color: readOnly ? Colors.grey[600] : Colors.black,
             ),
