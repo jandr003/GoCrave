@@ -13,18 +13,16 @@ class RestaurantDashboardScreen extends StatefulWidget {
 }
 
 class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
-  int _selectedTab = 0; // 0: Incoming, 1: Preparing, 2: Ready for Pickup, 3: Menu Stock
+  int _selectedTab = 0;
   bool _isAcceptingOrders = true;
   double _todaySales = 14850.0;
   int _preparedOrdersCount = 28;
   final Color brandColor = const Color(0xFFFF5622);
 
-  // In-memory food stock status tracker for merchant
   final Map<String, bool> _merchantStockStatus = {
     for (var item in allFoodItems) item['title']!: true,
   };
 
-  // Kitchen Orders Pipeline
   final List<Map<String, dynamic>> _incomingOrders = [
     {
       'id': '#GOC98231',
@@ -123,10 +121,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         'time': 'Just packed',
         'riderStatus': 'Rider Dispatched',
       });
-      _selectedTab = 2; // Switch to Ready tab
+      _selectedTab = 2;
     });
 
-    // Update customer live order status to Ready for Pickup
     final liveOrders = OrderManager().orders;
     if (liveOrders.isNotEmpty) {
       liveOrders.first.status = 'Processing';
@@ -151,7 +148,6 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
       _preparedOrdersCount += 1;
     });
 
-    // Update customer live order status to Out for Delivery
     final liveOrders = OrderManager().orders;
     if (liveOrders.isNotEmpty) {
       liveOrders.first.status = 'On the Way';
