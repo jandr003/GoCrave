@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/food_data.dart';
 import '../data/order_manager.dart';
+import 'main_nav_wrapper.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   final String adminEmail;
@@ -115,6 +116,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.storefront_rounded, color: Colors.white),
+            tooltip: 'Customer View',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainNavWrapper(initialIndex: 0),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.refresh_rounded, color: Colors.white),
             onPressed: () {

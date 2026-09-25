@@ -50,18 +50,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
               Center(
                 child: Hero(
                   tag: 'official_logo',
                   child: Image.asset(
                     'assets/images/gocrave_official_logo.png',
-                    height: 120,
+                    height: 180,
+                    width: 280,
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-              const SizedBox(height: 60),
+              const SizedBox(height: 32),
 
               _buildLabel('Email Address'),
               const SizedBox(height: 8),

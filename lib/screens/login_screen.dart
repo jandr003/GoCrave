@@ -4,6 +4,9 @@ import 'verification_method_screen.dart';
 import 'phone_entry_screen.dart';
 import 'sign_up_screen.dart';
 import 'forgot_password_screen.dart';
+import 'admin_dashboard_screen.dart';
+import 'rider_dashboard_screen.dart';
+import 'restaurant_dashboard_screen.dart';
 import '../widgets/agreement_modal.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   bool _isAgreed = false;
   final Color brandColor = const Color(0xFFFF5622);
-  
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
 
@@ -30,9 +35,113 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
     super.dispose();
+  }
+
+  void _handleSignIn() {
+    final emailInput = _emailController.text.trim();
+
+    if (emailInput.toLowerCase().contains('admin01') || emailInput.toLowerCase() == 'admin01') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Welcome Super Admin Admin01! Direct Control Panel access...',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: const Color(0xFF1E1E2C),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AdminDashboardScreen(adminEmail: 'Admin01'),
+        ),
+        (route) => false,
+      );
+      return;
+    }
+
+    if (emailInput.toLowerCase().contains('rider') || emailInput.toLowerCase().endsWith('@gocrave.app')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Welcome Rider Ricardo Dalisay! Direct Delivery Portal access...',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: const Color(0xFF161622),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RiderDashboardScreen(
+            riderEmail: emailInput.isNotEmpty ? emailInput : 'rider@gocrave.app',
+          ),
+        ),
+        (route) => false,
+      );
+      return;
+    }
+
+    if (emailInput.toLowerCase().contains('merchant') ||
+        emailInput.toLowerCase().contains('resto') ||
+        emailInput.toLowerCase().contains('staff')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Welcome GoCrave Central Kitchen! Direct Merchant Portal access...',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: const Color(0xFF1B2430),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RestaurantDashboardScreen(
+            merchantEmail: emailInput.isNotEmpty ? emailInput : 'resto@gocrave.app',
+          ),
+        ),
+        (route) => false,
+      );
+      return;
+    }
+
+    if (!_isAgreed) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please read and agree to the terms first."),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PhoneEntryScreen(isNewUser: false),
+      ),
+    );
   }
 
   @override
@@ -88,10 +197,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 10),
                     _buildTextField(
                       hint: 'Enter your email address',
+                      controller: _emailController,
                       focusNode: _emailFocus,
                     ),
                     const SizedBox(height: 24),
-                    
+
                     Text(
                       'Password',
                       style: GoogleFonts.poppins(
@@ -103,12 +213,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 10),
                     _buildTextField(
                       hint: 'Enter your password',
+                      controller: _passwordController,
                       obscure: _obscurePassword,
                       isPassword: true,
                       focusNode: _passwordFocus,
                       onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
-                    
+
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -166,9 +277,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 2,
                               ),
                             ),
-                            child: _isAgreed 
-                              ? const Icon(Icons.check, size: 16, color: Colors.white) 
-                              : null,
+                            child: _isAgreed
+                                ? const Icon(Icons.check, size: 16, color: Colors.white)
+                                : null,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -180,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextSpan(
                                     text: 'User Agreement',
                                     style: TextStyle(
-                                      color: brandColor, 
+                                      color: brandColor,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
                                     ),
@@ -189,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextSpan(
                                     text: 'Privacy Policy',
                                     style: TextStyle(
-                                      color: brandColor, 
+                                      color: brandColor,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
                                     ),
@@ -208,23 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 58,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (!_isAgreed) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Please read and agree to the terms first."),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                            return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PhoneEntryScreen(isNewUser: false),
-                            ),
-                          );
-                        },
+                        onPressed: _handleSignIn,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: brandColor,
                           foregroundColor: Colors.white,
@@ -263,7 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(width: 20),
                         _buildSocialButton(Icons.facebook),
                         const SizedBox(width: 20),
-                        _buildSocialButton(Icons.chat_bubble_outline), 
+                        _buildSocialButton(Icons.chat_bubble_outline),
                       ],
                     ),
 
@@ -307,6 +402,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildTextField({
     required String hint,
     required FocusNode focusNode,
+    TextEditingController? controller,
     bool obscure = false,
     bool isPassword = false,
     VoidCallback? onToggle,
@@ -319,6 +415,7 @@ class _LoginScreenState extends State<LoginScreen> {
         border: Border.all(color: Colors.grey[200]!, width: 1.5),
       ),
       child: TextField(
+        controller: controller,
         focusNode: focusNode,
         obscureText: obscure,
         style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
