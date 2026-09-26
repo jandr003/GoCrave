@@ -11,9 +11,6 @@ import 'app_preferences_screen.dart';
 import 'support_screen.dart';
 import 'feedback_screen.dart';
 import 'profile_setup_screen.dart';
-import 'admin_dashboard_screen.dart';
-import 'rider_dashboard_screen.dart';
-import 'restaurant_dashboard_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -391,45 +388,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const SupportScreen()),
-                    );
-                  },
-                ),
-                _buildMenuItem(
-                  icon: Icons.admin_panel_settings_outlined,
-                  title: 'Admin Control Panel',
-                  subtitle: 'Logged in as Admin01 • Manage sales, orders & menu',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminDashboardScreen(adminEmail: 'Admin01'),
-                      ),
-                    );
-                  },
-                ),
-                _buildMenuItem(
-                  icon: Icons.two_wheeler_rounded,
-                  title: 'Rider Delivery Portal',
-                  subtitle: 'Active rider orders & delivery workflow',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RiderDashboardScreen(riderEmail: 'rider@gocrave.app'),
-                      ),
-                    );
-                  },
-                ),
-                _buildMenuItem(
-                  icon: Icons.store_rounded,
-                  title: 'Restaurant Merchant Portal',
-                  subtitle: 'GoCrave Central Kitchen • Kitchen order pipeline',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RestaurantDashboardScreen(merchantEmail: 'resto@gocrave.app'),
-                      ),
                     );
                   },
                 ),

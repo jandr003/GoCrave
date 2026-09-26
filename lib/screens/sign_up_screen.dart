@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'verification_method_screen.dart';
 import 'phone_entry_screen.dart';
 import 'login_screen.dart';
+import '../widgets/whatsapp_icon.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -185,11 +186,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton(Icons.g_mobiledata),
+                  _buildSocialButton(icon: Icons.g_mobiledata),
                   const SizedBox(width: 20),
-                  _buildSocialButton(Icons.facebook),
+                  _buildSocialButton(icon: Icons.facebook),
                   const SizedBox(width: 20),
-                  _buildSocialButton(Icons.chat_bubble_outline),
+                  _buildSocialButton(customChild: const WhatsAppIcon(size: 26)),
                 ],
               ),
 
@@ -276,7 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon) {
+  Widget _buildSocialButton({IconData? icon, Widget? customChild}) {
     return Container(
       width: 50,
       height: 50,
@@ -285,7 +286,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.grey[200]!),
       ),
-      child: Icon(icon, size: 28, color: Colors.black87),
+      child: Center(
+        child: customChild ?? Icon(icon, size: 28, color: Colors.black87),
+      ),
     );
   }
 }

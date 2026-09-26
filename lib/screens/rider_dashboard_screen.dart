@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
-import 'main_nav_wrapper.dart';
+import 'login_screen.dart';
 
 class RiderDashboardScreen extends StatefulWidget {
   final String riderEmail;
@@ -230,8 +230,15 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         backgroundColor: const Color(0xFF161622),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
+          tooltip: 'Log Out',
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              (route) => false,
+            );
+          },
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,18 +253,6 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.storefront_rounded, color: Colors.white),
-            tooltip: 'Customer View',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

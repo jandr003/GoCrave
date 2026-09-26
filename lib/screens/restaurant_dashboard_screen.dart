@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/food_data.dart';
 import '../data/order_manager.dart';
-import 'main_nav_wrapper.dart';
+import 'login_screen.dart';
 
 class RestaurantDashboardScreen extends StatefulWidget {
   final String merchantEmail;
@@ -96,7 +96,7 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         'time': 'Just accepted',
         'prepStep': 'Preparing Food',
       });
-      _selectedTab = 1; // Switch to Preparing tab
+      _selectedTab = 1;
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -171,8 +171,15 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         backgroundColor: const Color(0xFF1B2430),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
+          tooltip: 'Log Out',
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              (route) => false,
+            );
+          },
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,18 +194,6 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.storefront_rounded, color: Colors.white),
-            tooltip: 'Customer View',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
