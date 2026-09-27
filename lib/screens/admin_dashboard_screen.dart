@@ -144,10 +144,62 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         child: Column(
           children: [
             _buildExecutiveSummary(),
-            _buildModuleNavigation(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: _buildSelectedTabContent(),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedTab,
+          onTap: (index) {
+            setState(() {
+              _selectedTab = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: brandColor,
+          unselectedItemColor: Colors.grey[500],
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard_rounded),
+              activeIcon: Icon(Icons.dashboard_rounded, size: 26),
+              label: 'Overview',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_rounded),
+              activeIcon: Icon(Icons.shopping_bag_rounded, size: 26),
+              label: 'Orders',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.restaurant_menu_rounded),
+              activeIcon: Icon(Icons.restaurant_menu_rounded, size: 26),
+              label: 'Menu',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.two_wheeler_rounded),
+              activeIcon: Icon(Icons.two_wheeler_rounded, size: 26),
+              label: 'Riders',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard_rounded),
+              activeIcon: Icon(Icons.card_giftcard_rounded, size: 26),
+              label: 'Promos',
             ),
           ],
         ),
@@ -239,65 +291,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildModuleNavigation() {
-    final modules = [
-      {'label': 'Overview', 'icon': Icons.dashboard_rounded},
-      {'label': 'Orders', 'icon': Icons.shopping_bag_rounded},
-      {'label': 'Menu Items', 'icon': Icons.restaurant_menu_rounded},
-      {'label': 'Riders', 'icon': Icons.two_wheeler_rounded},
-      {'label': 'Promos & Coins', 'icon': Icons.card_giftcard_rounded},
-    ];
 
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: SizedBox(
-        height: 42,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          itemCount: modules.length,
-          itemBuilder: (context, index) {
-            final isSelected = _selectedTab == index;
-            final module = modules[index];
-            return Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: InkWell(
-                onTap: () => setState(() => _selectedTab = index),
-                borderRadius: BorderRadius.circular(14),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected ? brandColor : const Color(0xFFF2F2F7),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        module['icon'] as IconData,
-                        size: 16,
-                        color: isSelected ? Colors.white : Colors.grey[700],
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        module['label'] as String,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                          color: isSelected ? Colors.white : Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
 
   Widget _buildSelectedTabContent() {
     switch (_selectedTab) {

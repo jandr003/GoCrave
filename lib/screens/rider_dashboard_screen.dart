@@ -259,10 +259,74 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         child: Column(
           children: [
             _buildRiderHeaderCard(),
-            _buildModuleNavigation(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: _buildSelectedTabContent(),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedTab,
+          onTap: (index) {
+            setState(() {
+              _selectedTab = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: brandColor,
+          unselectedItemColor: Colors.grey[500],
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.radar_rounded),
+              activeIcon: const Icon(Icons.radar_rounded, size: 26),
+              label: 'Deliveries (${_availableRequests.length})',
+            ),
+            BottomNavigationBarItem(
+              icon: Stack(
+                children: [
+                  const Icon(Icons.near_me_rounded),
+                  if (_activeTask != null)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.redAccent,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              activeIcon: const Icon(Icons.near_me_rounded, size: 26),
+              label: 'Active Task',
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.history_rounded),
+              activeIcon: const Icon(Icons.history_rounded, size: 26),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.account_balance_wallet_rounded),
+              activeIcon: const Icon(Icons.account_balance_wallet_rounded, size: 26),
+              label: 'Wallet',
             ),
           ],
         ),
@@ -386,64 +450,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
     );
   }
 
-  Widget _buildModuleNavigation() {
-    final tabs = [
-      {'label': 'Available (${_availableRequests.length})', 'icon': Icons.radar_rounded},
-      {'label': 'Active Task ${_activeTask != null ? "🔴" : ""}', 'icon': Icons.near_me_rounded},
-      {'label': 'History', 'icon': Icons.history_rounded},
-      {'label': 'Wallet', 'icon': Icons.account_balance_wallet_rounded},
-    ];
 
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: SizedBox(
-        height: 42,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          itemCount: tabs.length,
-          itemBuilder: (context, index) {
-            final isSelected = _selectedTab == index;
-            final tab = tabs[index];
-            return Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: InkWell(
-                onTap: () => setState(() => _selectedTab = index),
-                borderRadius: BorderRadius.circular(14),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected ? brandColor : const Color(0xFFF2F2F7),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        tab['icon'] as IconData,
-                        size: 16,
-                        color: isSelected ? Colors.white : Colors.grey[700],
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        tab['label'] as String,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                          color: isSelected ? Colors.white : Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
 
   Widget _buildSelectedTabContent() {
     switch (_selectedTab) {

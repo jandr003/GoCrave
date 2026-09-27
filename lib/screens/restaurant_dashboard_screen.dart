@@ -200,10 +200,57 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         child: Column(
           children: [
             _buildMerchantHeaderCard(),
-            _buildModuleNavigation(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: _buildSelectedTabContent(),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedTab,
+          onTap: (index) {
+            setState(() {
+              _selectedTab = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: brandColor,
+          unselectedItemColor: Colors.grey[500],
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.notifications_active_rounded),
+              activeIcon: const Icon(Icons.notifications_active_rounded, size: 26),
+              label: 'Incoming (${_incomingOrders.length})',
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.soup_kitchen_rounded),
+              activeIcon: const Icon(Icons.soup_kitchen_rounded, size: 26),
+              label: 'Preparing (${_preparingOrders.length})',
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.takeout_dining_rounded),
+              activeIcon: const Icon(Icons.takeout_dining_rounded, size: 26),
+              label: 'Ready (${_readyOrders.length})',
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.inventory_2_rounded),
+              activeIcon: const Icon(Icons.inventory_2_rounded, size: 26),
+              label: 'Menu Stock',
             ),
           ],
         ),
@@ -308,65 +355,6 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[400]),
         ),
       ],
-    );
-  }
-
-  Widget _buildModuleNavigation() {
-    final tabs = [
-      {'label': 'Incoming (${_incomingOrders.length})', 'icon': Icons.notifications_active_rounded},
-      {'label': 'Preparing (${_preparingOrders.length})', 'icon': Icons.soup_kitchen_rounded},
-      {'label': 'Ready (${_readyOrders.length})', 'icon': Icons.takeout_dining_rounded},
-      {'label': 'Menu Stock', 'icon': Icons.inventory_2_rounded},
-    ];
-
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: SizedBox(
-        height: 42,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          itemCount: tabs.length,
-          itemBuilder: (context, index) {
-            final isSelected = _selectedTab == index;
-            final tab = tabs[index];
-            return Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: InkWell(
-                onTap: () => setState(() => _selectedTab = index),
-                borderRadius: BorderRadius.circular(14),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected ? brandColor : const Color(0xFFF2F2F7),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        tab['icon'] as IconData,
-                        size: 16,
-                        color: isSelected ? Colors.white : Colors.grey[700],
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        tab['label'] as String,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                          color: isSelected ? Colors.white : Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 

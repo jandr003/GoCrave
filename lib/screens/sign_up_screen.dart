@@ -5,6 +5,7 @@ import 'verification_method_screen.dart';
 import 'phone_entry_screen.dart';
 import 'login_screen.dart';
 import '../widgets/whatsapp_icon.dart';
+import '../widgets/google_logo_icon.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -186,9 +187,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton(icon: Icons.g_mobiledata),
+                  _buildSocialButton(customChild: const GoogleLogoIcon(size: 26)),
                   const SizedBox(width: 20),
-                  _buildSocialButton(icon: Icons.facebook),
+                  _buildSocialButton(icon: Icons.facebook, iconColor: const Color(0xFF1877F2)),
                   const SizedBox(width: 20),
                   _buildSocialButton(customChild: const WhatsAppIcon(size: 26)),
                 ],
@@ -277,7 +278,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSocialButton({IconData? icon, Widget? customChild}) {
+  Widget _buildSocialButton({IconData? icon, Color? iconColor, Widget? customChild}) {
     return Container(
       width: 50,
       height: 50,
@@ -287,7 +288,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Center(
-        child: customChild ?? Icon(icon, size: 28, color: Colors.black87),
+        child: customChild ?? Icon(icon, size: 28, color: iconColor ?? Colors.black87),
       ),
     );
   }
