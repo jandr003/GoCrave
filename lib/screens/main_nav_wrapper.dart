@@ -5,6 +5,7 @@ import 'browse_menu_screen.dart';
 import 'orders_screen.dart';
 import 'favorites_screen.dart';
 import 'cart_screen.dart';
+import 'chat_list_screen.dart';
 
 class MainNavWrapper extends StatefulWidget {
   final int initialIndex;
@@ -34,8 +35,8 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
       ),
       const FavoritesScreen(),
       const OrdersScreen(),
-      const CartScreen(),
-      ProfileScreen(),
+      const ChatListScreen(),
+      const ProfileScreen(),
     ];
   }
 
@@ -46,44 +47,59 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.deepOrangeAccent,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            activeIcon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined),
-            activeIcon: Icon(Icons.receipt_long),
-            label: 'Orders',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            activeIcon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: const Color(0xFFFF5622),
+          unselectedItemColor: Colors.grey[500],
+          showUnselectedLabels: true,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline_rounded),
+              activeIcon: Icon(Icons.favorite_rounded),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long_outlined),
+              activeIcon: Icon(Icons.receipt_long_rounded),
+              label: 'Orders',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline_rounded),
+              activeIcon: Icon(Icons.chat_bubble_rounded),
+              label: 'Messages',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              activeIcon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

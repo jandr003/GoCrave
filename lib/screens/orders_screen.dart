@@ -4,6 +4,7 @@ import '../data/order_manager.dart';
 import '../data/food_data.dart';
 import 'order_tracking_screen.dart';
 import 'browse_menu_screen.dart';
+import 'notification_history_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -88,6 +89,34 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ],
         ),
         centerTitle: false,
+        actions: [
+          IconButton(
+            icon: Stack(
+              children: [
+                const Icon(Icons.notifications_none_rounded, color: Colors.black, size: 24),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFF5622),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NotificationHistoryScreen()),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: Column(
         children: [

@@ -59,7 +59,7 @@ class VerificationMethodScreen extends StatelessWidget {
               const SizedBox(height: 40),
               _buildMethodOption(
                 context,
-                iconWidget: const Icon(Icons.folder, color: Colors.orangeAccent, size: 24),
+                iconWidget: const Icon(Icons.sms_rounded, color: Colors.orangeAccent, size: 22),
                 iconColor: Colors.orangeAccent,
                 label: 'OTP via SMS',
                 onTap: () {

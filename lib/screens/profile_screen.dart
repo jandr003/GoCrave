@@ -11,6 +11,7 @@ import 'app_preferences_screen.dart';
 import 'support_screen.dart';
 import 'feedback_screen.dart';
 import 'profile_setup_screen.dart';
+import 'favorites_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -328,7 +329,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 24),
                 Row(
                   children: [
-                    _buildActionCard(context, 'Favorite', Icons.book_outlined, Colors.blueAccent, () {}),
+                    _buildActionCard(context, 'Favorite', Icons.favorite_border_rounded, Colors.blueAccent, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+                      );
+                    }),
                     const SizedBox(width: 16),
                     _buildActionCard(context, 'Wallet', Icons.account_balance_wallet, Colors.orangeAccent, () {
                       Navigator.push(

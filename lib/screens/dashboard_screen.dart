@@ -9,6 +9,9 @@ import '../data/location_manager.dart';
 import '../data/user_profile.dart';
 import '../data/coin_manager.dart';
 import '../widgets/daily_reward_modal.dart';
+import 'chat_list_screen.dart';
+import 'favorites_screen.dart';
+import 'cart_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback onSearchTap;
@@ -234,7 +237,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.shopping_cart_outlined,
+                          size: 22,
+                          color: Colors.deepOrangeAccent,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
                       },
