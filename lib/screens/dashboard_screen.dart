@@ -195,41 +195,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           Image.asset(
                             'assets/images/gocrave_app_logo.png',
-                            height: 45,
+                            height: 50,
                             fit: BoxFit.contain,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Deliver to',
+                                  'Welcome to',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    color: Colors.grey[500],
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[600],
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: _showLocationPicker,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          LocationManager().addressLine1,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      const Icon(Icons.keyboard_arrow_down, size: 20),
-                                    ],
-                                  ),
+                                const SizedBox(height: 2),
+                                Image.asset(
+                                  'assets/images/gocrave_official_logo.png',
+                                  height: 38,
+                                  alignment: Alignment.centerLeft,
+                                  fit: BoxFit.contain,
                                 ),
                               ],
                             ),
