@@ -8,6 +8,7 @@ import '../data/food_data.dart';
 import '../data/location_manager.dart';
 import '../data/user_profile.dart';
 import '../data/coin_manager.dart';
+import '../data/cart_manager.dart';
 import '../widgets/daily_reward_modal.dart';
 import 'chat_list_screen.dart';
 import 'favorites_screen.dart';
@@ -34,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     LocationManager().addListener(_updateState);
     UserProfile().addListener(_updateState);
     CoinManager().addListener(_updateState);
+    CartManager().addListener(_updateState);
   }
 
   void _updateState() {
@@ -61,6 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     LocationManager().removeListener(_updateState);
     UserProfile().removeListener(_updateState);
     CoinManager().removeListener(_updateState);
+    CartManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -192,31 +195,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Expanded(
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/gocrave_app_logo.png',
-                            height: 50,
-                            fit: BoxFit.contain,
+                          Transform.translate(
+                            offset: const Offset(0, -4),
+                            child: Image.asset(
+                              'assets/images/gocrave_app_logo.png',
+                              height: 42,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 8),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Welcome to',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF5A6275),
                                   ),
                                 ),
-                                const SizedBox(height: 2),
-                                Image.asset(
-                                  'assets/images/gocrave_official_logo.png',
-                                  height: 38,
-                                  alignment: Alignment.centerLeft,
-                                  fit: BoxFit.contain,
+                                SizedBox(
+                                  height: 42,
+                                  child: Transform.translate(
+                                    offset: const Offset(-18, 0),
+                                    child: Transform.scale(
+                                      scale: 2.6,
+                                      alignment: Alignment.centerLeft,
+                                      child: Image.asset(
+                                        'assets/images/gocrave_official_logo.png',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -238,10 +253,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           color: Colors.grey[100],
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
-                          Icons.shopping_cart_outlined,
-                          size: 22,
-                          color: Colors.deepOrangeAccent,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            const Icon(
+                              Icons.shopping_bag_outlined,
+                              size: 22,
+                              color: Colors.deepOrangeAccent,
+                            ),
+                            if (CartManager().items.isNotEmpty)
+                              Positioned(
+                                right: -2,
+                                top: -2,
+                                child: Container(
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFFF5622),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+                                  child: Text(
+                                    CartManager().items.fold<int>(0, (sum, i) => sum + i.quantity).toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ),

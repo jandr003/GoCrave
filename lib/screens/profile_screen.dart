@@ -12,6 +12,7 @@ import 'support_screen.dart';
 import 'feedback_screen.dart';
 import 'profile_setup_screen.dart';
 import 'favorites_screen.dart';
+import 'coupon_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -356,6 +357,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: Icons.card_giftcard,
                   title: 'Promotions',
                   subtitle: 'Exclusive deals on your favorite cravings',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CouponScreen()),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.workspace_premium_outlined,
