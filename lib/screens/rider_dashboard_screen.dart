@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import 'login_screen.dart';
+import '../widgets/rider/rider_header_card.dart';
+import '../widgets/rider/rider_available_orders_tab.dart';
+import '../widgets/rider/rider_active_task_tab.dart';
+import '../widgets/rider/rider_history_tab.dart';
+import '../widgets/rider/rider_wallet_tab.dart';
+import '../widgets/rider/rider_profile_tab.dart';
+import '../widgets/rider/rider_edit_profile_modal.dart';
 
 class RiderDashboardScreen extends StatefulWidget {
   final String riderEmail;
@@ -18,8 +25,25 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   int _completedTripsCount = 8;
   final Color brandColor = const Color(0xFFFF5622);
 
+  // Rider Editable Profile State
+  String _riderName = 'Ricardo Dalisay';
+  String _riderPhone = '0917 888 9900';
+  String _vehiclePlate = 'Honda Click 125i • Plate: MVC 1234';
+  String _riderAvatarUrl = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop';
+
   Map<String, dynamic>? _activeTask;
   int _taskStep = 1;
+
+  final List<String> _riderAvatars = [
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=RiderMax&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=RiderLeo&scale=120',
+  ];
 
   final List<Map<String, dynamic>> _availableRequests = [
     {
@@ -222,23 +246,62 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
     );
   }
 
+  void _showEditRiderProfileModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) {
+        return RiderEditProfileModal(
+          currentName: _riderName,
+          currentPhone: _riderPhone,
+          currentVehicle: _vehiclePlate,
+          currentAvatar: _riderAvatarUrl,
+          avatars: _riderAvatars,
+          brandColor: brandColor,
+          onSave: (name, phone, vehicle, avatar) {
+            setState(() {
+              _riderName = name;
+              _riderPhone = phone;
+              _vehiclePlate = vehicle;
+              _riderAvatarUrl = avatar;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Rider profile updated successfully!', style: GoogleFonts.poppins()),
+                backgroundColor: brandColor,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _onLogOut() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FC),
+      backgroundColor: const Color(0xFFF4F6FB),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF161622),
+        backgroundColor: const Color(0xFF12141D),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
           tooltip: 'Log Out',
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (route) => false,
-            );
-          },
+          onPressed: _onLogOut,
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,12 +316,40 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit_outlined, color: Colors.white, size: 20),
+            tooltip: 'Edit Profile',
+            onPressed: () => _showEditRiderProfileModal(context),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            _buildRiderHeaderCard(),
+            if (_selectedTab != 4)
+              RiderHeaderCard(
+                riderName: _riderName,
+                vehiclePlate: _vehiclePlate,
+                avatarUrl: _riderAvatarUrl,
+                isOnline: _isOnline,
+                todayEarnings: _todayEarnings,
+                completedTripsCount: _completedTripsCount,
+                brandColor: brandColor,
+                onOnlineChanged: (val) {
+                  setState(() => _isOnline = val);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(_isOnline ? 'You are now ONLINE and available for orders!' : 'You are now OFFLINE.'),
+                      backgroundColor: _isOnline ? Colors.green : Colors.grey[700],
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                },
+                onTapEditProfile: () => _showEditRiderProfileModal(context),
+              ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: _buildSelectedTabContent(),
@@ -328,661 +419,54 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
               activeIcon: const Icon(Icons.account_balance_wallet_rounded, size: 26),
               label: 'Wallet',
             ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.account_circle_outlined),
+              activeIcon: const Icon(Icons.account_circle_rounded, size: 26),
+              label: 'Profile',
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRiderHeaderCard() {
-    return Container(
-      color: const Color(0xFF161622),
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 26,
-                backgroundColor: brandColor,
-                child: const Icon(Icons.two_wheeler_rounded, color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Ricardo Dalisay',
-                          style: GoogleFonts.poppins(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            '4.9 ⭐',
-                            style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.amber),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'Honda Click 125i • Plate: MVC 1234',
-                      style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[400]),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  Switch(
-                    value: _isOnline,
-                    activeColor: Colors.greenAccent,
-                    onChanged: (val) {
-                      setState(() => _isOnline = val);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(_isOnline ? 'You are now ONLINE and available for orders!' : 'You are now OFFLINE.'),
-                          backgroundColor: _isOnline ? Colors.green : Colors.grey[700],
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    },
-                  ),
-                  Text(
-                    _isOnline ? 'ONLINE' : 'OFFLINE',
-                    style: GoogleFonts.poppins(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: _isOnline ? Colors.greenAccent : Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF232332),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.06)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildHeaderStat('Today Earnings', '₱${_todayEarnings.toInt()}', Colors.greenAccent),
-                Container(height: 30, width: 1, color: Colors.white12),
-                _buildHeaderStat('Completed', '$_completedTripsCount Trips', Colors.orangeAccent),
-                Container(height: 30, width: 1, color: Colors.white12),
-                _buildHeaderStat('Cash Wallet', '₱620', Colors.lightBlueAccent),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeaderStat(String label, String val, Color color) {
-    return Column(
-      children: [
-        Text(
-          val,
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w900, color: color),
-        ),
-        Text(
-          label,
-          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[400]),
-        ),
-      ],
-    );
-  }
-
-
-
   Widget _buildSelectedTabContent() {
     switch (_selectedTab) {
       case 1:
-        return _buildActiveTaskTab();
+        return RiderActiveTaskTab(
+          activeTask: _activeTask,
+          taskStep: _taskStep,
+          brandColor: brandColor,
+          onAdvanceTaskStep: _advanceTaskStep,
+        );
       case 2:
-        return _buildHistoryTab();
+        return RiderHistoryTab(
+          completedHistory: _completedHistory,
+          brandColor: brandColor,
+        );
       case 3:
-        return _buildWalletEarningsTab();
+        return RiderWalletTab(
+          todayEarnings: _todayEarnings,
+        );
+      case 4:
+        return RiderProfileTab(
+          riderName: _riderName,
+          riderPhone: _riderPhone,
+          vehiclePlate: _vehiclePlate,
+          avatarUrl: _riderAvatarUrl,
+          completedTripsCount: _completedTripsCount,
+          brandColor: brandColor,
+          onTapEditProfile: () => _showEditRiderProfileModal(context),
+          onLogOut: _onLogOut,
+        );
       case 0:
       default:
-        return _buildAvailableRequestsTab();
+        return RiderAvailableOrdersTab(
+          isOnline: _isOnline,
+          availableRequests: _availableRequests,
+          brandColor: brandColor,
+          onAcceptDelivery: _acceptDelivery,
+        );
     }
-  }
-
-  Widget _buildAvailableRequestsTab() {
-    if (!_isOnline) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0),
-          child: Column(
-            children: [
-              Icon(Icons.portable_wifi_off_rounded, size: 60, color: Colors.grey[400]),
-              const SizedBox(height: 12),
-              Text(
-                'You are currently OFFLINE',
-                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Toggle the Online switch at the top to receive new delivery orders.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_availableRequests.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0),
-          child: Column(
-            children: [
-              Icon(Icons.check_circle_outline_rounded, size: 60, color: Colors.green[300]),
-              const SizedBox(height: 12),
-              Text(
-                'No pending requests nearby',
-                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'New orders from restaurants will appear here automatically.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Nearby Orders Ready for Pickup',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 14),
-        ..._availableRequests.map((req) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF3E0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        req['id'],
-                        style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: brandColor),
-                      ),
-                    ),
-                    Text(
-                      req['payout'],
-                      style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.green[800]),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Icon(Icons.store_rounded, color: Colors.black87, size: 18),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        req['restaurant'],
-                        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      req['distance'],
-                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: brandColor),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 26.0),
-                  child: Text(
-                    req['restoAddress'],
-                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.location_on_rounded, color: brandColor, size: 18),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Customer: ${req['customer']}',
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 26.0),
-                  child: Text(
-                    req['customerAddress'],
-                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF9F9FB),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.fastfood_outlined, size: 16, color: Colors.grey),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          req['items'],
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[700]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _acceptDelivery(req),
-                    icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
-                    label: Text(
-                      'Accept Delivery',
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: brandColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      elevation: 0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
-  Widget _buildActiveTaskTab() {
-    if (_activeTask == null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0),
-          child: Column(
-            children: [
-              Icon(Icons.near_me_disabled_rounded, size: 60, color: Colors.grey[300]),
-              const SizedBox(height: 12),
-              Text(
-                'No Active Delivery Task',
-                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Accept a request from the Available tab to start a delivery workflow.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    String actionBtnLabel = 'Arrived at Restaurant';
-    IconData actionIcon = Icons.store_rounded;
-
-    if (_taskStep == 2) {
-      actionBtnLabel = 'Confirm Food Pick Up';
-      actionIcon = Icons.takeout_dining_rounded;
-    } else if (_taskStep == 3) {
-      actionBtnLabel = 'Complete Delivery & Collect ${_activeTask!['payout']}';
-      actionIcon = Icons.check_circle_rounded;
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 16, offset: const Offset(0, 6)),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Active Order ${_activeTask!['id']}',
-                    style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: brandColor),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green[50],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      'Payout: ${_activeTask!['payout']}',
-                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green[800]),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              Row(
-                children: [
-                  _buildStepCircle(1, 'Resto', _taskStep >= 1),
-                  _buildStepLine(_taskStep >= 2),
-                  _buildStepCircle(2, 'Pick Up', _taskStep >= 2),
-                  _buildStepLine(_taskStep >= 3),
-                  _buildStepCircle(3, 'Deliver', _taskStep >= 3),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-              const Divider(height: 1, color: Color(0xFFEEEEEE)),
-              const SizedBox(height: 16),
-
-              Row(
-                children: [
-                  Icon(Icons.store_rounded, color: brandColor, size: 20),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_activeTask!['restaurant'], style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold)),
-                        Text(_activeTask!['restoAddress'], style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500])),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  const Icon(Icons.person_pin_circle_rounded, color: Colors.blueAccent, size: 20),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_activeTask!['customer'], style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold)),
-                        Text(_activeTask!['customerAddress'], style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500])),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Calling ${_activeTask!['customer']}... (${_activeTask!['phone']})'),
-                            backgroundColor: Colors.blueAccent,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.phone, size: 16, color: Colors.blueAccent),
-                      label: Text('Call Customer', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blueAccent)),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.blueAccent),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Opening Navigation Maps...'),
-                            backgroundColor: Colors.green,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.navigation_rounded, size: 16, color: Colors.green),
-                      label: Text('Open Maps', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green)),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.green),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton.icon(
-                  onPressed: _advanceTaskStep,
-                  icon: Icon(actionIcon, size: 20, color: Colors.white),
-                  label: Text(
-                    actionBtnLabel,
-                    style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: brandColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    elevation: 0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStepCircle(int step, String label, bool isDone) {
-    return Expanded(
-      child: Column(
-        children: [
-          Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              color: isDone ? brandColor : Colors.grey[200],
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: isDone
-                  ? const Icon(Icons.check, size: 16, color: Colors.white)
-                  : Text('$step', style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold)),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(label, style: GoogleFonts.poppins(fontSize: 10, fontWeight: isDone ? FontWeight.bold : FontWeight.normal)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStepLine(bool isDone) {
-    return Expanded(
-      child: Container(
-        height: 3,
-        color: isDone ? brandColor : Colors.grey[200],
-      ),
-    );
-  }
-
-  Widget _buildHistoryTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Completed Delivery History',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 14),
-        ..._completedHistory.map((item) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFE8F5E9),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.check, color: Color(0xFF2E7D32), size: 20),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${item['id']} • ${item['customer']}',
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '${item['resto']} • ${item['time']}',
-                        style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      item['payout'],
-                      style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.green[800]),
-                    ),
-                    Text(
-                      '+${item['tip']} Tip',
-                      style: GoogleFonts.poppins(fontSize: 11, color: brandColor, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
-  Widget _buildWalletEarningsTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF161622), Color(0xFF28283C)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Rider Wallet Balance', style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[400])),
-              const SizedBox(height: 4),
-              Text('₱${_todayEarnings.toStringAsFixed(2)}', style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.greenAccent)),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Withdrawal request of ₱${_todayEarnings.toStringAsFixed(2)} sent to GCash!'),
-                            backgroundColor: Colors.green,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.account_balance_wallet, size: 16, color: Colors.black),
-                      label: Text('Withdraw to GCash', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 }

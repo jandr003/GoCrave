@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -14,192 +13,304 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   late final PageController _pageController;
   int _currentPage = 0;
-  Timer? _timer;
+  int _foodImageIndex = 0;
+  Timer? _foodFadeTimer;
 
   @override
   void initState() {
     super.initState();
-    // start at a high number for the infinite scroll loop
-    const initialPage = 6 * 500;
-    _pageController = PageController(initialPage: initialPage);
-    _currentPage = initialPage;
-    _startTimer();
+    _pageController = PageController(initialPage: 0);
+    _startFoodFadeTimer();
   }
 
-  void _startTimer() {
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      _pageController.animateToPage(
-        _pageController.page!.toInt() + 1,
-        duration: const Duration(milliseconds: 1200),
-        curve: Curves.easeInOutCubic,
-      );
+  void _startFoodFadeTimer() {
+    _foodFadeTimer?.cancel();
+    _foodFadeTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (mounted) {
+        setState(() {
+          _foodImageIndex = (_foodImageIndex + 1) % 3;
+        });
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _foodFadeTimer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
 
-  final List<Map<String, String>> _onboardingData = [
+  final List<Map<String, dynamic>> _onboardingData = [
     {
-      'title': 'Quick & Tasty Meals',
-      'subtitle': 'Crispy burgers and fries delivered to your doorstep.',
-      'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+      'category': '🍔 FAST FOOD',
+      'title': 'Juicy Burgers & Crispy Pizzas',
+      'subtitle': 'Savor flame-grilled beef burgers, New York pizzas, and hot golden fries.',
+      'images': [
+        'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1561758033-d89a9ad46330?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
     {
-      'title': 'Taste of Home',
-      'subtitle': 'Hearty home-cooked meals and warm flavors for the family.',
-      'image': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1000&auto=format&fit=crop',
+      'category': '🍲 HOME-STYLE',
+      'title': 'Hearty Filipino Home Favorites',
+      'subtitle': 'Tender chicken adobo, sour pork sinigang, and warm comfort meals.',
+      'images': [
+        'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1625398407796-82650a8c135f?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
     {
-      'title': 'Healthy & Fresh',
-      'subtitle': 'Nutritious green bowls and salads for a better you.',
-      'image': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop',
+      'category': '🥗 VEGETARIAN',
+      'title': 'Fresh & Nutritious Green Bowls',
+      'subtitle': 'Organic quinoa salad bowls and fresh garden greens made for a healthier you.',
+      'images': [
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
     {
-      'title': 'Perfect Mid-day Bites',
-      'subtitle': 'Street foods and quick snacks to fuel your day.',
-      'image': 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=1000&auto=format&fit=crop',
+      'category': '🍟 SNACKS',
+      'title': 'Crispy Nachos & Street Bites',
+      'subtitle': 'Loaded cheesy nachos supreme, street bites, and mid-day snacks.',
+      'images': [
+        'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1585325701165-351af916e581?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
     {
-      'title': 'Sweet Cravings Satisfied',
-      'subtitle': 'Cakes, ice cream, and sweets to end your meal right.',
-      'image': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=1000&auto=format&fit=crop',
+      'category': '🍰 DESSERTS',
+      'title': 'Sweet Cravings & Decadent Cakes',
+      'subtitle': 'Molten chocolate lava cakes, berry ice cream gelato, and gourmet sweets.',
+      'images': [
+        'https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
     {
-      'title': 'Refreshingly Cool',
-      'subtitle': 'Shakes, juices, and milk teas for a perfect break.',
-      'image': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1000&auto=format&fit=crop',
+      'category': '🥤 DRINKS & SHAKES',
+      'title': 'Refreshingly Cool Shakes & Teas',
+      'subtitle': 'Sweet mango graham shakes, chilled fruit juices, and boba milk teas.',
+      'images': [
+        'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=1000&auto=format&fit=crop',
+      ],
     },
   ];
 
-  void _onFinish() async {
-    // force onboarding to stay for now while testing
-    // final prefs = await SharedPreferences.getInstance();
-    // await prefs.setBool('isFirstTime', false);
+  void _onFinish() {
     if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 800),
+          pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final curvedAnimation = CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+            );
+            return FadeTransition(
+              opacity: curvedAnimation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0.0, 0.08),
+                  end: Offset.zero,
+                ).animate(curvedAnimation),
+                child: child,
+              ),
+            );
+          },
+        ),
+      );
+    }
+  }
+
+  void _onPrimaryButtonPressed() {
+    final currentSlideIndex = _currentPage % _onboardingData.length;
+    final isLastSlide = currentSlideIndex == _onboardingData.length - 1;
+
+    if (isLastSlide) {
+      _onFinish();
+    } else {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 900),
+        curve: Curves.fastOutSlowIn,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentSlideIndex = _currentPage % _onboardingData.length;
+    final isLastSlide = currentSlideIndex == _onboardingData.length - 1;
+    final categoryData = _onboardingData[currentSlideIndex];
+    final List<String> currentCategoryImages = List<String>.from(categoryData['images']);
+    final activeImageUrl = currentCategoryImages[_foodImageIndex % currentCategoryImages.length];
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          AnimatedBuilder(
-            animation: _pageController,
-            builder: (context, child) {
-              return PageView.builder(
-                controller: _pageController,
-                itemCount: 10000,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                  _startTimer();
-                },
-                itemBuilder: (context, index) {
-                  final dataIndex = index % _onboardingData.length;
-                  double page = 0.0;
-                  if (_pageController.hasClients && _pageController.page != null) {
-                    page = _pageController.page!;
-                  }
+          PageView.builder(
+            controller: _pageController,
+            itemCount: _onboardingData.length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+                _foodImageIndex = 0;
+              });
+            },
+            itemBuilder: (context, index) {
+              final slideData = _onboardingData[index];
+              final List<String> images = List<String>.from(slideData['images']);
+              final imgUrl = (index == currentSlideIndex)
+                  ? activeImageUrl
+                  : images[0];
 
-                  final double position = index - page;
-                  final double opacity = (1.0 - position.abs()).clamp(0.0, 1.0);
-                  final double screenWidth = MediaQuery.of(context).size.width;
-
-                  return Transform.translate(
-                    offset: Offset(-position * screenWidth, 0),
-                    child: Opacity(
-                      opacity: opacity,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Image.network(
-                            _onboardingData[dataIndex]['image']!,
-                            fit: BoxFit.cover,
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment(position * 0.2, 0.0), // subtler parallax
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white.withOpacity(0.5),
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Colors.grey[900],
-                                child: const Icon(Icons.error_outline,
-                                    color: Colors.white24, size: 40),
-                              );
-                            },
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 1000),
+                    child: Image.network(
+                      imgUrl,
+                      key: ValueKey<String>(imgUrl),
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white.withOpacity(0.5),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.8),
-                                ],
-                                stops: const [0.5, 1.0],
-                              ),
-                            ),
-                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(color: Colors.grey[900]);
+                      },
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.35),
+                          Colors.black.withOpacity(0.88),
                         ],
+                        stops: const [0.2, 1.0],
                       ),
                     ),
-                  );
-                },
+                  ),
+                ],
               );
             },
           ),
 
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: _onFinish,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Skip',
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 12),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    child: Container(
+                      key: ValueKey<String>(categoryData['category']),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF5622),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFF5622).withOpacity(0.4),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        categoryData['category'],
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  AnimatedSwitcher(
                     duration: const Duration(milliseconds: 500),
                     child: Column(
-                      key: ValueKey<int>(_currentPage % _onboardingData.length),
+                      key: ValueKey<int>(currentSlideIndex),
                       children: [
                         Text(
-                          _onboardingData[_currentPage % _onboardingData.length]['title']!,
+                          categoryData['title'],
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
-                            fontSize: 28,
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 10),
                         Text(
-                          _onboardingData[_currentPage % _onboardingData.length]['subtitle']!,
+                          categoryData['subtitle'],
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: Colors.white70,
+                            height: 1.4,
                           ),
                         ),
                       ],
@@ -207,67 +318,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  AnimatedBuilder(
-                    animation: _pageController,
-                    builder: (context, child) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          _onboardingData.length,
-                          (index) {
-                            double selectedness = 0.0;
-                            if (_pageController.hasClients && _pageController.page != null) {
-                              double normalizedPage = _pageController.page! % _onboardingData.length;
-                              double distance = (index - normalizedPage).abs();
-                              
-                              // handle wrap around for infinite scroll
-                              if (distance > _onboardingData.length / 2) {
-                                distance = (distance - _onboardingData.length).abs();
-                              }
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _onboardingData.length,
+                      (index) {
+                        final isSelected = index == currentSlideIndex;
+                        final double dotWidth = isSelected ? 32 : 8;
 
-                              selectedness = (1.0 - distance).clamp(0.0, 1.0);
-                            } else if (index == (_currentPage % _onboardingData.length)) {
-                              selectedness = 1.0;
-                            }
-
-                            final double dotWidth = 8 + (28 * selectedness);
-
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              height: 8,
-                              width: dotWidth,
-                              decoration: BoxDecoration(
-                                color: selectedness > 0.5 
-                                  ? Colors.white 
-                                  : Colors.white.withOpacity(0.3 + (0.7 * selectedness)),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          height: 8,
+                          width: dotWidth,
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                              ? const Color(0xFFFF5622)
+                              : Colors.white.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 36),
 
                   SizedBox(
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _onFinish,
+                      onPressed: _onPrimaryButtonPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
+                        backgroundColor: isLastSlide ? const Color(0xFFFF5622) : Colors.white,
+                        foregroundColor: isLastSlide ? Colors.white : Colors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),
                         ),
+                        elevation: isLastSlide ? 8 : 0,
                       ),
-                      child: Text(
-                        'Get Started',
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            isLastSlide ? 'Get Started' : 'Next',
+                            style: GoogleFonts.poppins(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 20,
+                            color: isLastSlide ? Colors.white : Colors.black,
+                          ),
+                        ],
                       ),
                     ),
                   ),
