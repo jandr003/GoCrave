@@ -46,29 +46,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleSignIn() {
-    final emailInput = _emailController.text.trim();
+    final emailInput = _emailController.text.trim().toLowerCase();
 
-    if (emailInput.toLowerCase() == 'admin01' || emailInput.toLowerCase() == 'admin@gocrave.app') {
-      _showRoleToast('Welcome Super Admin Admin01! Entering Control Panel...');
+    if (emailInput.contains('@gocraveadmin.') ||
+        emailInput == 'admin01' ||
+        emailInput.startsWith('admin')) {
+      _showRoleToast('Welcome GoCrave Admin! Entering Control Panel...');
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const AdminDashboardScreen(adminEmail: 'Admin01'),
-        ),
-        (route) => false,
-      );
-      return;
-    }
-
-    if (emailInput.toLowerCase().contains('resto') ||
-        emailInput.toLowerCase().contains('merchant') ||
-        emailInput.toLowerCase().contains('staff')) {
-      _showRoleToast('Welcome GoCrave Central Kitchen! Entering Kitchen Merchant Portal...');
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => RestaurantDashboardScreen(
-            merchantEmail: emailInput.isNotEmpty ? emailInput : 'resto@gocrave.app',
+          builder: (context) => AdminDashboardScreen(
+            adminEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'Admin01',
           ),
         ),
         (route) => false,
@@ -76,14 +64,35 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (emailInput.toLowerCase().contains('rider') ||
-        emailInput.toLowerCase().contains('driver')) {
-      _showRoleToast('Welcome Rider Ricardo Dalisay! Entering Delivery Portal...');
+    if (emailInput.contains('@gocraverider.') ||
+        emailInput == 'rider01' ||
+        emailInput.contains('rider') ||
+        emailInput.contains('driver')) {
+      _showRoleToast('Welcome Rider! Entering Delivery Portal...');
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => RiderDashboardScreen(
-            riderEmail: emailInput.isNotEmpty ? emailInput : 'rider@gocrave.app',
+            riderEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'rider@gocraverider.ph',
+          ),
+        ),
+        (route) => false,
+      );
+      return;
+    }
+
+    if (emailInput.contains('@gocravestaff.') ||
+        emailInput.contains('@gocravepartner.') ||
+        emailInput == 'merchant01' ||
+        emailInput.contains('resto') ||
+        emailInput.contains('merchant') ||
+        emailInput.contains('staff')) {
+      _showRoleToast('Welcome GoCrave Merchant/Staff! Entering Kitchen Portal...');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RestaurantDashboardScreen(
+            merchantEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'resto@gocravestaff.ph',
           ),
         ),
         (route) => false,

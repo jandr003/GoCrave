@@ -299,7 +299,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         backgroundColor: const Color(0xFF12141D),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
           tooltip: 'Log Out',
           onPressed: _onLogOut,
         ),
@@ -316,14 +316,6 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.white, size: 20),
-            tooltip: 'Edit Profile',
-            onPressed: () => _showEditRiderProfileModal(context),
-          ),
-          const SizedBox(width: 8),
-        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

@@ -28,17 +28,16 @@ class RiderProfileTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Rider Profile Card Header
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            color: const Color(0xFFFFF5F2),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
-                blurRadius: 16,
+                color: brandColor.withOpacity(0.08),
+                blurRadius: 18,
                 offset: const Offset(0, 6),
               ),
             ],
@@ -50,7 +49,8 @@ class RiderProfileTab extends StatelessWidget {
                   Stack(
                     children: [
                       CircleAvatar(
-                        radius: 36,
+                        radius: 38,
+                        backgroundColor: brandColor,
                         backgroundImage: NetworkImage(avatarUrl),
                       ),
                       Positioned(
@@ -99,7 +99,7 @@ class RiderProfileTab extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           riderPhone,
-                          style: GoogleFonts.poppins(fontSize: 13, color: brandColor, fontWeight: FontWeight.w600),
+                          style: GoogleFonts.poppins(fontSize: 13, color: brandColor, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           vehiclePlate,
@@ -110,10 +110,33 @@ class RiderProfileTab extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 18),
+
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8F9FC),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: const Color(0xFFEEEEEE)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildMiniMetric('Rating', '4.9 ⭐', Colors.amber[900]!),
+                    Container(height: 24, width: 1, color: Colors.grey[300]),
+                    _buildMiniMetric('On-Time', '99.2%', const Color(0xFF2E7D32)),
+                    Container(height: 24, width: 1, color: Colors.grey[300]),
+                    _buildMiniMetric('Total Trips', '210 Orders', Colors.blueAccent),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
               SizedBox(
                 width: double.infinity,
-                height: 46,
+                height: 48,
                 child: ElevatedButton.icon(
                   onPressed: onTapEditProfile,
                   icon: const Icon(Icons.edit_rounded, size: 18, color: Colors.white),
@@ -134,13 +157,19 @@ class RiderProfileTab extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        // Service & Documents Cards
         Container(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
             border: Border.all(color: const Color(0xFFEEEEEE)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -154,14 +183,13 @@ class RiderProfileTab extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 12),
                 child: Divider(height: 1, color: Color(0xFFEEEEEE)),
               ),
-              _buildProfileDetailRow(Icons.task_alt_rounded, 'Total Trips Completed', '$completedTripsCount Orders Completed'),
+              _buildProfileDetailRow(Icons.task_alt_rounded, 'Total Trips Completed Today', '$completedTripsCount Orders Completed Today'),
             ],
           ),
         ),
 
         const SizedBox(height: 24),
 
-        // Log Out Button
         SizedBox(
           width: double.infinity,
           height: 52,
@@ -182,14 +210,29 @@ class RiderProfileTab extends StatelessWidget {
     );
   }
 
+  Widget _buildMiniMetric(String label, String value, Color color) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: color),
+        ),
+        Text(
+          label,
+          style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[600]),
+        ),
+      ],
+    );
+  }
+
   Widget _buildProfileDetailRow(IconData icon, String title, String value) {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: brandColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
+            color: brandColor.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, size: 20, color: brandColor),
         ),
