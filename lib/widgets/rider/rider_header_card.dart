@@ -28,9 +28,9 @@ class RiderHeaderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF12141D), Color(0xFF1D202F)],
+          colors: [brandColor, const Color(0xFFFF7043)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -126,7 +126,6 @@ class RiderHeaderCard extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // Glassmorphism KPI Metrics Row
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(

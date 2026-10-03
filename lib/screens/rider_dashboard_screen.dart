@@ -9,6 +9,7 @@ import '../widgets/rider/rider_history_tab.dart';
 import '../widgets/rider/rider_wallet_tab.dart';
 import '../widgets/rider/rider_profile_tab.dart';
 import '../widgets/rider/rider_edit_profile_modal.dart';
+import '../widgets/rider/rider_government_id_modal.dart';
 
 class RiderDashboardScreen extends StatefulWidget {
   final String riderEmail;
@@ -283,6 +284,32 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
     );
   }
 
+  void _showRiderGovernmentIdModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) {
+        return RiderGovernmentIdModal(
+          brandColor: brandColor,
+          onSave: (idType, idNumber, frontPhoto, backPhoto) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Government ID ($idType) submitted for verification!', style: GoogleFonts.poppins()),
+                backgroundColor: Colors.green,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _onLogOut() {
     Navigator.pushAndRemoveUntil(
       context,
@@ -296,7 +323,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FB),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF12141D),
+        backgroundColor: brandColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
@@ -449,6 +476,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
           completedTripsCount: _completedTripsCount,
           brandColor: brandColor,
           onTapEditProfile: () => _showEditRiderProfileModal(context),
+          onTapGovernmentId: () => _showRiderGovernmentIdModal(context),
           onLogOut: _onLogOut,
         );
       case 0:

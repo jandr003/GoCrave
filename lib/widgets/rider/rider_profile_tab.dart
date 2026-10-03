@@ -9,6 +9,7 @@ class RiderProfileTab extends StatelessWidget {
   final int completedTripsCount;
   final Color brandColor;
   final VoidCallback onTapEditProfile;
+  final VoidCallback? onTapGovernmentId;
   final VoidCallback onLogOut;
 
   const RiderProfileTab({
@@ -20,6 +21,7 @@ class RiderProfileTab extends StatelessWidget {
     required this.completedTripsCount,
     required this.brandColor,
     required this.onTapEditProfile,
+    this.onTapGovernmentId,
     required this.onLogOut,
   });
 
@@ -178,7 +180,12 @@ class RiderProfileTab extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 12),
                 child: Divider(height: 1, color: Color(0xFFEEEEEE)),
               ),
-              _buildProfileDetailRow(Icons.badge_rounded, 'Government ID Status', 'PhilSys National ID #PH-NID-88123-90 (Verified)'),
+              _buildProfileDetailRow(
+                Icons.badge_rounded,
+                'Government ID Status (Tap to Upload)',
+                'PhilSys National ID #PH-NID-88123-90 (Verified)',
+                onTap: onTapGovernmentId,
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12),
                 child: Divider(height: 1, color: Color(0xFFEEEEEE)),
@@ -225,28 +232,34 @@ class RiderProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileDetailRow(IconData icon, String title, String value) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: brandColor.withOpacity(0.12),
-            borderRadius: BorderRadius.circular(12),
+  Widget _buildProfileDetailRow(IconData icon, String title, String value, {VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: brandColor.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, size: 20, color: brandColor),
           ),
-          child: Icon(icon, size: 20, color: brandColor),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
-              Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
-            ],
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
+                Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
+              ],
+            ),
           ),
-        ),
-      ],
+          if (onTap != null)
+            const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+        ],
+      ),
     );
   }
 }
