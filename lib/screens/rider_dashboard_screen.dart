@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import 'login_screen.dart';
@@ -26,7 +27,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   int _completedTripsCount = 8;
   final Color brandColor = const Color(0xFFFF5622);
 
-  // Rider Editable Profile State
+// Sample rider
   String _riderName = 'Ricardo Dalisay';
   String _riderPhone = '0917 888 9900';
   String _vehiclePlate = 'Honda Click 125i • Plate: MVC 1234';
@@ -47,6 +48,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   ];
 
   final List<Map<String, dynamic>> _availableRequests = [
+    //my sample data
     {
       'id': '#GOC98231',
       'restaurant': 'Jollibee - Malolos',
@@ -323,26 +325,61 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6FB),
       appBar: AppBar(
-        backgroundColor: brandColor,
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
-          tooltip: 'Log Out',
-          onPressed: _onLogOut,
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        surfaceTintColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        title: Row(
           children: [
-            Text(
-              'GoCrave Rider Portal',
-              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            Image.asset(
+              'assets/images/gocrave_app_logo.png',
+              height: 32,
+              fit: BoxFit.contain,
             ),
+            const SizedBox(width: 8),
             Text(
-              widget.riderEmail,
-              style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[400]),
+              'GoCrave Rider',
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Stack(
+              children: [
+                const Icon(Icons.notifications_none_rounded, color: Color(0xFF0F172A), size: 22),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFF5622),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            tooltip: 'Notifications',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('No new notifications.', style: GoogleFonts.poppins()),
+                  backgroundColor: brandColor,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
+            tooltip: 'Settings',
+            onPressed: () => _showEditRiderProfileModal(context),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

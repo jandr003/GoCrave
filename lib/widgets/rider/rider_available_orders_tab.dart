@@ -66,22 +66,32 @@ class RiderAvailableOrdersTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Nearby Orders Ready for Pickup',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Nearby Orders',
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+            ),
+            Text(
+              'See All >',
+              style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: brandColor),
+            ),
+          ],
         ),
         const SizedBox(height: 14),
+
         ...availableRequests.map((req) {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(22),
               border: Border.all(color: const Color(0xFFEEEEEE)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: Colors.black.withOpacity(0.03),
                   blurRadius: 14,
                   offset: const Offset(0, 6),
                 ),
@@ -94,10 +104,10 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF3E0),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         req['id'],
@@ -105,22 +115,26 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE8F5E9),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         req['payout'],
-                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w900, color: const Color(0xFF2E7D32)),
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w900,
+                          color: const Color(0xFF2E7D32),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 14),
 
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -158,10 +172,9 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
 
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -190,7 +203,7 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 Container(
                   padding: const EdgeInsets.all(12),
@@ -202,7 +215,7 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                   child: Row(
                     children: [
                       const Icon(Icons.fastfood_outlined, size: 16, color: Colors.grey),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           req['items'],
@@ -213,21 +226,21 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 16),
 
                 SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 48,
                   child: ElevatedButton.icon(
                     onPressed: () => onAcceptDelivery(req),
-                    icon: const Icon(Icons.check_circle_rounded, size: 20, color: Colors.white),
+                    icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
                     label: Text(
                       'Accept Delivery',
-                      style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: brandColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       elevation: 0,
                     ),
                   ),
