@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import 'login_screen.dart';
+import 'rider_settings_screen.dart';
+import 'rider_notifications_screen.dart';
 import '../widgets/rider/rider_header_card.dart';
 import '../widgets/rider/rider_available_orders_tab.dart';
 import '../widgets/rider/rider_active_task_tab.dart';
@@ -333,13 +335,21 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
           children: [
             Image.asset(
               'assets/images/gocrave_app_logo.png',
-              height: 32,
+              height: 38,
               fit: BoxFit.contain,
             ),
             const SizedBox(width: 8),
-            Text(
-              'GoCrave Rider',
-              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+            Transform.translate(
+              offset: const Offset(-16, 0),
+              child: Transform.scale(
+                scale: 2.3,
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/gocrave_official_logo.png',
+                  height: 32,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ],
         ),
@@ -364,19 +374,36 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
             ),
             tooltip: 'Notifications',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('No new notifications.', style: GoogleFonts.poppins()),
-                  backgroundColor: brandColor,
-                  behavior: SnackBarBehavior.floating,
-                ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RiderNotificationsScreen()),
               );
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
             tooltip: 'Settings',
-            onPressed: () => _showEditRiderProfileModal(context),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RiderSettingsScreen(
+                    riderName: _riderName,
+                    riderPhone: _riderPhone,
+                    vehiclePlate: _vehiclePlate,
+                    avatarUrl: _riderAvatarUrl,
+                    onUpdateProfile: (name, phone, vehicle, avatar) {
+                      setState(() {
+                        _riderName = name;
+                        _riderPhone = phone;
+                        _vehiclePlate = vehicle;
+                        _riderAvatarUrl = avatar;
+                      });
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           const SizedBox(width: 8),
         ],
