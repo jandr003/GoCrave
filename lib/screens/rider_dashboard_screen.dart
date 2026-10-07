@@ -412,7 +412,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            if (_selectedTab != 4)
+            if (_selectedTab < 3)
               RiderHeaderCard(
                 riderName: _riderName,
                 vehiclePlate: _vehiclePlate,

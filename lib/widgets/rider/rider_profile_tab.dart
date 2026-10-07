@@ -33,13 +33,13 @@ class RiderProfileTab extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: const Color(0xFFFFF5F2),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
+            border: Border.all(color: const Color(0xFFEEEEEE)),
             boxShadow: [
               BoxShadow(
-                color: brandColor.withOpacity(0.08),
-                blurRadius: 18,
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 16,
                 offset: const Offset(0, 6),
               ),
             ],
@@ -81,7 +81,7 @@ class RiderProfileTab extends StatelessWidget {
                               style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: const Color(0xFF0F172A),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -159,8 +159,15 @@ class RiderProfileTab extends StatelessWidget {
 
         const SizedBox(height: 20),
 
+        // Section Title
+        Text(
+          'Courier Settings & Verifications',
+          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+        ),
+        const SizedBox(height: 12),
+
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
@@ -175,22 +182,40 @@ class RiderProfileTab extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildProfileDetailRow(Icons.military_tech_rounded, 'Service Record', '2 Years & 4 Months delivering with GoCrave'),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
-              ),
-              _buildProfileDetailRow(
-                Icons.badge_rounded,
-                'Government ID Status (Tap to Upload)',
-                'PhilSys National ID #PH-NID-88123-90 (Verified)',
+              _buildProfileSettingRow(
+                icon: Icons.badge_rounded,
+                title: 'Government ID Status (Tap to Upload)',
+                value: 'PhilSys National ID #PH-NID-88123-90 (Verified)',
                 onTap: onTapGovernmentId,
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: Divider(height: 1, color: Color(0xFFEEEEEE)),
               ),
-              _buildProfileDetailRow(Icons.task_alt_rounded, 'Total Trips Completed Today', '$completedTripsCount Orders Completed Today'),
+              _buildProfileSettingRow(
+                icon: Icons.two_wheeler_rounded,
+                title: 'Registered Vehicle Details',
+                value: vehiclePlate,
+                onTap: onTapEditProfile,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+              ),
+              _buildProfileSettingRow(
+                icon: Icons.military_tech_rounded,
+                title: 'Service Record & Tenure',
+                value: '2 Years & 4 Months delivering with GoCrave',
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+              ),
+              _buildProfileSettingRow(
+                icon: Icons.task_alt_rounded,
+                title: 'Total Completed Orders Today',
+                value: '$completedTripsCount Orders Completed Today',
+              ),
             ],
           ),
         ),
@@ -232,33 +257,41 @@ class RiderProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileDetailRow(IconData icon, String title, String value, {VoidCallback? onTap}) {
+  Widget _buildProfileSettingRow({
+    required IconData icon,
+    required String title,
+    required String value,
+    VoidCallback? onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: brandColor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: brandColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, size: 20, color: brandColor),
             ),
-            child: Icon(icon, size: 20, color: brandColor),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
-                Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
-              ],
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
+                  Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
+                ],
+              ),
             ),
-          ),
-          if (onTap != null)
-            const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
-        ],
+            if (onTap != null)
+              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }
