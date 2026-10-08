@@ -59,3 +59,5 @@ An internet connection is required for features that communicate with the backen
 GoCrave is currently being rebuilt using **Flutter and Dart** as part of a planned technology and architecture update. The project is being developed with a dedicated backend and database to support its ordering and tracking features.
 
 Development is focused on improving the application's user interface, functionality, and overall structure while preparing it for Android deployment.
+
+

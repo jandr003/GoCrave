@@ -134,7 +134,6 @@ class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsS
       ),
       body: Column(
         children: [
-          // Filter Chips Row
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
             color: Colors.white,
@@ -176,7 +175,6 @@ class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsS
 
           const SizedBox(height: 12),
 
-          // Notifications List
           Expanded(
             child: filteredList.isEmpty
                 ? Center(
