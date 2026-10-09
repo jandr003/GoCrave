@@ -88,7 +88,6 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
             ),
             const SizedBox(height: 16),
 
-            // Store Avatar Selector
             Center(
               child: Stack(
                 children: [

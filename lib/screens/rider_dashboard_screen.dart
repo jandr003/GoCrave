@@ -29,7 +29,6 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   int _completedTripsCount = 8;
   final Color brandColor = const Color(0xFFFF5622);
 
-// Sample rider
   String _riderName = 'Ricardo Dalisay';
   String _riderPhone = '0917 888 9900';
   String _vehiclePlate = 'Honda Click 125i • Plate: MVC 1234';
@@ -331,6 +330,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleSpacing: 20,
         title: Row(
           children: [
             Image.asset(

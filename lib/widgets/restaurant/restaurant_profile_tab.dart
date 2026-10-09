@@ -41,7 +41,6 @@ class RestaurantProfileTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Clean White Store Identity Header Card
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
@@ -131,7 +130,6 @@ class RestaurantProfileTab extends StatelessWidget {
 
               const SizedBox(height: 18),
 
-              // Mini Performance Metrics Row
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
@@ -176,14 +174,12 @@ class RestaurantProfileTab extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        // Section Title
         Text(
           'Store Verifications & Settings',
           style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 12),
 
-        // Verifications & Settings List Card
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -251,7 +247,6 @@ class RestaurantProfileTab extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        // Log Out Button
         SizedBox(
           width: double.infinity,
           height: 52,
