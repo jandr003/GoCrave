@@ -9,6 +9,7 @@ class RestaurantEditProfileModal extends StatefulWidget {
   final String currentAvatar;
   final List<String> avatars;
   final Color brandColor;
+  final VoidCallback? onTapUploadBusinessPermit;
   final Function(String name, String phone, String address, String hours, String avatar) onSave;
 
   const RestaurantEditProfileModal({
@@ -20,6 +21,7 @@ class RestaurantEditProfileModal extends StatefulWidget {
     required this.currentAvatar,
     required this.avatars,
     required this.brandColor,
+    this.onTapUploadBusinessPermit,
     required this.onSave,
   });
 
@@ -160,6 +162,49 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
             const SizedBox(height: 14),
             _buildModalTextField('Operating Hours', _hoursCtrl, Icons.access_time_rounded),
 
+            const SizedBox(height: 16),
+
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF3E0),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xFFFFE0B2)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.badge_rounded, color: Color(0xFFFF5622), size: 20),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'DTI Permit & Government ID',
+                          style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        Text(
+                          'Upload DTI Permit & Owner ID for Verification',
+                          style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (widget.onTapUploadBusinessPermit != null)
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        widget.onTapUploadBusinessPermit!();
+                      },
+                      child: Text(
+                        'UPLOAD',
+                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
@@ -196,20 +241,30 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
         ),
         const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: const Color(0xFFF9F9FB),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(color: Colors.grey[200]!),
           ),
-          child: TextField(
-            controller: ctrl,
-            keyboardType: keyboardType,
-            style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              prefixIcon: Icon(icon, size: 20, color: widget.brandColor),
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, size: 20, color: widget.brandColor),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: ctrl,
+                  keyboardType: keyboardType,
+                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

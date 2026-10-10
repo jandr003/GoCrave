@@ -83,7 +83,6 @@ class _RiderEditProfileModalState extends State<RiderEditProfileModal> {
             ),
             const SizedBox(height: 16),
 
-            // Avatar Selector
             Center(
               child: Stack(
                 children: [
@@ -184,20 +183,30 @@ class _RiderEditProfileModalState extends State<RiderEditProfileModal> {
         ),
         const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: const Color(0xFFF9F9FB),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(color: Colors.grey[200]!),
           ),
-          child: TextField(
-            controller: ctrl,
-            keyboardType: keyboardType,
-            style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              prefixIcon: Icon(icon, size: 20, color: widget.brandColor),
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, size: 20, color: widget.brandColor),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: ctrl,
+                  keyboardType: keyboardType,
+                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

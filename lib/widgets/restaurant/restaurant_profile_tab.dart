@@ -11,6 +11,7 @@ class RestaurantProfileTab extends StatelessWidget {
   final int preparedOrdersCount;
   final Color brandColor;
   final VoidCallback onTapEditProfile;
+  final VoidCallback? onTapBusinessPermit;
   final VoidCallback onTapSettings;
   final VoidCallback onTapNotifications;
   final VoidCallback onLogOut;
@@ -26,6 +27,7 @@ class RestaurantProfileTab extends StatelessWidget {
     required this.preparedOrdersCount,
     required this.brandColor,
     required this.onTapEditProfile,
+    this.onTapBusinessPermit,
     required this.onTapSettings,
     required this.onTapNotifications,
     required this.onLogOut,
@@ -42,15 +44,15 @@ class RestaurantProfileTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(22),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFFFFF5F2),
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
-                blurRadius: 16,
+                color: brandColor.withOpacity(0.08),
+                blurRadius: 18,
                 offset: const Offset(0, 6),
               ),
             ],
@@ -62,7 +64,7 @@ class RestaurantProfileTab extends StatelessWidget {
                   Stack(
                     children: [
                       CircleAvatar(
-                        radius: 38,
+                        radius: 36,
                         backgroundColor: brandColor,
                         backgroundImage: NetworkImage(avatarUrl),
                       ),
@@ -80,18 +82,18 @@ class RestaurantProfileTab extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Expanded(
+                            Flexible(
                               child: Text(
                                 storeName,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFF0F172A),
                                 ),
@@ -119,8 +121,8 @@ class RestaurantProfileTab extends StatelessWidget {
                           style: GoogleFonts.poppins(fontSize: 13, color: brandColor, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Merchant ID: #MERCHANT-501',
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                          'Merchant ID: #MERCHANT-501 • Open',
+                          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
                         ),
                       ],
                     ),
@@ -131,11 +133,11 @@ class RestaurantProfileTab extends StatelessWidget {
               const SizedBox(height: 18),
 
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF8F9FC),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFEEEEEE)),
+                  border: Border.all(color: const Color(0xFFFFE0B2)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -198,8 +200,9 @@ class RestaurantProfileTab extends StatelessWidget {
             children: [
               _buildSettingRow(
                 icon: Icons.verified_rounded,
-                title: 'DTI Business Permit Status',
+                title: 'DTI Business Permit Status (Tap to Upload)',
                 value: 'DTI Registered #BP-2026-99210 (Verified)',
+                onTap: onTapBusinessPermit,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -270,9 +273,12 @@ class RestaurantProfileTab extends StatelessWidget {
   Widget _buildMiniMetric(String label, String value, Color color) {
     return Column(
       children: [
-        Text(
-          value,
-          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: color),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            value,
+            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: color),
+          ),
         ),
         Text(
           label,

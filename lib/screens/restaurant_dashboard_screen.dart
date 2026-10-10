@@ -13,6 +13,7 @@ import '../widgets/restaurant/restaurant_ready_tab.dart';
 import '../widgets/restaurant/restaurant_menu_stock_tab.dart';
 import '../widgets/restaurant/restaurant_profile_tab.dart';
 import '../widgets/restaurant/restaurant_edit_profile_modal.dart';
+import '../widgets/restaurant/restaurant_business_id_modal.dart';
 
 class RestaurantDashboardScreen extends StatefulWidget {
   final String merchantEmail;
@@ -203,6 +204,7 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           currentAvatar: _storeAvatarUrl,
           avatars: _storeAvatars,
           brandColor: brandColor,
+          onTapUploadBusinessPermit: () => _showRestaurantBusinessIdModal(context),
           onSave: (name, phone, address, hours, avatar) {
             setState(() {
               _storeName = name;
@@ -215,6 +217,32 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
               SnackBar(
                 content: Text('Store profile and operating hours updated!', style: GoogleFonts.poppins()),
                 backgroundColor: brandColor,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showRestaurantBusinessIdModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) {
+        return RestaurantBusinessIdModal(
+          brandColor: brandColor,
+          onSave: (permitType, permitNumber, permitPhoto, ownerIdPhoto) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Business Permit & ID ($permitType) submitted for verification!', style: GoogleFonts.poppins()),
+                backgroundColor: Colors.green,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -437,6 +465,7 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           preparedOrdersCount: _preparedOrdersCount,
           brandColor: brandColor,
           onTapEditProfile: () => _showEditStoreProfileModal(context),
+          onTapBusinessPermit: () => _showRestaurantBusinessIdModal(context),
           onTapSettings: () {
             Navigator.push(
               context,
