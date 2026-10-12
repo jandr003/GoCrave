@@ -14,6 +14,7 @@ import '../widgets/restaurant/restaurant_menu_stock_tab.dart';
 import '../widgets/restaurant/restaurant_profile_tab.dart';
 import '../widgets/restaurant/restaurant_edit_profile_modal.dart';
 import '../widgets/restaurant/restaurant_business_id_modal.dart';
+import '../widgets/restaurant/food_photo_proof_modal.dart';
 
 class RestaurantDashboardScreen extends StatefulWidget {
   final String merchantEmail;
@@ -253,6 +254,24 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
     );
   }
 
+  void _showFoodPhotoProofModal(BuildContext context, Map<String, dynamic> order, VoidCallback onConfirm) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) {
+        return FoodPhotoProofModal(
+          order: order,
+          brandColor: brandColor,
+          onConfirmSendPhoto: onConfirm,
+        );
+      },
+    );
+  }
+
   void _onLogOut() {
     Navigator.pushAndRemoveUntil(
       context,
@@ -270,28 +289,31 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleSpacing: 20,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/gocrave_app_logo.png',
-              height: 38,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(width: 8),
-            Transform.translate(
-              offset: const Offset(-16, 0),
-              child: Transform.scale(
-                scale: 2.3,
-                alignment: Alignment.centerLeft,
-                child: Image.asset(
-                  'assets/images/gocrave_official_logo.png',
-                  height: 32,
-                  fit: BoxFit.contain,
+        titleSpacing: 12,
+        title: Transform.translate(
+          offset: const Offset(-8, 0),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/images/gocrave_app_logo.png',
+                height: 38,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 8),
+              Transform.translate(
+                offset: const Offset(-16, 0),
+                child: Transform.scale(
+                  scale: 2.3,
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/gocrave_official_logo.png',
+                    height: 32,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           IconButton(
@@ -393,28 +415,28 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
           items: [
             BottomNavigationBarItem(
-              icon: const Icon(Icons.notifications_active_rounded),
-              activeIcon: const Icon(Icons.notifications_active_rounded, size: 26),
+              icon: const Icon(Icons.notifications_none_rounded, size: 22),
+              activeIcon: const Icon(Icons.notifications_active_rounded, size: 25),
               label: 'Incoming (${_incomingOrders.length})',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.soup_kitchen_rounded),
-              activeIcon: const Icon(Icons.soup_kitchen_rounded, size: 26),
+              icon: const Icon(Icons.soup_kitchen_outlined, size: 22),
+              activeIcon: const Icon(Icons.soup_kitchen_rounded, size: 25),
               label: 'Preparing (${_preparingOrders.length})',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.takeout_dining_rounded),
-              activeIcon: const Icon(Icons.takeout_dining_rounded, size: 26),
+              icon: const Icon(Icons.shopping_bag_outlined, size: 22),
+              activeIcon: const Icon(Icons.takeout_dining_rounded, size: 25),
               label: 'Ready (${_readyOrders.length})',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.inventory_2_rounded),
-              activeIcon: const Icon(Icons.inventory_2_rounded, size: 26),
+              icon: const Icon(Icons.restaurant_menu_rounded, size: 22),
+              activeIcon: const Icon(Icons.restaurant_menu_rounded, size: 25),
               label: 'Menu Stock',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.account_circle_outlined),
-              activeIcon: const Icon(Icons.account_circle_rounded, size: 26),
+              icon: const Icon(Icons.account_circle_outlined, size: 22),
+              activeIcon: const Icon(Icons.account_circle_rounded, size: 25),
               label: 'Profile',
             ),
           ],
@@ -429,13 +451,13 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         return RestaurantPreparingTab(
           preparingOrders: _preparingOrders,
           brandColor: brandColor,
-          onMarkReady: _markOrderReady,
+          onMarkReady: (order) => _showFoodPhotoProofModal(context, order, () => _markOrderReady(order)),
         );
       case 2:
         return RestaurantReadyTab(
           readyOrders: _readyOrders,
           brandColor: brandColor,
-          onHandOverToRider: _handOverToRider,
+          onHandOverToRider: (order) => _showFoodPhotoProofModal(context, order, () => _handOverToRider(order)),
         );
       case 3:
         return RestaurantMenuStockTab(

@@ -23,10 +23,11 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
   late String _selectedPermitType;
   late TextEditingController _permitNumberCtrl;
 
-  String _dtiPermitPhoto = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=400&auto=format&fit=crop';
-  String _ownerIdPhoto = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=400&auto=format&fit=crop';
+  String? _dtiPermitPhoto = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=400&auto=format&fit=crop';
+  String? _ownerIdPhoto = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=400&auto=format&fit=crop';
   bool _isUploadingPermit = false;
   bool _isUploadingOwnerId = false;
+  bool _isVerified = true;
 
   final List<String> _permitTypes = [
     'DTI Business Registration & BIR 2303',
@@ -127,18 +128,26 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5E9),
+                    color: _isVerified ? const Color(0xFFE8F5E9) : const Color(0xFFFFF3E0),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
+                    border: Border.all(color: _isVerified ? Colors.green.withOpacity(0.3) : const Color(0xFFFFE0B2)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.verified_rounded, color: Color(0xFF2E7D32), size: 14),
+                      Icon(
+                        _isVerified ? Icons.verified_rounded : Icons.pending_actions_rounded,
+                        color: _isVerified ? const Color(0xFF2E7D32) : widget.brandColor,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Text(
-                        'VERIFIED PARTNER',
-                        style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF2E7D32)),
+                        _isVerified ? 'VERIFIED PARTNER' : 'PENDING UPLOAD',
+                        style: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: _isVerified ? const Color(0xFF2E7D32) : widget.brandColor,
+                        ),
                       ),
                     ],
                   ),
@@ -233,37 +242,59 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8F9FC),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: widget.brandColor.withOpacity(0.3), width: 1.5),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(_dtiPermitPhoto, fit: BoxFit.cover),
-                              Container(color: Colors.black.withOpacity(0.25)),
-                              if (_isUploadingPermit)
-                                const Center(child: CircularProgressIndicator(color: Colors.white))
-                              else
-                                Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                      InkWell(
+                        onTap: _simulateUploadPermit,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: widget.brandColor.withOpacity(0.4),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: _dtiPermitPhoto != null
+                                ? Stack(
+                                    fit: StackFit.expand,
                                     children: [
-                                      const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'DTI Permit Photo',
-                                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
-                                      ),
+                                      Image.network(_dtiPermitPhoto!, fit: BoxFit.cover),
+                                      Container(color: Colors.black.withOpacity(0.25)),
+                                      if (_isUploadingPermit)
+                                        const Center(child: CircularProgressIndicator(color: Colors.white))
+                                      else
+                                        Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'DTI Permit Uploaded',
+                                                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                     ],
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.add_a_photo_outlined, color: widget.brandColor, size: 28),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'Tap to Upload\nDTI Permit Photo',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
                           ),
                         ),
                       ),
@@ -271,7 +302,10 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                       TextButton.icon(
                         onPressed: _simulateUploadPermit,
                         icon: Icon(Icons.camera_alt_outlined, size: 14, color: widget.brandColor),
-                        label: Text('Change Permit', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                        label: Text(
+                          _dtiPermitPhoto != null ? 'Change Permit' : 'Upload Permit',
+                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                        ),
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 24)),
                       ),
                     ],
@@ -283,37 +317,59 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8F9FC),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: widget.brandColor.withOpacity(0.3), width: 1.5),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(_ownerIdPhoto, fit: BoxFit.cover),
-                              Container(color: Colors.black.withOpacity(0.25)),
-                              if (_isUploadingOwnerId)
-                                const Center(child: CircularProgressIndicator(color: Colors.white))
-                              else
-                                Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                      InkWell(
+                        onTap: _simulateUploadOwnerId,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: widget.brandColor.withOpacity(0.4),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: _ownerIdPhoto != null
+                                ? Stack(
+                                    fit: StackFit.expand,
                                     children: [
-                                      const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Owner ID Photo',
-                                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
-                                      ),
+                                      Image.network(_ownerIdPhoto!, fit: BoxFit.cover),
+                                      Container(color: Colors.black.withOpacity(0.25)),
+                                      if (_isUploadingOwnerId)
+                                        const Center(child: CircularProgressIndicator(color: Colors.white))
+                                      else
+                                        Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Owner ID Uploaded',
+                                                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                     ],
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.add_a_photo_outlined, color: widget.brandColor, size: 28),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'Tap to Upload\nOwner ID Photo',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
                           ),
                         ),
                       ),
@@ -321,7 +377,10 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                       TextButton.icon(
                         onPressed: _simulateUploadOwnerId,
                         icon: Icon(Icons.camera_alt_outlined, size: 14, color: widget.brandColor),
-                        label: Text('Change Owner ID', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                        label: Text(
+                          _ownerIdPhoto != null ? 'Change Owner ID' : 'Upload Owner ID',
+                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                        ),
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 24)),
                       ),
                     ],
@@ -337,7 +396,8 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
               height: 52,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  widget.onSave(_selectedPermitType, _permitNumberCtrl.text, _dtiPermitPhoto, _ownerIdPhoto);
+                  setState(() => _isVerified = true);
+                  widget.onSave(_selectedPermitType, _permitNumberCtrl.text, _dtiPermitPhoto ?? '', _ownerIdPhoto ?? '');
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.check_circle_rounded, size: 20, color: Colors.white),

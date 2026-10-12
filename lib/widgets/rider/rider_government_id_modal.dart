@@ -23,10 +23,11 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
   late String _selectedIdType;
   late TextEditingController _idNumberCtrl;
 
-  String _frontIdPhoto = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=400&auto=format&fit=crop';
-  String _backIdPhoto = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=400&auto=format&fit=crop';
+  String? _frontIdPhoto = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=400&auto=format&fit=crop';
+  String? _backIdPhoto = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=400&auto=format&fit=crop';
   bool _isUploadingFront = false;
   bool _isUploadingBack = false;
+  bool _isVerified = true;
 
   final List<String> _idTypes = [
     'PhilSys Philippine National ID',
@@ -126,18 +127,26 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5E9),
+                    color: _isVerified ? const Color(0xFFE8F5E9) : const Color(0xFFFFF3E0),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
+                    border: Border.all(color: _isVerified ? Colors.green.withOpacity(0.3) : const Color(0xFFFFE0B2)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.verified_rounded, color: Color(0xFF2E7D32), size: 14),
+                      Icon(
+                        _isVerified ? Icons.verified_rounded : Icons.pending_actions_rounded,
+                        color: _isVerified ? const Color(0xFF2E7D32) : widget.brandColor,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Text(
-                        'VERIFIED COURIER',
-                        style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF2E7D32)),
+                        _isVerified ? 'VERIFIED COURIER' : 'PENDING UPLOAD',
+                        style: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: _isVerified ? const Color(0xFF2E7D32) : widget.brandColor,
+                        ),
                       ),
                     ],
                   ),
@@ -191,21 +200,31 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
             ),
             const SizedBox(height: 6),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
                 color: const Color(0xFFF9F9FB),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: Colors.grey[200]!),
               ),
-              child: TextField(
-                controller: _idNumberCtrl,
-                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  hintText: 'Enter ID Number e.g. #PH-NID-88123-90',
-                  hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 13),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.badge_outlined, size: 20, color: widget.brandColor),
-                ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.badge_outlined, size: 20, color: widget.brandColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextField(
+                      controller: _idNumberCtrl,
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        hintText: 'Enter ID Number e.g. #PH-NID-88123-90',
+                        hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 13),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -222,37 +241,59 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8F9FC),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: widget.brandColor.withOpacity(0.3), width: 1.5),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(_frontIdPhoto, fit: BoxFit.cover),
-                              Container(color: Colors.black.withOpacity(0.25)),
-                              if (_isUploadingFront)
-                                const Center(child: CircularProgressIndicator(color: Colors.white))
-                              else
-                                Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                      InkWell(
+                        onTap: _simulateUploadFront,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: widget.brandColor.withOpacity(0.4),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: _frontIdPhoto != null
+                                ? Stack(
+                                    fit: StackFit.expand,
                                     children: [
-                                      const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Front ID Photo',
-                                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
-                                      ),
+                                      Image.network(_frontIdPhoto!, fit: BoxFit.cover),
+                                      Container(color: Colors.black.withOpacity(0.25)),
+                                      if (_isUploadingFront)
+                                        const Center(child: CircularProgressIndicator(color: Colors.white))
+                                      else
+                                        Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Front ID Uploaded',
+                                                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                     ],
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.add_a_photo_outlined, color: widget.brandColor, size: 28),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'Tap to Upload\nFront ID Photo',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
                           ),
                         ),
                       ),
@@ -260,7 +301,10 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                       TextButton.icon(
                         onPressed: _simulateUploadFront,
                         icon: Icon(Icons.camera_alt_outlined, size: 14, color: widget.brandColor),
-                        label: Text('Change Front', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                        label: Text(
+                          _frontIdPhoto != null ? 'Change Front' : 'Upload Front',
+                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                        ),
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 24)),
                       ),
                     ],
@@ -272,37 +316,59 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8F9FC),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: widget.brandColor.withOpacity(0.3), width: 1.5),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(_backIdPhoto, fit: BoxFit.cover),
-                              Container(color: Colors.black.withOpacity(0.25)),
-                              if (_isUploadingBack)
-                                const Center(child: CircularProgressIndicator(color: Colors.white))
-                              else
-                                Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                      InkWell(
+                        onTap: _simulateUploadBack,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: widget.brandColor.withOpacity(0.4),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: _backIdPhoto != null
+                                ? Stack(
+                                    fit: StackFit.expand,
                                     children: [
-                                      const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Back ID Photo',
-                                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
-                                      ),
+                                      Image.network(_backIdPhoto!, fit: BoxFit.cover),
+                                      Container(color: Colors.black.withOpacity(0.25)),
+                                      if (_isUploadingBack)
+                                        const Center(child: CircularProgressIndicator(color: Colors.white))
+                                      else
+                                        Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.cloud_upload_rounded, color: Colors.white, size: 24),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Back ID Uploaded',
+                                                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                     ],
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.add_a_photo_outlined, color: widget.brandColor, size: 28),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'Tap to Upload\nBack ID Photo',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
                           ),
                         ),
                       ),
@@ -310,7 +376,10 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                       TextButton.icon(
                         onPressed: _simulateUploadBack,
                         icon: Icon(Icons.camera_alt_outlined, size: 14, color: widget.brandColor),
-                        label: Text('Change Back', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                        label: Text(
+                          _backIdPhoto != null ? 'Change Back' : 'Upload Back',
+                          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                        ),
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 24)),
                       ),
                     ],
@@ -326,7 +395,8 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
               height: 52,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  widget.onSave(_selectedIdType, _idNumberCtrl.text, _frontIdPhoto, _backIdPhoto);
+                  setState(() => _isVerified = true);
+                  widget.onSave(_selectedIdType, _idNumberCtrl.text, _frontIdPhoto ?? '', _backIdPhoto ?? '');
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.check_circle_rounded, size: 20, color: Colors.white),

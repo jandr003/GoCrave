@@ -330,28 +330,31 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleSpacing: 20,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/gocrave_app_logo.png',
-              height: 38,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(width: 8),
-            Transform.translate(
-              offset: const Offset(-16, 0),
-              child: Transform.scale(
-                scale: 2.3,
-                alignment: Alignment.centerLeft,
-                child: Image.asset(
-                  'assets/images/gocrave_official_logo.png',
-                  height: 32,
-                  fit: BoxFit.contain,
+        titleSpacing: 12,
+        title: Transform.translate(
+          offset: const Offset(-8, 0),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/images/gocrave_app_logo.png',
+                height: 38,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 8),
+              Transform.translate(
+                offset: const Offset(-16, 0),
+                child: Transform.scale(
+                  scale: 2.3,
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/gocrave_official_logo.png',
+                    height: 32,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           IconButton(
