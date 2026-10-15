@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RestaurantHeaderCard extends StatelessWidget {
+  final String staffName;
+  final String staffId;
+  final String avatarUrl;
   final bool isAcceptingOrders;
   final double todaySales;
   final int preparedOrdersCount;
   final Color brandColor;
   final ValueChanged<bool> onAcceptingChanged;
+  final VoidCallback? onTapAvatar;
 
   const RestaurantHeaderCard({
     super.key,
+    this.staffName = 'Restaurant Staff',
+    this.staffId = '#REST-501',
+    this.avatarUrl = 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=200&auto=format&fit=crop',
     required this.isAcceptingOrders,
     required this.todaySales,
     required this.preparedOrdersCount,
     required this.brandColor,
     required this.onAcceptingChanged,
+    this.onTapAvatar,
   });
 
   @override
@@ -25,16 +33,49 @@ class RestaurantHeaderCard extends StatelessWidget {
     );
 
     return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
+      margin: const EdgeInsets.fromLTRB(16, 10, 16, 8),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFEEEEEE)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 26,
-                backgroundColor: brandColor,
-                child: const Icon(Icons.restaurant_rounded, color: Colors.white, size: 28),
+              InkWell(
+                onTap: onTapAvatar,
+                borderRadius: BorderRadius.circular(30),
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundColor: brandColor,
+                      backgroundImage: NetworkImage(avatarUrl),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: isAcceptingOrders ? const Color(0xFF2E7D32) : Colors.grey,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2.5),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -42,25 +83,60 @@ class RestaurantHeaderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Good day, Kitchen Staff',
-                      style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
+                      'Good day, Restaurant Staff',
+                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
                     ),
+                    const SizedBox(height: 1),
                     Text(
-                      'GoCrave Central Kitchen',
+                      staffName,
                       style: GoogleFonts.poppins(
-                        fontSize: 17,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF0F172A),
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      'Merchant ID: #MERCHANT-501 • Open',
-                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
+                    Row(
+                      children: [
+                        Text(
+                          'Staff ID: $staffId  •  ',
+                          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: isAcceptingOrders ? const Color(0xFFE8F5E9) : Colors.grey[100],
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: BoxDecoration(
+                                  color: isAcceptingOrders ? const Color(0xFF2E7D32) : Colors.grey,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                isAcceptingOrders ? 'Active' : 'Paused',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: isAcceptingOrders ? const Color(0xFF2E7D32) : Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 6),
               InkWell(
                 onTap: () => onAcceptingChanged(!isAcceptingOrders),
                 borderRadius: BorderRadius.circular(20),
@@ -85,7 +161,7 @@ class RestaurantHeaderCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        isAcceptingOrders ? 'Accepting' : 'Paused',
+                        isAcceptingOrders ? 'On Duty' : 'Off Duty',
                         style: GoogleFonts.poppins(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
@@ -109,19 +185,19 @@ class RestaurantHeaderCard extends StatelessWidget {
           Row(
             children: [
               _buildStatTile(
-                icon: Icons.payments_rounded,
+                icon: Icons.receipt_long_rounded,
                 iconColor: const Color(0xFF2E7D32),
                 iconBg: const Color(0xFFE8F5E9),
                 value: '₱$formattedSales',
-                label: 'Today Sales',
+                label: 'Today\'s Sales',
               ),
               const SizedBox(width: 8),
               _buildStatTile(
                 icon: Icons.soup_kitchen_rounded,
                 iconColor: brandColor,
                 iconBg: const Color(0xFFFFF3E0),
-                value: '$preparedOrdersCount Orders',
-                label: 'Prepared',
+                value: '$preparedOrdersCount',
+                label: 'Orders Prepared',
               ),
               const SizedBox(width: 8),
               _buildStatTile(
@@ -129,7 +205,7 @@ class RestaurantHeaderCard extends StatelessWidget {
                 iconColor: const Color(0xFF1565C0),
                 iconBg: const Color(0xFFE3F2FD),
                 value: '14 Mins',
-                label: 'Avg Prep',
+                label: 'Avg. Prep Time',
               ),
             ],
           ),

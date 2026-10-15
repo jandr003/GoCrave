@@ -11,6 +11,7 @@ import '../widgets/restaurant/restaurant_incoming_tab.dart';
 import '../widgets/restaurant/restaurant_preparing_tab.dart';
 import '../widgets/restaurant/restaurant_ready_tab.dart';
 import '../widgets/restaurant/restaurant_menu_stock_tab.dart';
+import '../widgets/restaurant/restaurant_messages_tab.dart';
 import '../widgets/restaurant/restaurant_profile_tab.dart';
 import '../widgets/restaurant/restaurant_edit_profile_modal.dart';
 import '../widgets/restaurant/restaurant_business_id_modal.dart';
@@ -35,13 +36,17 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
   String _storePhone = '0917 888 9900';
   String _branchAddress = 'McArthur Highway, Malolos City, Bulacan';
   String _operatingHours = '8:00 AM - 10:00 PM (Mon - Sun)';
-  String _storeAvatarUrl = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200&auto=format&fit=crop';
+  String _storeAvatarUrl = 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=200&auto=format&fit=crop';
 
   final List<String> _storeAvatars = [
+    'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1583394293214-28ded15ee548?q=80&w=200&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=200&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?q=80&w=200&auto=format&fit=crop',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=ChefMarco&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=StaffElena&scale=120',
+    'https://api.dicebear.com/7.x/adventurer/png?seed=BakerLeo&scale=120',
   ];
 
   final Map<String, bool> _merchantStockStatus = {
@@ -289,31 +294,28 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleSpacing: 12,
-        title: Transform.translate(
-          offset: const Offset(-8, 0),
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/images/gocrave_app_logo.png',
-                height: 38,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 8),
-              Transform.translate(
-                offset: const Offset(-16, 0),
-                child: Transform.scale(
-                  scale: 2.3,
-                  alignment: Alignment.centerLeft,
-                  child: Image.asset(
-                    'assets/images/gocrave_official_logo.png',
-                    height: 32,
-                    fit: BoxFit.contain,
-                  ),
+        titleSpacing: 18,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/gocrave_app_logo.png',
+              height: 38,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 8),
+            Transform.translate(
+              offset: const Offset(-16, 0),
+              child: Transform.scale(
+                scale: 2.3,
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/gocrave_official_logo.png',
+                  height: 32,
+                  fit: BoxFit.contain,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -367,10 +369,14 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           children: [
             if (_selectedTab != 4)
               RestaurantHeaderCard(
+                staffName: 'Restaurant Staff',
+                staffId: '#REST-501',
+                avatarUrl: _storeAvatarUrl,
                 isAcceptingOrders: _isAcceptingOrders,
                 todaySales: _todaySales,
                 preparedOrdersCount: _preparedOrdersCount,
                 brandColor: brandColor,
+                onTapAvatar: () => _showEditStoreProfileModal(context),
                 onAcceptingChanged: (val) {
                   setState(() => _isAcceptingOrders = val);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -430,9 +436,25 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
               label: 'Ready (${_readyOrders.length})',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.restaurant_menu_rounded, size: 22),
-              activeIcon: const Icon(Icons.restaurant_menu_rounded, size: 25),
-              label: 'Menu Stock',
+              icon: Stack(
+                children: [
+                  const Icon(Icons.chat_bubble_outline_rounded, size: 22),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFF5622),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              activeIcon: const Icon(Icons.chat_bubble_rounded, size: 25),
+              label: 'Messages',
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.account_circle_outlined, size: 22),
@@ -460,9 +482,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           onHandOverToRider: (order) => _showFoodPhotoProofModal(context, order, () => _handOverToRider(order)),
         );
       case 3:
-        return RestaurantMenuStockTab(
-          merchantStockStatus: _merchantStockStatus,
+        return RestaurantMessagesTab(
           brandColor: brandColor,
+        );
           onToggleStock: (title, inStock) {
             setState(() {
               _merchantStockStatus[title] = inStock;
