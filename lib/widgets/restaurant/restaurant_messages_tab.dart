@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'merchant_chat_detail_modal.dart';
+import '../../screens/chat_screen.dart';
 
 class RestaurantMessagesTab extends StatefulWidget {
   final Color brandColor;
@@ -62,16 +62,15 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
   ];
 
   void _openChatModal(Map<String, dynamic> thread) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return MerchantChatDetailModal(
-          chatThread: thread,
-          brandColor: widget.brandColor,
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          name: thread['name'],
+          image: thread['avatar'],
+          role: '${thread['role']} (${thread['orderId']})',
+        ),
+      ),
     );
   }
 

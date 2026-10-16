@@ -367,7 +367,7 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            if (_selectedTab != 4)
+            if (_selectedTab < 3)
               RestaurantHeaderCard(
                 staffName: 'Restaurant Staff',
                 staffId: '#REST-501',
@@ -484,19 +484,6 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
       case 3:
         return RestaurantMessagesTab(
           brandColor: brandColor,
-        );
-          onToggleStock: (title, inStock) {
-            setState(() {
-              _merchantStockStatus[title] = inStock;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('$title is now ${inStock ? "AVAILABLE" : "UNAVAILABLE"}'),
-                backgroundColor: inStock ? Colors.green : Colors.grey[700],
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          },
         );
       case 4:
         return RestaurantProfileTab(

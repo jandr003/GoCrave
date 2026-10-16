@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/food_data.dart';
 import '../data/order_manager.dart';
@@ -76,67 +77,75 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1E1E2C),
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
-          tooltip: 'Log Out',
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (route) => false,
-            );
-          },
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        surfaceTintColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleSpacing: 18,
+        title: Row(
           children: [
-            Text(
-              'GoCrave Admin Control Panel',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            Image.asset(
+              'assets/images/gocrave_app_logo.png',
+              height: 38,
+              fit: BoxFit.contain,
             ),
-            Row(
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colors.greenAccent,
-                    shape: BoxShape.circle,
-                  ),
+            const SizedBox(width: 8),
+            Transform.translate(
+              offset: const Offset(-16, 0),
+              child: Transform.scale(
+                scale: 2.3,
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/gocrave_official_logo.png',
+                  height: 32,
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(width: 6),
-                Text(
-                  'Super Admin: ${widget.adminEmail}',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+            icon: Stack(
+              children: [
+                const Icon(Icons.notifications_none_rounded, color: Color(0xFF0F172A), size: 22),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFF5622),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            tooltip: 'Notifications',
             onPressed: () {
-              setState(() {});
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Dashboard metrics refreshed!', style: GoogleFonts.poppins()),
+                  content: Text('No new admin alerts.', style: GoogleFonts.poppins()),
                   backgroundColor: brandColor,
                   behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               );
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout_rounded, color: Color(0xFF0F172A), size: 22),
+            tooltip: 'Log Out',
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: SingleChildScrollView(
@@ -175,30 +184,30 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           unselectedItemColor: Colors.grey[500],
           selectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
           unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_rounded),
-              activeIcon: Icon(Icons.dashboard_rounded, size: 26),
+          items: [
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard_outlined, size: 22),
+              activeIcon: Icon(Icons.dashboard_rounded, size: 25),
               label: 'Overview',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_rounded),
-              activeIcon: Icon(Icons.shopping_bag_rounded, size: 26),
-              label: 'Orders',
+              icon: const Icon(Icons.shopping_bag_outlined, size: 22),
+              activeIcon: const Icon(Icons.shopping_bag_rounded, size: 25),
+              label: 'Orders (${OrderManager().orders.length})',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.restaurant_menu_rounded),
-              activeIcon: Icon(Icons.restaurant_menu_rounded, size: 26),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.restaurant_menu_rounded, size: 22),
+              activeIcon: Icon(Icons.restaurant_menu_rounded, size: 25),
               label: 'Menu',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.two_wheeler_rounded),
-              activeIcon: Icon(Icons.two_wheeler_rounded, size: 26),
-              label: 'Riders',
+              icon: const Icon(Icons.two_wheeler_rounded, size: 22),
+              activeIcon: const Icon(Icons.two_wheeler_rounded, size: 25),
+              label: 'Riders (${_riders.length})',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard_rounded),
-              activeIcon: Icon(Icons.card_giftcard_rounded, size: 26),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard_rounded, size: 22),
+              activeIcon: Icon(Icons.card_giftcard_rounded, size: 25),
               label: 'Promos',
             ),
           ],
@@ -212,23 +221,102 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final activeOrdersCount = liveOrders.where((o) => o.status == 'Processing' || o.status == 'On the Way').length;
 
     return Container(
-      color: const Color(0xFF1E1E2C),
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
+      margin: const EdgeInsets.fromLTRB(16, 10, 16, 8),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF5F2),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: brandColor.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Row(
             children: [
-              _buildKpiCard('Total Revenue', '₱128,450', '+14.2% vs last week', Icons.payments_rounded, Colors.greenAccent),
+              CircleAvatar(
+                radius: 26,
+                backgroundColor: brandColor,
+                child: const Icon(Icons.admin_panel_settings_rounded, color: Colors.white, size: 28),
+              ),
               const SizedBox(width: 12),
-              _buildKpiCard('Active Orders', '$activeOrdersCount Orders', 'Live in system', Icons.receipt_long_rounded, Colors.orangeAccent),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Good day, System Administrator',
+                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
+                    ),
+                    Text(
+                      'GoCrave Admin Control Panel',
+                      style: GoogleFonts.poppins(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF0F172A),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Super Admin: ${widget.adminEmail} • Live System',
+                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE8F5E9),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.green.withOpacity(0.3)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF2E7D32),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'ACTIVE',
+                      style: GoogleFonts.poppins(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF2E7D32),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
+
+          const SizedBox(height: 16),
+
           Row(
             children: [
-              _buildKpiCard('Total Cravers', '1,280', 'Active accounts', Icons.people_alt_rounded, Colors.lightBlueAccent),
-              const SizedBox(width: 12),
-              _buildKpiCard('Rider Fleet', '24 Active', '4 On delivery', Icons.two_wheeler_rounded, Colors.amberAccent),
+              _buildKpiCard('Total Revenue', '₱142.5k', '+14.2%', Icons.payments_rounded, const Color(0xFF2E7D32), const Color(0xFFE8F5E9)),
+              const SizedBox(width: 8),
+              _buildKpiCard('Active Orders', '$activeOrdersCount Live', 'System', Icons.shopping_bag_rounded, brandColor, const Color(0xFFFFF3E0)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              _buildKpiCard('Total Cravers', '1,280', 'Active', Icons.people_alt_rounded, const Color(0xFF1565C0), const Color(0xFFE3F2FD)),
+              const SizedBox(width: 8),
+              _buildKpiCard('Rider Fleet', '14 Active', '4 On delivery', Icons.two_wheeler_rounded, const Color(0xFF7C3AED), const Color(0xFFF3E8FF)),
             ],
           ),
         ],
@@ -236,53 +324,58 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildKpiCard(String label, String value, String sub, IconData icon, Color accentColor) {
+  Widget _buildKpiCard(String label, String value, String sub, IconData icon, Color accentColor, Color bgAccent) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFF2A2A3C),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFFFE0B2)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(icon, size: 22, color: accentColor),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: accentColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    sub,
-                    style: GoogleFonts.poppins(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                      color: accentColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: bgAccent,
+                shape: BoxShape.circle,
               ),
+              child: Icon(icon, size: 18, color: accentColor),
             ),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 11,
-                color: Colors.grey[400],
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      color: const Color(0xFF0F172A),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    label,
+                    style: GoogleFonts.poppins(
+                      fontSize: 10,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ],
@@ -290,8 +383,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       ),
     );
   }
-
-
 
   Widget _buildSelectedTabContent() {
     switch (_selectedTab) {
@@ -318,7 +409,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: const Color(0xFF0F172A),
           ),
         ),
         const SizedBox(height: 12),
@@ -352,6 +443,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                       Text(
@@ -421,7 +513,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           children: [
             Text(
               'Live Platform Orders (${liveOrders.length})',
-              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
             Text(
               'Admin Override Enabled',
@@ -465,7 +557,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 const SizedBox(height: 8),
                 Text(
                   order.title,
-                  style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Text(
                   'Customer: ${order.customerName} • Rider: ${order.riderName}',
@@ -530,7 +622,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           children: [
             Text(
               'Menu Stock & Availability',
-              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
             ElevatedButton.icon(
               onPressed: () {
@@ -576,7 +668,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     children: [
                       Text(
                         title,
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                       Text(
                         '${food['category']} • ${food['price']}',
@@ -615,7 +707,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         Text(
           'Active Delivery Fleet (${_riders.length})',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 14),
         ..._riders.map((rider) {
@@ -642,7 +734,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     children: [
                       Text(
                         rider['name']!,
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                       Text(
                         'Plate: ${rider['plate']} • ${rider['deliveries']}',
@@ -690,7 +782,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         Text(
           'Active Platform Vouchers & Promos',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 14),
         _buildPromoCard('GOCRAVE20', '20% OFF on all Fast Food items', 'Active'),
