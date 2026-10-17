@@ -4,6 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/food_data.dart';
 import '../data/order_manager.dart';
 import 'login_screen.dart';
+import 'admin_settings_screen.dart';
+import '../widgets/admin/admin_header_card.dart';
+import '../widgets/admin/admin_orders_tab.dart';
+import '../widgets/admin/admin_riders_tab.dart';
+import '../widgets/admin/admin_reports_tab.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   final String adminEmail;
@@ -37,40 +42,77 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     if (mounted) setState(() {});
   }
 
-  final List<Map<String, dynamic>> _riders = [
-    {
-      'name': 'Ricardo Dalisay',
-      'plate': 'MVC 1234',
-      'rating': '4.9 ⭐',
-      'status': 'Delivering',
-      'deliveries': '142 orders',
-      'phone': '0917 123 4567',
-    },
-    {
-      'name': 'Cardo Dalisay',
-      'plate': 'ABC 5678',
-      'rating': '4.8 ⭐',
-      'status': 'Available',
-      'deliveries': '98 orders',
-      'phone': '0918 987 6543',
-    },
-    {
-      'name': 'Juan Dela Cruz',
-      'plate': 'XYZ 9101',
-      'rating': '5.0 ⭐',
-      'status': 'Delivering',
-      'deliveries': '210 orders',
-      'phone': '0919 456 7890',
-    },
-    {
-      'name': 'Pedro Penduko',
-      'plate': 'GOC 2026',
-      'rating': '4.7 ⭐',
-      'status': 'Offline',
-      'deliveries': '65 orders',
-      'phone': '0920 111 2233',
-    },
-  ];
+  void _showAddFoodModal(BuildContext context) {
+    final titleController = TextEditingController();
+    final priceController = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Add New Food Item', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Food Title (e.g. Sizzling Sisig)'),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Price (e.g. ₱195.00)'),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (titleController.text.isNotEmpty) {
+                      setState(() {
+                        allFoodItems.add({
+                          'title': titleController.text,
+                          'subtitle': 'New Admin Creation',
+                          'price': priceController.text.contains('₱') ? priceController.text : '₱${priceController.text}',
+                          'rating': '5.0',
+                          'category': 'Home-Style',
+                          'image': 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=500&auto=format&fit=crop',
+                          'ingredients': '🥩,🧅,🧄',
+                          'time': '15 Min',
+                          'spice': 'Mild',
+                          'kcal': '400 Kcal',
+                          'longDescription': 'Freshly added menu item by GoCrave Admin.',
+                        });
+                        _foodStockStatus[titleController.text] = true;
+                      });
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${titleController.text} added to menu!'),
+                          backgroundColor: brandColor,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: brandColor),
+                  child: const Text('Add to Menu', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,13 +177,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.logout_rounded, color: Color(0xFF0F172A), size: 22),
-            tooltip: 'Log Out',
+            icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
+            tooltip: 'Admin Settings',
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                (route) => false,
+                MaterialPageRoute(
+                  builder: (context) => AdminSettingsScreen(adminEmail: widget.adminEmail),
+                ),
               );
             },
           ),
@@ -152,7 +195,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            _buildExecutiveSummary(),
+            if (_selectedTab == 0)
+              AdminHeaderCard(
+                brandColor: brandColor,
+                onTapAssignRider: () => setState(() => _selectedTab = 2),
+                onTapManageOrders: () => setState(() => _selectedTab = 1),
+                onTapManageRiders: () => setState(() => _selectedTab = 2),
+              ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: _buildSelectedTabContent(),
@@ -186,197 +235,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
           items: [
             const BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_outlined, size: 22),
-              activeIcon: Icon(Icons.dashboard_rounded, size: 25),
-              label: 'Overview',
+              icon: Icon(Icons.home_outlined, size: 22),
+              activeIcon: Icon(Icons.home_rounded, size: 25),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.shopping_bag_outlined, size: 22),
-              activeIcon: const Icon(Icons.shopping_bag_rounded, size: 25),
-              label: 'Orders (${OrderManager().orders.length})',
+              icon: const Icon(Icons.assignment_outlined, size: 22),
+              activeIcon: const Icon(Icons.assignment_rounded, size: 25),
+              label: 'Orders',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.restaurant_menu_rounded, size: 22),
-              activeIcon: Icon(Icons.restaurant_menu_rounded, size: 25),
-              label: 'Menu',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.two_wheeler_rounded, size: 22),
-              activeIcon: const Icon(Icons.two_wheeler_rounded, size: 25),
-              label: 'Riders (${_riders.length})',
+              icon: Icon(Icons.two_wheeler_rounded, size: 22),
+              activeIcon: Icon(Icons.two_wheeler_rounded, size: 25),
+              label: 'Riders',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard_rounded, size: 22),
-              activeIcon: Icon(Icons.card_giftcard_rounded, size: 25),
-              label: 'Promos',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildExecutiveSummary() {
-    final liveOrders = OrderManager().orders;
-    final activeOrdersCount = liveOrders.where((o) => o.status == 'Processing' || o.status == 'On the Way').length;
-
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 10, 16, 8),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF5F2),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: brandColor.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 26,
-                backgroundColor: brandColor,
-                child: const Icon(Icons.admin_panel_settings_rounded, color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Good day, System Administrator',
-                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
-                    ),
-                    Text(
-                      'GoCrave Admin Control Panel',
-                      style: GoogleFonts.poppins(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF0F172A),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Super Admin: ${widget.adminEmail} • Live System',
-                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8F5E9),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.green.withOpacity(0.3)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF2E7D32),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'ACTIVE',
-                      style: GoogleFonts.poppins(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF2E7D32),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          Row(
-            children: [
-              _buildKpiCard('Total Revenue', '₱142.5k', '+14.2%', Icons.payments_rounded, const Color(0xFF2E7D32), const Color(0xFFE8F5E9)),
-              const SizedBox(width: 8),
-              _buildKpiCard('Active Orders', '$activeOrdersCount Live', 'System', Icons.shopping_bag_rounded, brandColor, const Color(0xFFFFF3E0)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              _buildKpiCard('Total Cravers', '1,280', 'Active', Icons.people_alt_rounded, const Color(0xFF1565C0), const Color(0xFFE3F2FD)),
-              const SizedBox(width: 8),
-              _buildKpiCard('Rider Fleet', '14 Active', '4 On delivery', Icons.two_wheeler_rounded, const Color(0xFF7C3AED), const Color(0xFFF3E8FF)),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildKpiCard(String label, String value, String sub, IconData icon, Color accentColor, Color bgAccent) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFFFE0B2)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: bgAccent,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, size: 18, color: accentColor),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    value,
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w900,
-                      color: const Color(0xFF0F172A),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    label,
-                    style: GoogleFonts.poppins(
-                      fontSize: 10,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+              icon: Icon(Icons.more_horiz_rounded, size: 22),
+              activeIcon: Icon(Icons.more_horiz_rounded, size: 25),
+              label: 'More',
             ),
           ],
         ),
@@ -387,16 +263,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Widget _buildSelectedTabContent() {
     switch (_selectedTab) {
       case 1:
-        return _buildOrdersManagementTab();
+        return AdminOrdersTab(brandColor: brandColor);
       case 2:
-        return _buildMenuManagementTab();
+        return AdminRidersTab(brandColor: brandColor);
       case 3:
-        return _buildRidersManagementTab();
-      case 4:
-        return _buildPromosTab();
+        return AdminReportsTab(brandColor: brandColor);
       case 0:
       default:
-        return _buildOverviewAnalyticsTab();
+        return const SizedBox.shrink();
     }
   }
 
@@ -484,135 +358,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildOrdersManagementTab() {
-    final liveOrders = OrderManager().orders;
-
-    if (liveOrders.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            children: [
-              Icon(Icons.inbox_rounded, size: 60, color: Colors.grey[300]),
-              const SizedBox(height: 12),
-              Text(
-                'No orders placed yet',
-                style: GoogleFonts.poppins(fontSize: 15, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Live Platform Orders (${liveOrders.length})',
-              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-            ),
-            Text(
-              'Admin Override Enabled',
-              style: GoogleFonts.poppins(fontSize: 11, color: brandColor, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        const SizedBox(height: 14),
-        ...liveOrders.map((order) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 14),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      order.id,
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: brandColor),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.orange[50],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        order.status,
-                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: brandColor),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  order.title,
-                  style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                Text(
-                  'Customer: ${order.customerName} • Rider: ${order.riderName}',
-                  style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total: ${order.totalAmount}',
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.black),
-                    ),
-                    PopupMenuButton<String>(
-                      onSelected: (newStatus) {
-                        setState(() {
-                          order.status = newStatus;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Order ${order.id} status updated to $newStatus"),
-                            backgroundColor: brandColor,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(value: 'Processing', child: Text('Set: Processing')),
-                        const PopupMenuItem(value: 'On the Way', child: Text('Set: On the Way')),
-                        const PopupMenuItem(value: 'Delivered', child: Text('Set: Delivered')),
-                      ],
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            Text('Override Status', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold)),
-                            const Icon(Icons.arrow_drop_down, size: 18),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
   Widget _buildMenuManagementTab() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -629,7 +374,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 _showAddFoodModal(context);
               },
               icon: const Icon(Icons.add, size: 16, color: Colors.white),
-              label: Text('Add Item', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold)),
+              label: Text('Add Item', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: brandColor,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -698,226 +443,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           );
         }).toList(),
       ],
-    );
-  }
-
-  Widget _buildRidersManagementTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Active Delivery Fleet (${_riders.length})',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-        ),
-        const SizedBox(height: 14),
-        ..._riders.map((rider) {
-          final isDelivering = rider['status'] == 'Delivering';
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 22,
-                  backgroundColor: isDelivering ? Colors.orange[50] : Colors.grey[100],
-                  child: Icon(Icons.two_wheeler_rounded, color: isDelivering ? brandColor : Colors.grey),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        rider['name']!,
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        'Plate: ${rider['plate']} • ${rider['deliveries']}',
-                        style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: isDelivering ? Colors.orange[50] : Colors.green[50],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        rider['status']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: isDelivering ? brandColor : Colors.green[800],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      rider['rating']!,
-                      style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
-  Widget _buildPromosTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Active Platform Vouchers & Promos',
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-        ),
-        const SizedBox(height: 14),
-        _buildPromoCard('GOCRAVE20', '20% OFF on all Fast Food items', 'Active'),
-        _buildPromoCard('HOMESTYLE15', '15% OFF on Family Meals', 'Active'),
-        _buildPromoCard('FREEDEL', 'Free Delivery on Desserts', 'Active'),
-      ],
-    );
-  }
-
-  Widget _buildPromoCard(String code, String desc, String status) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF3E0),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(Icons.local_offer_rounded, color: brandColor, size: 20),
-              ),
-              const SizedBox(width: 14),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    code,
-                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: brandColor),
-                  ),
-                  Text(
-                    desc,
-                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.green[50],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              status,
-              style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green[800]),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddFoodModal(BuildContext context) {
-    final titleController = TextEditingController();
-    final priceController = TextEditingController();
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Add New Food Item',
-                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Food Title (e.g. Sizzling Sisig)'),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Price (e.g. ₱195.00)'),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (titleController.text.isNotEmpty) {
-                      setState(() {
-                        allFoodItems.add({
-                          'title': titleController.text,
-                          'subtitle': 'New Admin Creation',
-                          'price': priceController.text.contains('₱') ? priceController.text : '₱${priceController.text}',
-                          'rating': '5.0',
-                          'category': 'Home-Style',
-                          'image': 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=500&auto=format&fit=crop',
-                          'ingredients': '🥩,🧅,🧄',
-                          'time': '15 Min',
-                          'spice': 'Mild',
-                          'kcal': '400 Kcal',
-                          'longDescription': 'Freshly added menu item by GoCrave Admin.',
-                        });
-                        _foodStockStatus[titleController.text] = true;
-                      });
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${titleController.text} added to menu!'),
-                          backgroundColor: brandColor,
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: brandColor),
-                  child: const Text('Add to Menu', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
