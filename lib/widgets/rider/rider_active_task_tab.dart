@@ -252,6 +252,17 @@ class RiderActiveTaskTab extends StatelessWidget {
                               child: Stack(
                                 children: [
                                   Positioned.fill(
+                                    child: Image.network(
+                                      'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=400&auto=format&fit=crop',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned.fill(
+                                    child: Container(
+                                      color: Colors.black.withOpacity(0.18),
+                                    ),
+                                  ),
+                                  Positioned.fill(
                                     child: CustomPaint(
                                       painter: _MapRoutePainter(),
                                     ),
