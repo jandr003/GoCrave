@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
+import '../../data/order_model.dart';
 
-class AdminTrackingModal extends StatelessWidget {
+class AdminTrackingModal extends StatefulWidget {
   final Map<String, dynamic> rider;
   final Color brandColor;
 
@@ -14,10 +15,23 @@ class AdminTrackingModal extends StatelessWidget {
   });
 
   @override
+  State<AdminTrackingModal> createState() => _AdminTrackingModalState();
+}
+
+class _AdminTrackingModalState extends State<AdminTrackingModal> {
+  final MapController _mapController = MapController();
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const storeLatLng = LatLng(14.8527, 120.8160);
-    const riderLatLng = LatLng(14.8560, 120.8200);
-    const customerLatLng = LatLng(14.8600, 120.8250);
+    final OrderModel order = widget.rider['orderModel'] is OrderModel
+        ? widget.rider['orderModel'] as OrderModel
+        : OrderModel.fromJson(widget.rider);
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.82,
@@ -40,9 +54,19 @@ class AdminTrackingModal extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Rider Live Tracking',
-                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Live Tracking (${order.id})',
+                      style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                    ),
+                    if (order.cityName.isNotEmpty)
+                      Text(
+                        'Local Delivery in ${order.cityName}',
+                        style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
+                      ),
+                  ],
                 ),
                 IconButton(icon: const Icon(Icons.close_rounded, color: Colors.grey), onPressed: () => Navigator.pop(context)),
               ],
@@ -63,9 +87,13 @@ class AdminTrackingModal extends StatelessWidget {
                 child: Stack(
                   children: [
                     FlutterMap(
-                      options: const MapOptions(
-                        initialCenter: LatLng(14.8562, 120.8205),
-                        initialZoom: 14.5,
+                      mapController: _mapController,
+                      options: MapOptions(
+                        initialCenter: order.centerLatLng,
+                        initialZoom: 15.0,
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag.all,
+                        ),
                       ),
                       children: [
                         TileLayer(
@@ -75,22 +103,18 @@ class AdminTrackingModal extends StatelessWidget {
                         PolylineLayer(
                           polylines: [
                             Polyline(
-                              points: const [
-                                storeLatLng,
-                                LatLng(14.8540, 120.8180),
-                                riderLatLng,
-                                LatLng(14.8580, 120.8220),
-                                customerLatLng,
-                              ],
-                              strokeWidth: 5.0,
-                              color: const Color(0xFF005CEE),
+                              points: order.routePoints,
+                              strokeWidth: 6.0,
+                              color: widget.brandColor,
+                              borderColor: Colors.white,
+                              borderStrokeWidth: 2.0,
                             ),
                           ],
                         ),
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: storeLatLng,
+                              point: order.storeLatLng,
                               width: 120,
                               height: 36,
                               child: Container(
@@ -111,7 +135,7 @@ class AdminTrackingModal extends StatelessWidget {
                                     const SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
-                                        'Jollibee',
+                                        order.storeName,
                                         style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -121,13 +145,13 @@ class AdminTrackingModal extends StatelessWidget {
                               ),
                             ),
                             Marker(
-                              point: riderLatLng,
+                              point: order.riderLatLng,
                               width: 40,
                               height: 40,
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: brandColor,
+                                  color: widget.brandColor,
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Colors.white, width: 2.5),
                                   boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 4))],
@@ -136,7 +160,7 @@ class AdminTrackingModal extends StatelessWidget {
                               ),
                             ),
                             Marker(
-                              point: customerLatLng,
+                              point: order.customerLatLng,
                               width: 130,
                               height: 36,
                               child: Container(
@@ -157,7 +181,7 @@ class AdminTrackingModal extends StatelessWidget {
                                     const SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
-                                        'Maria Santos',
+                                        order.customerName,
                                         style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -184,22 +208,84 @@ class AdminTrackingModal extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: NetworkImage(rider['avatar'] ?? 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop'),
-                            ),
+                            if (order.riderAvatar.isNotEmpty)
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundImage: NetworkImage(order.riderAvatar),
+                              ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(rider['name'] ?? 'Rider', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                                  Text('On the way • ETA 12 mins', style: GoogleFonts.poppins(fontSize: 11, color: brandColor, fontWeight: FontWeight.bold)),
+                                  Text(order.riderName, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                                  Text('${order.storeName} ➔ ${order.customerName}', style: GoogleFonts.poppins(fontSize: 11, color: widget.brandColor, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
                           ],
                         ),
+                      ),
+                    ),
+
+                    Positioned(
+                      bottom: 16,
+                      right: 16,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              final double currentZoom = _mapController.camera.zoom;
+                              _mapController.move(_mapController.camera.center, currentZoom + 0.8);
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 8, offset: const Offset(0, 3))],
+                              ),
+                              child: Icon(Icons.add_rounded, color: widget.brandColor, size: 20),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          InkWell(
+                            onTap: () {
+                              final double currentZoom = _mapController.camera.zoom;
+                              _mapController.move(_mapController.camera.center, currentZoom - 0.8);
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 8, offset: const Offset(0, 3))],
+                              ),
+                              child: Icon(Icons.remove_rounded, color: widget.brandColor, size: 20),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          InkWell(
+                            onTap: () {
+                              _mapController.move(order.riderLatLng, 15.2);
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: widget.brandColor,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [BoxShadow(color: widget.brandColor.withOpacity(0.4), blurRadius: 10, offset: const Offset(0, 4))],
+                              ),
+                              child: const Icon(Icons.my_location_rounded, color: Colors.white, size: 20),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

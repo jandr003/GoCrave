@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
+import '../../data/order_model.dart';
 import '../../screens/chat_screen.dart';
 import 'admin_tracking_modal.dart';
+import 'admin_contact_rider_modal.dart';
 
 class AdminOrdersTab extends StatefulWidget {
   final Color brandColor;
@@ -21,70 +24,147 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
 
   final List<String> _filters = ['All 128', 'Pending 18', 'In Progress 34', 'On Delivery 22', 'Completed 72'];
 
-  final List<Map<String, dynamic>> _ordersList = [
-    {
-      'id': '#GC-0000128',
-      'store': 'McDonald\'s',
-      'dish': 'Big Mac Meal',
-      'customer': 'Sofia Mendoza',
-      'customerPhone': '+63 917 888 9900',
-      'address': 'Brgy. San Vicente, Malolos City',
-      'rider': 'Ramon Castillo (#RIDER-027)',
-      'price': '₱ 249',
-      'time': '10:42 AM • Apr 26, 2025',
-      'status': 'Assigned',
-      'statusBg': Color(0xFFE3F2FD),
-      'statusColor': Color(0xFF1565C0),
-      'logo': 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': '#GC-0000127',
-      'store': 'KFC',
-      'dish': 'Chicken Bucket',
-      'customer': 'Maria Santos',
-      'customerPhone': '+63 912 345 6789',
-      'address': '1234 Greenview St., Makati City',
-      'rider': 'Carlos Reyes (#RIDER-018)',
-      'price': '₱ 320',
-      'time': '10:18 AM • Apr 26, 2025',
-      'status': 'In Progress',
-      'statusBg': Color(0xFFFFF3E0),
-      'statusColor': Color(0xFFFF5622),
-      'logo': 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': '#GC-0000126',
-      'store': 'Jollibee',
-      'dish': 'Chicken Joy',
-      'customer': 'Juan Dela Cruz',
-      'customerPhone': '+63 918 777 6655',
-      'address': 'Brgy. Sta. Cruz, Guiguinto',
-      'rider': 'Juan Dela Cruz (#RIDER-027)',
-      'price': '₱ 185',
-      'time': '10:12 AM • Apr 26, 2025',
-      'status': 'On Delivery',
-      'statusBg': Color(0xFFF3E8FF),
-      'statusColor': Color(0xFF7C3AED),
-      'logo': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': '#GC-0000125',
-      'store': 'Shake Shack',
-      'dish': 'ShackBurger',
-      'customer': 'Alexander Santos',
-      'customerPhone': '+63 919 555 4433',
-      'address': 'Brgy. San Miguel, Bulacan',
-      'rider': 'Mark Santos (#RIDER-042)',
-      'price': '₱ 265',
-      'time': '10:03 AM • Apr 26, 2025',
-      'status': 'Completed',
-      'statusBg': Color(0xFFE8F5E9),
-      'statusColor': Color(0xFF2E7D32),
-      'logo': 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=200&auto=format&fit=crop',
-    },
+  final List<OrderModel> _ordersList = const [
+    OrderModel(
+      id: '#GC-0000128',
+      storeName: 'McDonald\'s',
+      storeLogo: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=200&auto=format&fit=crop',
+      dishName: 'Big Mac Meal',
+      customerName: 'Sofia Mendoza',
+      customerPhone: '+63 917 888 9900',
+      address: 'Brgy. San Vicente, Malolos City',
+      riderName: 'Ramon Castillo (#RIDER-027)',
+      riderAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+      price: '₱ 249',
+      time: '10:42 AM • Apr 26, 2025',
+      status: 'Assigned',
+      cityName: 'Malolos, Bulacan',
+      centerLatLng: LatLng(14.8560, 120.8190),
+      storeLatLng: LatLng(14.8527, 120.8160),
+      riderLatLng: const LatLng(14.8560, 120.8163),
+      customerLatLng: const LatLng(14.8570, 120.8252),
+      routePoints: const [
+        LatLng(14.8527, 120.8160),
+        LatLng(14.8550, 120.8162),
+        LatLng(14.8560, 120.8163),
+        LatLng(14.8582, 120.8166),
+        LatLng(14.8584, 120.8172),
+        LatLng(14.8582, 120.8190),
+        LatLng(14.8578, 120.8215),
+        LatLng(14.8573, 120.8235),
+        LatLng(14.8570, 120.8252),
+      ],
+    ),
+    OrderModel(
+      id: '#GC-0000127',
+      storeName: 'KFC',
+      storeLogo: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=200&auto=format&fit=crop',
+      dishName: 'Chicken Bucket',
+      customerName: 'Maria Santos',
+      customerPhone: '+63 912 345 6789',
+      address: '1234 Greenview St., Makati City',
+      riderName: 'Carlos Reyes (#RIDER-018)',
+      riderAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop',
+      price: '₱ 320',
+      time: '10:18 AM • Apr 26, 2025',
+      status: 'In Progress',
+      cityName: 'Makati City (NCR)',
+      centerLatLng: LatLng(14.5560, 121.0280),
+      storeLatLng: LatLng(14.5547, 121.0244),
+      riderLatLng: LatLng(14.5562, 121.0280),
+      customerLatLng: LatLng(14.5580, 121.0320),
+      routePoints: [
+        LatLng(14.5547, 121.0244),
+        LatLng(14.5555, 121.0260),
+        LatLng(14.5562, 121.0280),
+        LatLng(14.5570, 121.0300),
+        LatLng(14.5580, 121.0320),
+      ],
+    ),
+    OrderModel(
+      id: '#GC-0000126',
+      storeName: 'Jollibee',
+      storeLogo: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop',
+      dishName: 'Chicken Joy',
+      customerName: 'Juan Dela Cruz',
+      customerPhone: '+63 918 777 6655',
+      address: 'Brgy. Sta. Cruz, Guiguinto',
+      riderName: 'Juan Dela Cruz (#RIDER-027)',
+      riderAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+      price: '₱ 185',
+      time: '10:12 AM • Apr 26, 2025',
+      status: 'On Delivery',
+      cityName: 'Guiguinto, Bulacan',
+      centerLatLng: LatLng(14.8350, 120.8840),
+      storeLatLng: LatLng(14.8320, 120.8800),
+      riderLatLng: LatLng(14.8350, 120.8840),
+      customerLatLng: LatLng(14.8380, 120.8880),
+      routePoints: [
+        LatLng(14.8320, 120.8800),
+        LatLng(14.8335, 120.8820),
+        LatLng(14.8350, 120.8840),
+        LatLng(14.8365, 120.8860),
+        LatLng(14.8380, 120.8880),
+      ],
+    ),
+    OrderModel(
+      id: '#GC-0000125',
+      storeName: 'Shake Shack',
+      storeLogo: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=200&auto=format&fit=crop',
+      dishName: 'ShackBurger',
+      customerName: 'Alexander Santos',
+      customerPhone: '+63 919 555 4433',
+      address: 'Brgy. San Miguel, Bulacan',
+      riderName: 'Mark Santos (#RIDER-042)',
+      riderAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+      price: '₱ 265',
+      time: '10:03 AM • Apr 26, 2025',
+      status: 'Completed',
+      cityName: 'San Miguel, Bulacan',
+      centerLatLng: LatLng(15.1420, 120.9750),
+      storeLatLng: LatLng(15.1400, 120.9700),
+      riderLatLng: LatLng(15.1415, 120.9730),
+      customerLatLng: LatLng(15.1450, 120.9780),
+      routePoints: [
+        LatLng(15.1400, 120.9700),
+        LatLng(15.1415, 120.9730),
+        LatLng(15.1430, 120.9750),
+        LatLng(15.1450, 120.9780),
+      ],
+    ),
   ];
 
-  void _showOrderDetailsModal(Map<String, dynamic> order) {
+  Color _getStatusBg(String status) {
+    switch (status.toLowerCase()) {
+      case 'assigned':
+        return const Color(0xFFE3F2FD);
+      case 'in progress':
+        return const Color(0xFFFFF3E0);
+      case 'on delivery':
+        return const Color(0xFFF3E8FF);
+      case 'completed':
+        return const Color(0xFFE8F5E9);
+      default:
+        return Colors.grey[100]!;
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'assigned':
+        return const Color(0xFF1565C0);
+      case 'in progress':
+        return const Color(0xFFFF5622);
+      case 'on delivery':
+        return const Color(0xFF7C3AED);
+      case 'completed':
+        return const Color(0xFF2E7D32);
+      default:
+        return Colors.grey[700]!;
+    }
+  }
+
+  void _showOrderDetailsModal(OrderModel order) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -138,15 +218,15 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: order['statusBg'],
+                  color: _getStatusBg(order.status),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  order['status'],
+                  order.status,
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    color: order['statusColor'],
+                    color: _getStatusColor(order.status),
                   ),
                 ),
               ),
@@ -154,7 +234,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
               const SizedBox(height: 12),
 
               Text(
-                order['id'],
+                order.id,
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -162,7 +242,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 ),
               ),
               Text(
-                order['time'],
+                order.time,
                 style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
               ),
 
@@ -185,14 +265,14 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                       children: [
                         Text('Customer', style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
                         Text(
-                          order['customer'],
+                          order.customerName,
                           style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         Row(
                           children: [
                             const Icon(Icons.phone_outlined, size: 12, color: Colors.grey),
                             const SizedBox(width: 4),
-                            Text(order['customerPhone'], style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600])),
+                            Text(order.customerPhone, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600])),
                           ],
                         ),
                         Row(
@@ -201,7 +281,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                order['address'],
+                                order.address,
                                 style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -225,7 +305,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.grey[100],
-                    backgroundImage: NetworkImage(order['logo']),
+                    backgroundImage: NetworkImage(order.storeLogo),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -234,11 +314,11 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                       children: [
                         Text('Restaurant', style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
                         Text(
-                          order['store'],
+                          order.storeName,
                           style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         Text(
-                          '🍱 ${order['dish']}  •  ${order['price']}',
+                          '🍱 ${order.dishName}  •  ${order.price}',
                           style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -265,7 +345,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                       children: [
                         Text('Rider', style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
                         Text(
-                          order['rider'],
+                          order.riderName,
                           style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       ],
@@ -278,7 +358,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Calling rider for ${order['id']}...', style: GoogleFonts.poppins()),
+                              content: Text('Calling rider for ${order.id}...', style: GoogleFonts.poppins()),
                               backgroundColor: widget.brandColor,
                               behavior: SnackBarBehavior.floating,
                             ),
@@ -293,9 +373,9 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChatScreen(
-                                name: order['rider'],
-                                image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
-                                role: 'Rider (${order['id']})',
+                                name: order.riderName,
+                                image: order.riderAvatar,
+                                role: 'Rider (${order.id})',
                               ),
                             ),
                           );
@@ -313,12 +393,21 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 height: 48,
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Contacting rider for ${order['id']}...', style: GoogleFonts.poppins()),
-                        backgroundColor: widget.brandColor,
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) {
+                        return AdminContactRiderModal(
+                          rider: {
+                            'id': order.id,
+                            'name': order.riderName,
+                            'avatar': order.riderAvatar,
+                            'phone': '0917 123 4567',
+                          },
+                          brandColor: widget.brandColor,
+                        );
+                      },
                     );
                   },
                   icon: const Icon(Icons.phone_rounded, size: 18, color: Color(0xFF1565C0)),
@@ -348,8 +437,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                       builder: (context) {
                         return AdminTrackingModal(
                           rider: {
-                            'name': order['rider'],
-                            'id': order['id'],
+                            'orderModel': order,
                           },
                           brandColor: widget.brandColor,
                         );
@@ -380,7 +468,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
     final filteredOrders = _ordersList.where((o) {
       if (_selectedFilterIndex == 0) return true;
       final filterText = _filters[_selectedFilterIndex].split(' ')[0].toLowerCase();
-      return o['status'].toString().toLowerCase().contains(filterText);
+      return o.status.toLowerCase().contains(filterText);
     }).toList();
 
     return Column(
@@ -486,7 +574,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              order['id'],
+                              order.id,
                               style: GoogleFonts.poppins(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -494,7 +582,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                               ),
                             ),
                             Text(
-                              order['time'],
+                              order.time,
                               style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[400]),
                             ),
                           ],
@@ -502,15 +590,15 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                           decoration: BoxDecoration(
-                            color: order['statusBg'],
+                            color: _getStatusBg(order.status),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            order['status'],
+                            order.status,
                             style: GoogleFonts.poppins(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: order['statusColor'],
+                              color: _getStatusColor(order.status),
                             ),
                           ),
                         ),
@@ -524,7 +612,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         CircleAvatar(
                           radius: 20,
                           backgroundColor: Colors.grey[100],
-                          backgroundImage: NetworkImage(order['logo']),
+                          backgroundImage: NetworkImage(order.storeLogo),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -532,7 +620,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                order['store'],
+                                order.storeName,
                                 style: GoogleFonts.poppins(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -545,7 +633,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
-                                      order['dish'],
+                                      order.dishName,
                                       style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -559,7 +647,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         Row(
                           children: [
                             Text(
-                              order['price'],
+                              order.price,
                               style: GoogleFonts.poppins(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w900,
