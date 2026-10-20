@@ -137,7 +137,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   Color _getStatusBg(String status) {
     switch (status.toLowerCase()) {
       case 'assigned':
-        return const Color(0xFFE3F2FD);
+        return widget.brandColor.withOpacity(0.12);
       case 'in progress':
         return const Color(0xFFFFF3E0);
       case 'on delivery':
@@ -152,7 +152,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'assigned':
-        return const Color(0xFF1565C0);
+        return widget.brandColor;
       case 'in progress':
         return const Color(0xFFFF5622);
       case 'on delivery':
@@ -255,8 +255,8 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundColor: const Color(0xFFE3F2FD),
-                    child: const Icon(Icons.person_rounded, color: Color(0xFF1565C0), size: 20),
+                    backgroundColor: widget.brandColor.withOpacity(0.12),
+                    child: Icon(Icons.person_rounded, color: widget.brandColor, size: 20),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -354,7 +354,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.phone_outlined, color: Color(0xFF1565C0), size: 20),
+                        icon: Icon(Icons.phone_outlined, color: widget.brandColor, size: 20),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -366,7 +366,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.chat_bubble_outline_rounded, color: Color(0xFF1565C0), size: 20),
+                        icon: Icon(Icons.chat_bubble_outline_rounded, color: widget.brandColor, size: 20),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -410,13 +410,13 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                       },
                     );
                   },
-                  icon: const Icon(Icons.phone_rounded, size: 18, color: Color(0xFF1565C0)),
+                  icon: Icon(Icons.phone_rounded, size: 18, color: widget.brandColor),
                   label: Text(
                     'Contact Rider',
-                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF1565C0)),
+                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: widget.brandColor),
                   ),
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xFF1565C0), width: 1.5),
+                    side: BorderSide(color: widget.brandColor, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
                 ),
@@ -450,7 +450,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                     style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1565C0),
+                    backgroundColor: widget.brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     elevation: 0,
                   ),
@@ -528,7 +528,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                     duration: const Duration(milliseconds: 250),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFF1565C0) : const Color(0xFFF1F3F5),
+                      color: isSelected ? widget.brandColor : const Color(0xFFF1F3F5),
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Text(

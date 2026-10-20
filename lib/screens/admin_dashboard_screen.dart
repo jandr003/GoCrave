@@ -5,6 +5,7 @@ import '../data/food_data.dart';
 import '../data/order_manager.dart';
 import 'login_screen.dart';
 import 'admin_settings_screen.dart';
+import 'admin_notifications_screen.dart';
 import '../widgets/admin/admin_header_card.dart';
 import '../widgets/admin/admin_orders_tab.dart';
 import '../widgets/admin/admin_riders_tab.dart';
@@ -167,11 +168,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
             tooltip: 'Notifications',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('No new admin alerts.', style: GoogleFonts.poppins()),
-                  backgroundColor: brandColor,
-                  behavior: SnackBarBehavior.floating,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminNotificationsScreen(),
                 ),
               );
             },
