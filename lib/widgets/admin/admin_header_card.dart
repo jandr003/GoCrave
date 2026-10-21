@@ -81,7 +81,7 @@ class AdminHeaderCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              _buildOverviewCard('128', 'Total Orders', Icons.inventory_2_rounded, const Color(0xFF1565C0), const Color(0xFFE3F2FD)),
+              _buildOverviewCard('128', 'Total Orders', Icons.inventory_2_rounded, brandColor, const Color(0xFFFFF3E0)),
               const SizedBox(width: 8),
               _buildOverviewCard('12', 'Active Deliveries', Icons.two_wheeler_rounded, brandColor, const Color(0xFFFFF3E0)),
               const SizedBox(width: 8),
@@ -130,8 +130,8 @@ class AdminHeaderCard extends StatelessWidget {
                 title: 'For Rider Assignment',
                 subtitle: 'Orders without an assigned rider',
                 badgeCount: '3',
-                badgeColor: const Color(0xFF1565C0),
-                badgeBg: const Color(0xFFE3F2FD),
+                badgeColor: brandColor,
+                badgeBg: const Color(0xFFFFF3E0),
                 onTap: onTapAssignRider,
               ),
             ],
