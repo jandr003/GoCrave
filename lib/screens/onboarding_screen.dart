@@ -15,6 +15,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   int _foodImageIndex = 0;
   Timer? _foodFadeTimer;
+  final Color brandColor = const Color(0xFFFF5622);
 
   @override
   void initState() {
@@ -218,34 +219,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  InkWell(
-                    onTap: _onFinish,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
+                  TextButton(
+                    onPressed: _onFinish,
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white70,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Skip',
-                            style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 12),
-                        ],
+                    ),
+                    child: Text(
+                      'Skip',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -260,7 +251,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 500),
                     child: Column(
@@ -305,7 +295,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: dotWidth,
                           decoration: BoxDecoration(
                             color: isSelected 
-                              ? const Color(0xFFFF5622)
+                              ? brandColor
                               : Colors.white.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -321,30 +311,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: ElevatedButton(
                       onPressed: _onPrimaryButtonPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isLastSlide ? const Color(0xFFFF5622) : Colors.white,
-                        foregroundColor: isLastSlide ? Colors.white : Colors.black,
+                        backgroundColor: brandColor,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),
                         ),
-                        elevation: isLastSlide ? 8 : 0,
+                        elevation: 6,
+                        shadowColor: brandColor.withOpacity(0.4),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            isLastSlide ? 'Get Started' : 'Next',
-                            style: GoogleFonts.poppins(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                            size: 20,
-                            color: isLastSlide ? Colors.white : Colors.black,
-                          ),
-                        ],
+                      child: Text(
+                        isLastSlide ? 'Get Started' : 'Next',
+                        style: GoogleFonts.poppins(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

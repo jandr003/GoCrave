@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'admin_contact_support_screen.dart';
+import 'admin_app_overview_screen.dart';
 
 class AdminHelpCenterScreen extends StatefulWidget {
   const AdminHelpCenterScreen({super.key});
@@ -166,10 +168,14 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                 icon: Icons.dashboard_outlined,
                 title: 'Admin App Overview',
                 subtitle: 'Learn about the dashboard and main features.',
-                onTap: () => _openDetailModal(
-                  'Admin App Overview',
-                  'Welcome to GoCrave Admin Control Panel. From here you can manage live customer orders, fleet riders, restaurant menus, and review platform sales performance analytics.',
-                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminAppOverviewScreen(),
+                    ),
+                  );
+                },
               ),
             ),
 
@@ -360,11 +366,10 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                     height: 48,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Support line: support@gocrave.app', style: GoogleFonts.poppins()),
-                            backgroundColor: brandColor,
-                            behavior: SnackBarBehavior.floating,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminContactSupportScreen(),
                           ),
                         );
                       },

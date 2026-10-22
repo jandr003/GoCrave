@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'admin_help_center_screen.dart';
 import 'admin_terms_screen.dart';
 import 'admin_privacy_policy_screen.dart';
+import 'admin_contact_support_screen.dart';
 
 class AdminHelpAboutScreen extends StatefulWidget {
   const AdminHelpAboutScreen({super.key});
@@ -155,10 +156,14 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                     icon: Icons.headset_mic_outlined,
                     title: 'Contact Support',
                     subtitle: 'Get help with technical issues',
-                    onTap: () => _openDetailModal(
-                      'Contact Support',
-                      'Need urgent technical assistance? Contact GoCrave Systems Engineer Helpdesk via email at support@gocrave.app or hotline 0917-888-GOCRAVE.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminContactSupportScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildOptionTile(
