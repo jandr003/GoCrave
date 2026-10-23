@@ -444,19 +444,9 @@ class _AdminContactSupportScreenState extends State<AdminContactSupportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'How can we help?',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 14),
-
-            Text(
               'Contact Options',
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF0F172A),
               ),

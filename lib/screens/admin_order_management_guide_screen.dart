@@ -15,7 +15,7 @@ class AdminOrderManagementGuideScreen extends StatelessWidget {
     {
       'number': '2',
       'title': 'Filtering Orders by Status',
-      'body': 'Use the available status filters to locate specific orders:\n• Pending — Orders awaiting review or rider assignment.\n• Assigned — Orders with a rider assigned.\n• In Progress — Orders currently being processed.\n• On Delivery — Orders currently being delivered to customers.\n• Completed — Orders that have been successfully delivered and completed.'
+      'body': 'Use the available status filters to locate specific orders:'
     },
     {
       'number': '3',
@@ -204,15 +204,8 @@ class AdminOrderManagementGuideScreen extends StatelessWidget {
                                       color: const Color(0xFF0F172A),
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    step['body']!,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: const Color(0xFF475569),
-                                      height: 1.5,
-                                    ),
-                                  ),
+                                  const SizedBox(height: 6),
+                                  _buildStepBody(idx, step['body']!),
                                 ],
                               ),
                             ),
@@ -288,50 +281,76 @@ class AdminOrderManagementGuideScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 28),
-
-            Center(
-              child: Text(
-                'Need additional assistance? Visit Contact Support through Help & About.',
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  color: const Color(0xFF94A3B8),
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton.icon(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back_rounded, size: 18, color: Colors.white),
-                label: Text(
-                  'Back to Help Center',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: brandColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  elevation: 0,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStepBody(int idx, String defaultBody) {
+    if (idx == 1) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            defaultBody,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: const Color(0xFF475569),
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _buildStatusTagPill('Pending', 'Orders awaiting review or rider assignment.', const Color(0xFF64748B), const Color(0xFFF1F5F9)),
+          const SizedBox(height: 8),
+          _buildStatusTagPill('Assigned', 'Orders with a rider assigned.', brandColor, const Color(0xFFFFF3E0)),
+          const SizedBox(height: 8),
+          _buildStatusTagPill('In Progress', 'Orders currently being processed.', const Color(0xFFD97706), const Color(0xFFFEF3C7)),
+          const SizedBox(height: 8),
+          _buildStatusTagPill('On Delivery', 'Orders currently being delivered to customers.', const Color(0xFF7C3AED), const Color(0xFFF3E8FF)),
+          const SizedBox(height: 8),
+          _buildStatusTagPill('Completed', 'Orders that have been successfully delivered and completed.', const Color(0xFF10B981), const Color(0xFFECFDF5)),
+        ],
+      );
+    }
+    return Text(
+      defaultBody,
+      style: GoogleFonts.poppins(
+        fontSize: 12,
+        color: const Color(0xFF475569),
+        height: 1.5,
+      ),
+    );
+  }
+
+  Widget _buildStatusTagPill(String status, String description, Color textColor, Color bgColor) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: textColor.withOpacity(0.3)),
+          ),
+          child: Text(
+            status,
+            style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: textColor),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Text(
+              description,
+              style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF475569), height: 1.4),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

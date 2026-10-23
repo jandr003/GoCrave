@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'admin_contact_support_screen.dart';
 import 'admin_app_overview_screen.dart';
+import 'admin_order_management_guide_screen.dart';
+import 'admin_rider_delivery_guide_screen.dart';
+import 'admin_restaurant_management_guide_screen.dart';
+import 'admin_payments_fees_guide_screen.dart';
+import 'admin_reports_analytics_guide_screen.dart';
+import 'admin_account_settings_guide_screen.dart';
 
 class AdminHelpCenterScreen extends StatefulWidget {
   const AdminHelpCenterScreen({super.key});
@@ -17,15 +23,15 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
   final List<Map<String, String>> _faqs = [
     {
       'question': 'How do I assign a delivery to a rider?',
-      'answer': 'Go to Orders tab, select the order awaiting assignment, tap "Contact Rider" or "Assign Rider", and select an online rider from the available fleet list.'
+      'answer': 'Navigate to the Orders tab, select an order with Pending or Unassigned status, and click "Assign Rider". Choose an active, online fleet rider from the dispatch list and confirm the assignment.'
     },
     {
       'question': 'How do I verify a customer payment?',
-      'answer': 'Check the Order Details modal for transaction reference IDs. GCash, Maya, and COD orders display real-time settlement status.'
+      'answer': 'Open the Order Details modal to review the transaction reference code and gateway status. Check real-time payment settlement records for GCash, Maya, or Cash on Delivery before confirming.'
     },
     {
       'question': 'Where can I view completed orders?',
-      'answer': 'In the Orders tab, select the "Completed" filter chip to view historical completed deliveries and customer receipts.'
+      'answer': 'Navigate to the Orders tab and select the "Completed" filter pill. All historical delivered orders, transaction totals, and digital customer receipts will be listed.'
     },
   ];
 
@@ -210,60 +216,84 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                     icon: Icons.inventory_2_outlined,
                     title: 'Order Management',
                     subtitle: 'View and manage customer orders',
-                    onTap: () => _openDetailModal(
-                      'Order Management Guide',
-                      'Track active incoming orders, filter by status (Pending, Assigned, In Progress, On Delivery, Completed), and review customer order items.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminOrderManagementGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildTopicTile(
                     icon: Icons.two_wheeler_outlined,
                     title: 'Rider & Delivery Management',
                     subtitle: 'Assign riders and monitor deliveries',
-                    onTap: () => _openDetailModal(
-                      'Rider & Delivery Guide',
-                      'Monitor online fleet riders, assign pending delivery tasks, track rider GPS locations on the map, and verify rider licenses.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminRiderDeliveryGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildTopicTile(
                     icon: Icons.store_outlined,
                     title: 'Restaurant Management',
                     subtitle: 'Manage restaurant accounts and requests',
-                    onTap: () => _openDetailModal(
-                      'Restaurant Management Guide',
-                      'Add new menu items, toggle restaurant stock availability, review kitchen order pipelines, and manage partner merchants.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminRestaurantManagementGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildTopicTile(
                     icon: Icons.account_balance_wallet_outlined,
                     title: 'Payments & Fees',
                     subtitle: 'Review transactions and payment statuses',
-                    onTap: () => _showDetailModal(
-                      'Payments & Fees Guide',
-                      'Review GCash, Maya, and COD transaction settlements, merchant commission fees, and rider payout withdrawals.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminPaymentsFeesGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildTopicTile(
                     icon: Icons.bar_chart_outlined,
                     title: 'Reports & Analytics',
                     subtitle: 'Understand sales and performance reports',
-                    onTap: () => _showDetailModal(
-                      'Reports & Analytics Guide',
-                      'Analyze daily, weekly, and monthly sales graphs, order velocity curves, average delivery response times, and customer ratings.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminReportsAnalyticsGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   _buildTopicTile(
                     icon: Icons.settings_outlined,
                     title: 'Account & Settings',
                     subtitle: 'Manage your profile and app settings',
-                    onTap: () => _showDetailModal(
-                      'Account & Settings Guide',
-                      'Update admin credentials, security preferences, notification channels, and platform delivery radius limits.',
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminAccountSettingsGuideScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

@@ -294,45 +294,7 @@ class AdminAppOverviewScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 28),
 
-            Center(
-              child: Text(
-                'Need additional assistance? Visit Contact Support through Help & About.',
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  color: const Color(0xFF94A3B8),
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton.icon(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back_rounded, size: 18, color: Colors.white),
-                label: Text(
-                  'Back to Help Center',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: brandColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  elevation: 0,
-                ),
-              ),
-            ),
 
             const SizedBox(height: 20),
           ],

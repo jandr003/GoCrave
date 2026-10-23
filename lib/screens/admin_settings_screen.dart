@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login_screen.dart';
 import 'admin_help_about_screen.dart';
+import 'admin_general_preferences_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -137,7 +138,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                   icon: Icons.tune_outlined,
                   title: 'General Preferences',
                   subtitle: 'Platform currency, language & theme preferences',
-                  onTap: () => _showSettingDetailModal(context, 'General Preferences', 'Set primary platform currency (PHP ₱), regional date-time formats, system language, and theme preferences.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminGeneralPreferencesScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
