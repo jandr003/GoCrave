@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'login_screen.dart';
 import 'admin_help_about_screen.dart';
 import 'admin_general_preferences_screen.dart';
+import 'admin_staff_permissions_screen.dart';
+import 'admin_notification_settings_screen.dart';
+import 'admin_order_policies_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -117,21 +120,42 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                   icon: Icons.assignment_turned_in_outlined,
                   title: 'Order Policies',
                   subtitle: 'Cancellation windows, refund & auto-accept rules',
-                  onTap: () => _showSettingDetailModal(context, 'Order Policies', 'Set customer order cancellation grace period (5 mins), automated merchant order acceptance, and refund dispute guidelines.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminOrderPoliciesScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
                   icon: Icons.notifications_active_outlined,
                   title: 'Notification Settings',
                   subtitle: 'Push alerts, email digests & SMS dispatch notices',
-                  onTap: () => _showSettingDetailModal(context, 'Notification Settings', 'Toggle real-time push notification channels, daily financial email digests, and high-priority rider SMS dispatch alerts.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminNotificationSettingsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
                   icon: Icons.badge_outlined,
                   title: 'Staff & Permissions',
                   subtitle: 'Admin role access levels & rider approval rights',
-                  onTap: () => _showSettingDetailModal(context, 'Staff & Permissions', 'Manage sub-admin permissions, merchant menu approval workflows, and rider government ID verification authorization.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminStaffPermissionsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
