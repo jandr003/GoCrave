@@ -6,6 +6,9 @@ import 'admin_general_preferences_screen.dart';
 import 'admin_staff_permissions_screen.dart';
 import 'admin_notification_settings_screen.dart';
 import 'admin_order_policies_screen.dart';
+import 'admin_delivery_settings_screen.dart';
+import 'admin_payment_fees_screen.dart';
+import 'admin_account_security_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -99,21 +102,42 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
-                  onTap: () => _showSettingDetailModal(context, 'Account & Security', 'Manage system authentication credentials, reset admin master passwords, and configure two-factor security alerts.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminAccountSecurityScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
                   icon: Icons.account_balance_wallet_outlined,
                   title: 'Payment & Fees',
                   subtitle: 'GCash, Maya, commission rate & base delivery fee',
-                  onTap: () => _showSettingDetailModal(context, 'Payment & Fees', 'Configure payment gateway settlements, merchant commission percentages, base delivery charges, and cash-on-delivery limits.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminPaymentFeesScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
                   icon: Icons.two_wheeler_outlined,
                   title: 'Delivery Settings',
                   subtitle: 'Max delivery radius limit & auto-dispatch rules',
-                  onTap: () => _showSettingDetailModal(context, 'Delivery Settings', 'Adjust maximum delivery distance radius (15 km), driver base fare rates, and automated rider dispatch algorithms.'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminDeliverySettingsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
