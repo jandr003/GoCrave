@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AdminHeaderCard extends StatelessWidget {
   final Color brandColor;
+  final String? adminAvatarUrl;
   final VoidCallback onTapAssignRider;
   final VoidCallback onTapManageOrders;
   final VoidCallback onTapManageRiders;
@@ -10,6 +11,7 @@ class AdminHeaderCard extends StatelessWidget {
   const AdminHeaderCard({
     super.key,
     required this.brandColor,
+    this.adminAvatarUrl,
     required this.onTapAssignRider,
     required this.onTapManageOrders,
     required this.onTapManageRiders,
@@ -56,13 +58,12 @@ class AdminHeaderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: brandColor.withOpacity(0.12),
-                  shape: BoxShape.circle,
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: brandColor.withOpacity(0.12),
+                backgroundImage: NetworkImage(
+                  adminAvatarUrl ?? 'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622',
                 ),
-                child: Icon(Icons.admin_panel_settings_rounded, color: brandColor, size: 24),
               ),
             ],
           ),
@@ -186,11 +187,7 @@ class AdminHeaderCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
-              child: Icon(icon, size: 18, color: color),
-            ),
+            Icon(icon, size: 22, color: color),
             const SizedBox(height: 10),
             Text(
               value,

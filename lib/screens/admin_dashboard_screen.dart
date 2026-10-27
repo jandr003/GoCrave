@@ -10,6 +10,7 @@ import '../widgets/admin/admin_header_card.dart';
 import '../widgets/admin/admin_orders_tab.dart';
 import '../widgets/admin/admin_riders_tab.dart';
 import '../widgets/admin/admin_reports_tab.dart';
+import '../widgets/admin/custom_curved_nav_bar.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   final String adminEmail;
@@ -209,53 +210,36 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 16,
-              offset: const Offset(0, -4),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedTab,
-          onTap: (index) {
-            setState(() {
-              _selectedTab = index;
-            });
-          },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: brandColor,
-          unselectedItemColor: Colors.grey[500],
-          selectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold),
-          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w500),
-          items: [
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 22),
-              activeIcon: Icon(Icons.home_rounded, size: 25),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.assignment_outlined, size: 22),
-              activeIcon: const Icon(Icons.assignment_rounded, size: 25),
-              label: 'Orders',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.two_wheeler_rounded, size: 22),
-              activeIcon: Icon(Icons.two_wheeler_rounded, size: 25),
-              label: 'Riders',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.more_horiz_rounded, size: 22),
-              activeIcon: Icon(Icons.more_horiz_rounded, size: 25),
-              label: 'More',
-            ),
-          ],
-        ),
+      bottomNavigationBar: CustomCurvedNavBar(
+        currentIndex: _selectedTab,
+        brandColor: brandColor,
+        onTap: (index) {
+          setState(() {
+            _selectedTab = index;
+          });
+        },
+        items: const [
+          CustomCurvedNavBarItem(
+            icon: Icons.home_outlined,
+            activeIcon: Icons.home_rounded,
+            label: 'Home',
+          ),
+          CustomCurvedNavBarItem(
+            icon: Icons.assignment_outlined,
+            activeIcon: Icons.assignment_rounded,
+            label: 'Orders',
+          ),
+          CustomCurvedNavBarItem(
+            icon: Icons.two_wheeler_outlined,
+            activeIcon: Icons.two_wheeler_rounded,
+            label: 'Riders',
+          ),
+          CustomCurvedNavBarItem(
+            icon: Icons.more_horiz_rounded,
+            activeIcon: Icons.more_horiz_rounded,
+            label: 'More',
+          ),
+        ],
       ),
     );
   }

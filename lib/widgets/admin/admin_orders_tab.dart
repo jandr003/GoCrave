@@ -184,24 +184,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   Color _getStatusBg(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return const Color(0xFFFFF3E0);
-      case 'assigned':
-        return widget.brandColor.withOpacity(0.12);
-      case 'in progress':
-        return const Color(0xFFEFF6FF);
-      case 'completed':
-        return const Color(0xFFECFDF5);
-      case 'cancelled':
-        return const Color(0xFFF1F5F9);
-      default:
-        return Colors.grey[100]!;
-    }
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return const Color(0xFFD97706);
+        return const Color(0xFFEF4444);
       case 'assigned':
         return widget.brandColor;
       case 'in progress':
@@ -213,6 +196,10 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
       default:
         return Colors.grey[700]!;
     }
+  }
+
+  Color _getStatusColor(String status) {
+    return Colors.white;
   }
 
   IconData _getStatusIcon(String status) {
@@ -606,14 +593,14 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
         const SizedBox(height: 16),
 
         SizedBox(
-          height: 105,
+          height: 118,
           child: ListView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             children: [
               _buildKpiCard('Total Orders', '128', '↗ +12%', 'vs. last week', widget.brandColor, Icons.assignment_rounded, true),
               const SizedBox(width: 10),
-              _buildKpiCard('Pending', '18', '↘ 14%', 'of total', const Color(0xFFD97706), Icons.access_time_filled_rounded, false),
+              _buildKpiCard('Pending', '18', '↘ 14%', 'of total', const Color(0xFFEF4444), Icons.access_time_filled_rounded, false),
               const SizedBox(width: 10),
               _buildKpiCard('In Progress', '34', '↘ 27%', 'of total', const Color(0xFF2563EB), Icons.two_wheeler_rounded, false),
               const SizedBox(width: 10),
@@ -687,21 +674,29 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(14),
-                          child: Image.network(
-                            order.storeLogo,
-                            width: 64,
-                            height: 64,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 64,
-                                height: 64,
-                                color: const Color(0xFFFFF3E0),
-                                child: Icon(Icons.fastfood_rounded, color: widget.brandColor),
-                              );
-                            },
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 3)),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              order.storeLogo,
+                              width: 68,
+                              height: 68,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 68,
+                                  height: 68,
+                                  color: const Color(0xFFFFF3E0),
+                                  child: Icon(Icons.fastfood_rounded, color: widget.brandColor),
+                                );
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(width: 14),
@@ -715,7 +710,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                                   Text(
                                     order.id,
                                     style: GoogleFonts.poppins(
-                                      fontSize: 15,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: const Color(0xFF0F172A),
                                     ),
@@ -761,12 +756,12 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFF1F5F9),
+                                      color: const Color(0xFFEFF6FF),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
                                       'Customer',
-                                      style: GoogleFonts.poppins(fontSize: 9, fontWeight: FontWeight.bold, color: const Color(0xFF64748B)),
+                                      style: GoogleFonts.poppins(fontSize: 9, fontWeight: FontWeight.bold, color: const Color(0xFF2563EB)),
                                     ),
                                   ),
                                 ],
@@ -798,22 +793,37 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     const Divider(height: 1, color: Color(0xFFF1F5F9)),
                     const SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          order.price,
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w900,
-                            color: const Color(0xFF0F172A),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.brandColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '🍱 ${order.dishName}',
+                            style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        const Icon(Icons.chevron_right_rounded, color: Color(0xFF94A3B8), size: 20),
+                        Row(
+                          children: [
+                            Text(
+                              order.price,
+                              style: GoogleFonts.poppins(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w900,
+                                color: const Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            const Icon(Icons.chevron_right_rounded, color: Color(0xFF94A3B8), size: 20),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -826,17 +836,16 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
     );
   }
 
-  Widget _buildKpiCard(String label, String value, String rate, String period, Color iconColor, IconData icon, bool isPositive) {
+  Widget _buildKpiCard(String label, String value, String rate, String period, Color cardColor, IconData icon, bool isPositive) {
     return Container(
       width: 125,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: cardColor.withOpacity(0.3),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -846,40 +855,28 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: iconColor, size: 16),
-              ),
-            ],
-          ),
+          Icon(icon, color: Colors.white, size: 20),
           Text(
             label,
-            style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF64748B)),
+            style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.9)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
             value,
-            style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w900, color: const Color(0xFF0F172A)),
+            style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
           ),
           Row(
             children: [
               Text(
                 rate,
-                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: isPositive ? const Color(0xFF10B981) : const Color(0xFF2563EB)),
+                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              const SizedBox(width: 2),
+              const SizedBox(width: 3),
               Expanded(
                 child: Text(
                   period,
-                  style: GoogleFonts.poppins(fontSize: 9, color: const Color(0xFF94A3B8)),
+                  style: GoogleFonts.poppins(fontSize: 9, color: Colors.white.withOpacity(0.85)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
