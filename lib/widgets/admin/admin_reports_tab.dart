@@ -280,7 +280,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                 ),
                 const SizedBox(height: 16),
                 _buildDynamicStatusRow(
-                  dotColor: const Color(0xFF64748B),
+                  dotColor: const Color(0xFFEF4444),
                   label: 'Pending',
                   count: statusCounts['Pending'] ?? 0,
                   total: effectiveTotalOrders,
@@ -301,7 +301,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                 ),
                 const Divider(height: 20, color: Color(0xFFF1F5F9)),
                 _buildDynamicStatusRow(
-                  dotColor: const Color(0xFFA855F7),
+                  dotColor: const Color(0xFF2563EB),
                   label: 'On Delivery',
                   count: statusCounts['On Delivery'] ?? 0,
                   total: effectiveTotalOrders,

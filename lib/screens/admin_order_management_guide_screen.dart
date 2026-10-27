@@ -302,7 +302,7 @@ class AdminOrderManagementGuideScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _buildStatusTagPill('Pending', 'Orders awaiting review or rider assignment.', const Color(0xFF64748B), const Color(0xFFF1F5F9)),
+          _buildStatusTagPill('Pending', 'Orders awaiting review or rider assignment.', const Color(0xFFEF4444), const Color(0xFFFEF2F2)),
           const SizedBox(height: 8),
           _buildStatusTagPill('Assigned', 'Orders with a rider assigned.', brandColor, const Color(0xFFFFF3E0)),
           const SizedBox(height: 8),

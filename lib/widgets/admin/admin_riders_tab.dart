@@ -495,7 +495,7 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
     } else if (status == 'On Delivery') {
       cardColor = const Color(0xFF10B981);
     } else if (status == 'Pending Review') {
-      cardColor = const Color(0xFFD97706);
+      cardColor = const Color(0xFFEF4444);
     } else {
       cardColor = const Color(0xFF64748B);
     }
