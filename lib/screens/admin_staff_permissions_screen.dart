@@ -637,19 +637,7 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
               ),
             ),
 
-            const SizedBox(height: 20),
 
-            Center(
-              child: Text(
-                'Illustrative example only. The staff records and counts above are sample data.',
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  color: const Color(0xFF94A3B8),
-                  fontStyle: FontStyle.italic,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
 
             const SizedBox(height: 20),
           ],
