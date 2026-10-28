@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,8 +22,86 @@ class AdminHeaderCard extends StatefulWidget {
 }
 
 class _AdminHeaderCardState extends State<AdminHeaderCard> {
-  int _selectedSalesFilterIndex = 0;
-  final List<String> _salesFilters = ['Last 7 Days', 'This Month', 'This Year'];
+  final List<double> _weeklyOrderCounts = [10.0, 20.0, 20.0, 32.0, 26.0, 40.0, 47.0];
+
+  void _showQuickDetailsModal(String title, String subtitle, String category, String details) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF3E0),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  category,
+                  style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(title, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+              Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B))),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8FAFC),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                ),
+                child: Text(
+                  details,
+                  style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF334155), height: 1.5),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if (category.contains('Order') || category.contains('Payment')) {
+                      widget.onTapManageOrders();
+                    } else if (category.contains('Rider')) {
+                      widget.onTapManageRiders();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: widget.brandColor,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  child: Text('Take Action Now', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +130,19 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Good morning, Admin',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF0F172A),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        const Text('👋', style: TextStyle(fontSize: 16)),
-                      ],
+                    Text(
+                      'Good morning, Admin',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF0F172A),
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'Here\'s what\'s happening with your GoCrave platform today.',
-                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
-                      maxLines: 2,
+                      'Manage your delivery operations',
+                      style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -89,429 +160,231 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
           ),
         ),
 
-        SizedBox(
-          height: 122,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              _buildGradientKpiCard(
-                title: 'Total Orders',
-                value: '128',
-                rate: '↗ +12%',
-                icon: Icons.shopping_bag_rounded,
-                bgGradient: const LinearGradient(
-                  colors: [Color(0xFFFFF3E0), Color(0xFFFFE0B2)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                accentColor: widget.brandColor,
-              ),
-              const SizedBox(width: 10),
-              _buildGradientKpiCard(
-                title: 'Active Riders',
-                value: '24',
-                rate: '↗ +8%',
-                icon: Icons.two_wheeler_rounded,
-                bgGradient: const LinearGradient(
-                  colors: [Color(0xFFE0F2FE), Color(0xFFBAE6FD)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                accentColor: const Color(0xFF0284C7),
-              ),
-              const SizedBox(width: 10),
-              _buildGradientKpiCard(
-                title: 'Restaurants',
-                value: '86',
-                rate: '↗ +5%',
-                icon: Icons.storefront_rounded,
-                bgGradient: const LinearGradient(
-                  colors: [Color(0xFFDCFCE7), Color(0xFFBBF7D0)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                accentColor: const Color(0xFF16A34A),
-              ),
-              const SizedBox(width: 10),
-              _buildGradientKpiCard(
-                title: 'Customers',
-                value: '12.5K',
-                rate: '↗ +7%',
-                icon: Icons.group_rounded,
-                bgGradient: const LinearGradient(
-                  colors: [Color(0xFFF3E8FF), Color(0xFFE9D5FF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                accentColor: const Color(0xFF9333EA),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.02),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.bar_chart_rounded, color: widget.brandColor, size: 18),
-                            const SizedBox(width: 6),
-                            Text(
-                              'Sales Overview',
-                              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Total sales in the last 7 days',
-                          style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B)),
-                        ),
-                      ],
-                    ),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<int>(
-                        value: _selectedSalesFilterIndex,
-                        dropdownColor: Colors.white,
-                        icon: Icon(Icons.keyboard_arrow_down_rounded, color: widget.brandColor, size: 18),
-                        style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-                        onChanged: (val) {
-                          if (val != null) setState(() => _selectedSalesFilterIndex = val);
-                        },
-                        items: List.generate(_salesFilters.length, (idx) {
-                          return DropdownMenuItem(
-                            value: idx,
-                            child: Text(_salesFilters[idx]),
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    Text(
-                      '₱48,750',
-                      style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w900, color: const Color(0xFF0F172A)),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFECFDF5),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 12),
-                          const SizedBox(width: 2),
-                          Text(
-                            '+14%',
-                            style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF10B981)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 18),
-                SizedBox(
-                  height: 130,
-                  child: CustomPaint(
-                    size: const Size(double.infinity, 130),
-                    painter: _BezierSalesChartPainter(brandColor: widget.brandColor),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: const Color(0xFFE2E8F0)),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 70,
-                        height: 70,
-                        child: CustomPaint(
-                          painter: _DonutChartPainter(
-                            completedPct: 0.68,
-                            inProgressPct: 0.20,
-                            pendingPct: 0.12,
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('68%', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w900, color: const Color(0xFF0F172A))),
-                                Text('Completed', style: GoogleFonts.poppins(fontSize: 7, color: const Color(0xFF64748B))),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildLegendItem('Completed', widget.brandColor),
-                            const SizedBox(height: 4),
-                            _buildLegendItem('In Progress', const Color(0xFF2563EB)),
-                            const SizedBox(height: 4),
-                            _buildLegendItem('Pending', const Color(0xFF94A3B8)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Rider Activity', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                    InkWell(
-                      onTap: widget.onTapManageRiders,
-                      child: Text('View All →', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                _buildRiderActivityRow('Miguel Reyes', 'Available', const Color(0xFF10B981), null),
-                const Divider(height: 16, color: Color(0xFFF1F5F9)),
-                _buildRiderActivityRow('Juan Dela Cruz', 'On Delivery', const Color(0xFF2563EB), '#1247'),
-                const Divider(height: 16, color: Color(0xFFF1F5F9)),
-                _buildRiderActivityRow('Adrian Cruz', 'Pending Review', const Color(0xFFD97706), null),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.assignment_outlined, color: widget.brandColor, size: 18),
-                        const SizedBox(width: 6),
-                        Text('Recent Orders', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                      ],
-                    ),
-                    InkWell(
-                      onTap: widget.onTapManageOrders,
-                      child: Text('View All →', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                _buildRecentOrderRow('#GC-0000128', 'Maria Santos', 'KFC', 'In Progress', const Color(0xFF2563EB), const Color(0xFFEFF6FF), '₱320', '2m ago'),
-                const Divider(height: 16, color: Color(0xFFF1F5F9)),
-                _buildRecentOrderRow('#GC-0000127', 'Juan Dela Cruz', 'McDonald\'s', 'Pending', const Color(0xFFEF4444), const Color(0xFFFEF2F2), '₱249', '5m ago'),
-                const Divider(height: 16, color: Color(0xFFF1F5F9)),
-                _buildRecentOrderRow('#GC-0000126', 'Ana Reyes', 'Jollibee', 'Completed', const Color(0xFF10B981), const Color(0xFFECFDF5), '₱185', '8m ago'),
-                const Divider(height: 16, color: Color(0xFFF1F5F9)),
-                _buildRecentOrderRow('#GC-0000125', 'Mark Castillo', 'Shake Shack', 'On Delivery', const Color(0xFF2563EB), const Color(0xFFEFF6FF), '₱265', '12m ago'),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [widget.brandColor, const Color(0xFFFF7043)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(color: widget.brandColor.withOpacity(0.35), blurRadius: 12, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.bolt_rounded, color: Colors.white, size: 22),
-                    const SizedBox(width: 6),
-                    Text('Quick Actions', style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                  ],
-                ),
-                Text('Manage your platform efficiently.', style: GoogleFonts.poppins(fontSize: 11, color: Colors.white.withOpacity(0.9))),
-                const SizedBox(height: 16),
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.6,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: [
-                    _buildQuickActionGridCard('Register Rider', Icons.person_add_alt_1_rounded, widget.onTapManageRiders),
-                    _buildQuickActionGridCard('Add Restaurant', Icons.storefront_rounded, widget.onTapManageOrders),
-                    _buildQuickActionGridCard('View Reports', Icons.bar_chart_rounded, widget.onTapManageOrders),
-                    _buildQuickActionGridCard('Settings', Icons.settings_rounded, widget.onTapManageOrders),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: const Color(0xFFEEEEEE)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Order Status', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 56,
-                            height: 56,
-                            child: CustomPaint(
-                              painter: _DonutChartPainter(completedPct: 0.56, inProgressPct: 0.30, pendingPct: 0.14),
-                              child: Center(
-                                child: Text('128', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildSmallStatusRow('Completed', '72 (56%)', const Color(0xFF10B981)),
-                                _buildSmallStatusRow('In Progress', '38 (30%)', const Color(0xFF2563EB)),
-                                _buildSmallStatusRow('Pending', '18 (14%)', const Color(0xFFEF4444)),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              _buildOverviewCard('128', 'Total Orders', widget.brandColor),
+              const SizedBox(width: 10),
+              _buildOverviewCard('18', 'Active Deliveries', const Color(0xFF2563EB)),
+              const SizedBox(width: 10),
+              _buildOverviewCard('96', 'Completed Today', const Color(0xFF10B981)),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Text(
+            'Pending Actions',
+            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              _buildPendingActionCard(
+                title: 'Orders to Review',
+                subtitle: 'Orders needing admin approval',
+                badgeCount: '05',
+                badgeColor: const Color(0xFFEF4444),
+                onTap: () {
+                  widget.onTapManageOrders();
+                },
+              ),
+              const SizedBox(height: 10),
+              _buildPendingActionCard(
+                title: 'Orders to Assign',
+                subtitle: 'Orders without an assigned rider',
+                badgeCount: '03',
+                badgeColor: widget.brandColor,
+                onTap: () {
+                  widget.onTapAssignRider();
+                },
+              ),
+              const SizedBox(height: 10),
+              _buildPendingActionCard(
+                title: 'Payments to Verify',
+                subtitle: 'Transactions awaiting verification',
+                badgeCount: '02',
+                badgeColor: const Color(0xFFD97706),
+                onTap: () {
+                  widget.onTapManageOrders();
+                },
               ),
             ],
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 24),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Text(
+            'Delivery Overview',
+            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          ),
+        ),
+        const SizedBox(height: 10),
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFA7F3D0)),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color(0xFFEEEEEE)),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
+              ],
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(color: Color(0xFF10B981), shape: BoxShape.circle),
-                  child: const Icon(Icons.check_rounded, color: Colors.white, size: 18),
+                _buildDeliveryStatusPill('Assigned', '8', widget.brandColor),
+                Container(height: 30, width: 1, color: const Color(0xFFE2E8F0)),
+                _buildDeliveryStatusPill('Picked Up', '5', const Color(0xFF2563EB)),
+                Container(height: 30, width: 1, color: const Color(0xFFE2E8F0)),
+                _buildDeliveryStatusPill('On the Way', '5', const Color(0xFF10B981)),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Weekly Transactions',
+                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFECFDF5),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('All Systems Operational', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF065F46))),
-                      Text('Last updated: Apr 26, 2025 • 10:42 AM', style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF047857))),
-                    ],
+                child: Row(
+                  children: [
+                    const Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 12),
+                    const SizedBox(width: 2),
+                    Text(
+                      '+12%',
+                      style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF10B981)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(16, 18, 16, 14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color(0xFFEEEEEE)),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('128 total orders processed this week', style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B))),
+                const SizedBox(height: 14),
+                SizedBox(
+                  height: 140,
+                  width: double.infinity,
+                  child: CustomPaint(
+                    painter: _WeeklyTransactionsPainter(
+                      dataPoints: _weeklyOrderCounts,
+                      lineColor: widget.brandColor,
+                      maxY: 60,
+                    ),
                   ),
                 ),
-                Icon(Icons.restaurant_rounded, color: const Color(0xFF10B981).withOpacity(0.5), size: 28),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Text(
+            'Latest Updates',
+            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color(0xFFEEEEEE)),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
+              ],
+            ),
+            child: Column(
+              children: [
+                _buildLatestUpdateTile(
+                  title: 'New Customer Order Received',
+                  subtitle: 'Order #GC-0000128 placed by Juan Dela Cruz',
+                  time: '2 mins ago',
+                  icon: Icons.assignment_turned_in_rounded,
+                  onTap: () => _showQuickDetailsModal(
+                    'New Customer Order Received',
+                    'Order #GC-0000128 placed for McDonald\'s',
+                    'Latest Update',
+                    'Customer Juan Dela Cruz placed order #GC-0000128 for ₱249. Awaiting merchant confirmation.',
+                  ),
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildLatestUpdateTile(
+                  title: 'Rider Assignment Confirmed',
+                  subtitle: 'Miguel Reyes accepted assignment for #GC-0000128',
+                  time: '5 mins ago',
+                  icon: Icons.two_wheeler_rounded,
+                  onTap: () => _showQuickDetailsModal(
+                    'Rider Assignment Confirmed',
+                    'Miguel Reyes assigned to #GC-0000128',
+                    'Latest Update',
+                    'Rider Miguel Reyes (#R001) accepted delivery assignment for McDonald\'s order #GC-0000128.',
+                  ),
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildLatestUpdateTile(
+                  title: 'Payment Verification Updated',
+                  subtitle: 'GCash reference code #GC-8842 verified',
+                  time: '12 mins ago',
+                  icon: Icons.check_circle_rounded,
+                  onTap: () => _showQuickDetailsModal(
+                    'Payment Verification Updated',
+                    'GCash payment of ₱320 verified',
+                    'Latest Update',
+                    'GCash transaction reference code #GC-8842 was verified by Admin. Order status set to Paid.',
+                  ),
+                ),
               ],
             ),
           ),
@@ -522,268 +395,265 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
     );
   }
 
-  Widget _buildGradientKpiCard({
+  Widget _buildOverviewCard(String value, String label, Color color) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFEEEEEE)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              value,
+              style: GoogleFonts.poppins(
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: GoogleFonts.poppins(
+                fontSize: 11,
+                color: const Color(0xFF64748B),
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPendingActionCard({
     required String title,
-    required String value,
-    required String rate,
-    required IconData icon,
-    required LinearGradient bgGradient,
-    required Color accentColor,
+    required String subtitle,
+    required String badgeCount,
+    required Color badgeColor,
+    required VoidCallback onTap,
   }) {
-    return Container(
-      width: 122,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        gradient: bgGradient,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(color: accentColor.withOpacity(0.15), blurRadius: 8, offset: const Offset(0, 3)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle),
-            child: Icon(icon, color: accentColor, size: 16),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(value, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w900, color: const Color(0xFF0F172A))),
-              Text(title, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF475569)), maxLines: 1, overflow: TextOverflow.ellipsis),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  Text(rate, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: accentColor)),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLegendItem(String label, Color color) {
-    return Row(
-      children: [
-        Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-        const SizedBox(width: 6),
-        Text(label, style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF475569))),
-      ],
-    );
-  }
-
-  Widget _buildRiderActivityRow(String name, String status, Color statusColor, String? tag) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 16,
-          backgroundColor: widget.brandColor.withOpacity(0.12),
-          child: Text(name[0], style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFFEEEEEE)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(name, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-              Row(
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 6, height: 6, decoration: BoxDecoration(color: statusColor, shape: BoxShape.circle)),
-                  const SizedBox(width: 4),
-                  Text(status, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: statusColor)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        if (tag != null)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(color: const Color(0xFFFFF3E0), borderRadius: BorderRadius.circular(6)),
-            child: Text(tag, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: widget.brandColor)),
-          )
-        else
-          const Icon(Icons.chevron_right_rounded, color: Colors.grey, size: 18),
-      ],
-    );
-  }
-
-  Widget _buildRecentOrderRow(String id, String customer, String restaurant, String status, Color statusColor, Color statusBg, String price, String time) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(id, style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-                  const SizedBox(width: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(6)),
-                    child: Text(status, style: GoogleFonts.poppins(fontSize: 9, fontWeight: FontWeight.bold, color: statusColor)),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                  ),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B)),
                   ),
                 ],
               ),
-              const SizedBox(height: 2),
-              Text('$customer • $restaurant', style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B)), maxLines: 1, overflow: TextOverflow.ellipsis),
-            ],
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(price, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w900, color: const Color(0xFF0F172A))),
-            Text(time, style: GoogleFonts.poppins(fontSize: 9, color: const Color(0xFF94A3B8))),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildQuickActionGridCard(String title, IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: widget.brandColor, size: 20),
-            const SizedBox(height: 4),
-            Text(title, textAlign: TextAlign.center, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+            ),
+            Text(
+              badgeCount,
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w900, color: badgeColor),
+            ),
+            const SizedBox(width: 6),
+            const Icon(Icons.chevron_right_rounded, color: Colors.grey, size: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSmallStatusRow(String label, String val, Color color) {
-    return Row(
+  Widget _buildDeliveryStatusPill(String label, String count, Color color) {
+    return Column(
       children: [
-        Container(width: 6, height: 6, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-        const SizedBox(width: 4),
-        Expanded(
-          child: Text(label, style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF64748B))),
+        Text(
+          count,
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w900, color: color),
         ),
-        Text(val, style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+        Text(
+          label,
+          style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w600, color: const Color(0xFF64748B)),
+        ),
       ],
     );
   }
-}
 
-class _BezierSalesChartPainter extends CustomPainter {
-  final Color brandColor;
-
-  _BezierSalesChartPainter({required this.brandColor});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final points = [
-      Offset(0, size.height * 0.7),
-      Offset(size.width * 0.16, size.height * 0.55),
-      Offset(size.width * 0.33, size.height * 0.4),
-      Offset(size.width * 0.5, size.height * 0.5),
-      Offset(size.width * 0.66, size.height * 0.2),
-      Offset(size.width * 0.83, size.height * 0.3),
-      Offset(size.width, size.height * 0.1),
-    ];
-
-    final fillPath = Path();
-    fillPath.moveTo(points[0].dx, points[0].dy);
-    for (int i = 0; i < points.length - 1; i++) {
-      final p1 = points[i];
-      final p2 = points[i + 1];
-      final controlPoint1 = Offset(p1.dx + (p2.dx - p1.dx) / 2, p1.dy);
-      final controlPoint2 = Offset(p1.dx + (p2.dx - p1.dx) / 2, p2.dy);
-      fillPath.cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx, controlPoint2.dy, p2.dx, p2.dy);
-    }
-    fillPath.lineTo(size.width, size.height);
-    fillPath.lineTo(0, size.height);
-    fillPath.close();
-
-    final fillGradient = LinearGradient(
-      colors: [brandColor.withOpacity(0.4), brandColor.withOpacity(0.0)],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
+  Widget _buildLatestUpdateTile({
+    required String title,
+    required String subtitle,
+    required String time,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(22),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: widget.brandColor),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                  Text(subtitle, style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B))),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(time, style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8))),
+            const SizedBox(width: 4),
+            const Icon(Icons.chevron_right_rounded, color: Colors.grey, size: 18),
+          ],
+        ),
+      ),
     );
-
-    canvas.drawPath(
-      fillPath,
-      Paint()..shader = fillGradient.createShader(Rect.fromLTWH(0, 0, size.width, size.height)),
-    );
-
-    final linePath = Path();
-    linePath.moveTo(points[0].dx, points[0].dy);
-    for (int i = 0; i < points.length - 1; i++) {
-      final p1 = points[i];
-      final p2 = points[i + 1];
-      final controlPoint1 = Offset(p1.dx + (p2.dx - p1.dx) / 2, p1.dy);
-      final controlPoint2 = Offset(p1.dx + (p2.dx - p1.dx) / 2, p2.dy);
-      linePath.cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx, controlPoint2.dy, p2.dx, p2.dy);
-    }
-
-    final linePaint = Paint()
-      ..color = brandColor
-      ..strokeWidth = 3
-      ..style = PaintingStyle.stroke;
-
-    canvas.drawPath(linePath, linePaint);
-
-    for (var pt in points) {
-      canvas.drawCircle(pt, 4, Paint()..color = Colors.white);
-      canvas.drawCircle(pt, 2, Paint()..color = brandColor);
-    }
   }
-
-  @override
-  bool shouldRepaint(covariant _BezierSalesChartPainter oldDelegate) => false;
 }
 
-class _DonutChartPainter extends CustomPainter {
-  final double completedPct;
-  final double inProgressPct;
-  final double pendingPct;
+class _WeeklyTransactionsPainter extends CustomPainter {
+  final List<double> dataPoints;
+  final Color lineColor;
+  final double maxY;
 
-  _DonutChartPainter({
-    required this.completedPct,
-    required this.inProgressPct,
-    required this.pendingPct,
+  _WeeklyTransactionsPainter({
+    required this.dataPoints,
+    required this.lineColor,
+    required this.maxY,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = math.min(size.width, size.height) / 2 - 4;
-    final strokeWidth = 8.0;
+    const double leftPadding = 28.0;
+    const double bottomPadding = 24.0;
+    final double chartWidth = size.width - leftPadding;
+    final double chartHeight = size.height - bottomPadding;
 
-    final rect = Rect.fromCircle(center: center, radius: radius);
+    final Paint gridPaint = Paint()
+      ..color = const Color(0xFFF1F5F9)
+      ..strokeWidth = 1.0;
 
-    double startAngle = -math.pi / 2;
+    final TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
 
-    final completedAngle = completedPct * 2 * math.pi;
-    canvas.drawArc(rect, startAngle, completedAngle, false, Paint()..color = const Color(0xFFFF5622)..style = PaintingStyle.stroke..strokeWidth = strokeWidth..strokeCap = StrokeCap.round);
-    startAngle += completedAngle;
+    final List<int> yLabels = [60, 40, 20, 0];
+    for (int i = 0; i < yLabels.length; i++) {
+      final double yPos = (i / (yLabels.length - 1)) * chartHeight;
+      canvas.drawLine(Offset(leftPadding, yPos), Offset(size.width, yPos), gridPaint);
 
-    final inProgressAngle = inProgressPct * 2 * math.pi;
-    canvas.drawArc(rect, startAngle, inProgressAngle, false, Paint()..color = const Color(0xFF2563EB)..style = PaintingStyle.stroke..strokeWidth = strokeWidth..strokeCap = StrokeCap.round);
-    startAngle += inProgressAngle;
+      textPainter.text = TextSpan(
+        text: '${yLabels[i]}',
+        style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(0, yPos - textPainter.height / 2));
+    }
 
-    final pendingAngle = pendingPct * 2 * math.pi;
-    canvas.drawArc(rect, startAngle, pendingAngle, false, Paint()..color = const Color(0xFF94A3B8)..style = PaintingStyle.stroke..strokeWidth = strokeWidth..strokeCap = StrokeCap.round);
+    final List<String> xLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    for (int i = 0; i < xLabels.length; i++) {
+      final double xPos = leftPadding + (i / (xLabels.length - 1)) * chartWidth;
+      textPainter.text = TextSpan(
+        text: xLabels[i],
+        style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(xPos - textPainter.width / 2, size.height - textPainter.height + 4));
+    }
+
+    if (dataPoints.isEmpty) return;
+
+    final List<Offset> points = [];
+    final double stepX = chartWidth / (dataPoints.length - 1);
+    for (int i = 0; i < dataPoints.length; i++) {
+      final double x = leftPadding + (i * stepX);
+      final double normalizedY = (dataPoints[i] / maxY).clamp(0.0, 1.0);
+      final double y = chartHeight - (normalizedY * chartHeight);
+      points.add(Offset(x, y));
+    }
+
+    final Path linePath = Path();
+    linePath.moveTo(points[0].dx, points[0].dy);
+
+    for (int i = 0; i < points.length - 1; i++) {
+      final Offset p0 = points[i];
+      final Offset p1 = points[i + 1];
+      final Offset controlPoint1 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p0.dy);
+      final Offset controlPoint2 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p1.dy);
+      linePath.cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx, controlPoint2.dy, p1.dx, p1.dy);
+    }
+
+    final Path fillPath = Path.from(linePath);
+    fillPath.lineTo(points.last.dx, chartHeight);
+    fillPath.lineTo(points.first.dx, chartHeight);
+    fillPath.close();
+
+    final Paint fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          lineColor.withOpacity(0.28),
+          lineColor.withOpacity(0.0),
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, chartHeight));
+
+    canvas.drawPath(fillPath, fillPaint);
+
+    final Paint strokePaint = Paint()
+      ..color = lineColor
+      ..strokeWidth = 3.0
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawPath(linePath, strokePaint);
+
+    final Paint dotOutlinePaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final Paint dotInnerPaint = Paint()
+      ..color = lineColor
+      ..style = PaintingStyle.fill;
+
+    for (final Offset point in points) {
+      canvas.drawCircle(point, 5.0, dotOutlinePaint);
+      canvas.drawCircle(point, 3.5, dotInnerPaint);
+    }
   }
 
   @override
-  bool shouldRepaint(covariant _DonutChartPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _WeeklyTransactionsPainter oldDelegate) {
+    return oldDelegate.dataPoints != dataPoints || oldDelegate.lineColor != lineColor;
+  }
 }
