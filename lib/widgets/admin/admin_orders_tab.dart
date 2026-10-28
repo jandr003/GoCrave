@@ -598,13 +598,13 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             children: [
-              _buildKpiCard('Total Orders', '128', '↗ +12%', 'vs. last week', widget.brandColor, Icons.assignment_rounded, true),
+              _buildKpiCard('Total Orders', '128', '+12%', 'vs. last week', widget.brandColor, Icons.assignment_rounded, true),
               const SizedBox(width: 10),
-              _buildKpiCard('Pending', '18', '↘ 14%', 'of total', const Color(0xFFEF4444), Icons.access_time_filled_rounded, false),
+              _buildKpiCard('Pending', '18', '14%', 'of total', const Color(0xFFEF4444), Icons.access_time_filled_rounded, false),
               const SizedBox(width: 10),
-              _buildKpiCard('In Progress', '34', '↘ 27%', 'of total', const Color(0xFF2563EB), Icons.two_wheeler_rounded, false),
+              _buildKpiCard('In Progress', '34', '27%', 'of total', const Color(0xFF2563EB), Icons.two_wheeler_rounded, false),
               const SizedBox(width: 10),
-              _buildKpiCard('Completed', '76', '↘ 59%', 'of total', const Color(0xFF10B981), Icons.check_circle_rounded, false),
+              _buildKpiCard('Completed', '76', '59%', 'of total', const Color(0xFF10B981), Icons.check_circle_rounded, false),
             ],
           ),
         ),
@@ -868,6 +868,12 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
           ),
           Row(
             children: [
+              Icon(
+                isPositive ? Icons.trending_up_rounded : Icons.trending_down_rounded,
+                color: Colors.white,
+                size: 13,
+              ),
+              const SizedBox(width: 3),
               Text(
                 rate,
                 style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),

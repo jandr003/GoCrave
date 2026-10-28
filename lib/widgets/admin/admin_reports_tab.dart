@@ -30,29 +30,6 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
   final List<String> _tabs = ['Orders', 'Revenue', 'Performance'];
   final List<String> _availableDates = ['Apr 26, 2025', 'Apr 25, 2025', 'Apr 24, 2025', 'This Week', 'This Month'];
 
-  static const List<OrderModel> _defaultOrders = [
-    OrderModel(
-      id: '#GC-0000128',
-      storeName: 'McDonald\'s',
-      storeLogo: '',
-      dishName: 'Big Mac Meal',
-      customerName: 'Sofia Mendoza',
-      customerPhone: '+63 917 888 9900',
-      address: 'Malolos, Bulacan',
-      riderName: 'Ramon Castillo',
-      riderAvatar: '',
-      price: '₱ 249',
-      time: '10:42 AM',
-      status: 'Assigned',
-      cityName: 'Malolos, Bulacan',
-      centerLatLng: LatLng(14.8560, 120.8190),
-      storeLatLng: LatLng(14.8527, 120.8160),
-      riderLatLng: LatLng(14.8560, 120.8163),
-      customerLatLng: LatLng(14.8570, 120.8252),
-      routePoints: [],
-    ),
-  ];
-
   Map<int, List<double>> get _chartDataSets {
     if (widget.customChartData != null) {
       return {
@@ -321,13 +298,14 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Reports',
+                'Reports Summary',
                 style: GoogleFonts.poppins(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF0F172A),
                 ),
               ),
+              _buildDateDropdownPill(),
             ],
           ),
 
@@ -372,10 +350,6 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               }),
             ),
           ),
-
-          const SizedBox(height: 14),
-
-          _buildDateDropdownPill(),
 
           const SizedBox(height: 18),
 
