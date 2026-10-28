@@ -235,9 +235,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             label: 'Riders',
           ),
           CustomCurvedNavBarItem(
-            icon: Icons.more_horiz_rounded,
-            activeIcon: Icons.more_horiz_rounded,
-            label: 'More',
+            icon: Icons.bar_chart_outlined,
+            activeIcon: Icons.bar_chart_rounded,
+            label: 'Reports',
           ),
         ],
       ),
