@@ -208,24 +208,35 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           const SizedBox(width: 8),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            if (_selectedTab == 0)
-              AdminHeaderCard(
-                brandColor: brandColor,
-                adminAvatarUrl: _adminAvatarUrl,
-                onTapAssignRider: () => setState(() => _selectedTab = 2),
-                onTapManageOrders: () => setState(() => _selectedTab = 1),
-                onTapManageRiders: () => setState(() => _selectedTab = 2),
-              ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: _buildSelectedTabContent(),
+      body: IndexedStack(
+        index: _selectedTab,
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: AdminHeaderCard(
+              brandColor: brandColor,
+              adminAvatarUrl: _adminAvatarUrl,
+              onTapAssignRider: () => setState(() => _selectedTab = 2),
+              onTapManageOrders: () => setState(() => _selectedTab = 1),
+              onTapManageRiders: () => setState(() => _selectedTab = 2),
             ),
-          ],
-        ),
+          ),
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(20.0),
+            child: AdminOrdersTab(brandColor: brandColor),
+          ),
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(20.0),
+            child: AdminRidersTab(brandColor: brandColor),
+          ),
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(20.0),
+            child: AdminReportsTab(brandColor: brandColor),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomCurvedNavBar(
         currentIndex: _selectedTab,
