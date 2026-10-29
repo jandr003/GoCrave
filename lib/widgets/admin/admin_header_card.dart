@@ -221,41 +221,7 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
           ),
         ),
 
-        const SizedBox(height: 24),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Text(
-            'Delivery Overview',
-            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-          ),
-        ),
-        const SizedBox(height: 10),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildDeliveryStatusPill('Assigned', '8', widget.brandColor),
-                Container(height: 30, width: 1, color: const Color(0xFFE2E8F0)),
-                _buildDeliveryStatusPill('Picked Up', '5', const Color(0xFF2563EB)),
-                Container(height: 30, width: 1, color: const Color(0xFFE2E8F0)),
-                _buildDeliveryStatusPill('On the Way', '5', const Color(0xFF10B981)),
-              ],
-            ),
-          ),
-        ),
 
         const SizedBox(height: 24),
 
