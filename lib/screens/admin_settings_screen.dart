@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'login_screen.dart';
 import 'admin_help_about_screen.dart';
 import 'admin_general_preferences_screen.dart';
@@ -23,6 +25,183 @@ class AdminSettingsScreen extends StatefulWidget {
 
 class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
   final Color brandColor = const Color(0xFFFF5622);
+  final ImagePicker _picker = ImagePicker();
+
+  String _currentAvatarUrl = 'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622';
+  File? _customAvatarFile;
+
+  final List<String> _cartoonAvatarPresets = [
+    'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622',
+    'https://api.dicebear.com/7.x/avataaars/png?seed=SuperAdmin01&backgroundColor=2563eb',
+    'https://api.dicebear.com/7.x/avataaars/png?seed=TechAdmin02&backgroundColor=10b981',
+    'https://api.dicebear.com/7.x/avataaars/png?seed=MasterAdmin03&backgroundColor=d97706',
+    'https://api.dicebear.com/7.x/avataaars/png?seed=ExecutiveAdmin04&backgroundColor=a855f7',
+    'https://api.dicebear.com/7.x/avataaars/png?seed=LeaderAdmin05&backgroundColor=0284c7',
+  ];
+
+  Future<void> _pickImageFromGallery(StateSetter setModalState) async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setModalState(() {
+        _customAvatarFile = File(image.path);
+      });
+      setState(() {
+        _customAvatarFile = File(image.path);
+      });
+    }
+  }
+
+  void _showChangeAvatarModal() {
+    String selectedUrl = _currentAvatarUrl;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Change Admin Avatar', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                  Text('Select a 3D cartoon avatar preset or upload a custom profile image.', style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B))),
+                  const SizedBox(height: 20),
+
+                  Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: brandColor.withOpacity(0.12),
+                          backgroundImage: _customAvatarFile != null
+                              ? FileImage(_customAvatarFile!) as ImageProvider
+                              : NetworkImage(selectedUrl),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(color: brandColor, shape: BoxShape.circle),
+                            child: const Icon(Icons.edit_rounded, color: Colors.white, size: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  Text('3D Cartoon Presets', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
+                  const SizedBox(height: 10),
+
+                  SizedBox(
+                    height: 64,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: _cartoonAvatarPresets.length,
+                      itemBuilder: (context, idx) {
+                        final preset = _cartoonAvatarPresets[idx];
+                        final isSelected = _customAvatarFile == null && selectedUrl == preset;
+
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: InkWell(
+                            onTap: () {
+                              setModalState(() {
+                                _customAvatarFile = null;
+                                selectedUrl = preset;
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(32),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isSelected ? brandColor : Colors.transparent,
+                                  width: 2.5,
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 26,
+                                backgroundColor: const Color(0xFFF1F5F9),
+                                backgroundImage: NetworkImage(preset),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton.icon(
+                      onPressed: () => _pickImageFromGallery(setModalState),
+                      icon: Icon(Icons.photo_library_rounded, size: 18, color: brandColor),
+                      label: Text('Pick Image from Gallery', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: brandColor)),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: brandColor, width: 1.5),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _currentAvatarUrl = selectedUrl;
+                        });
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Admin profile avatar updated successfully!', style: GoogleFonts.poppins()),
+                            backgroundColor: brandColor,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: brandColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        elevation: 0,
+                      ),
+                      child: Text('Update Profile Avatar', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,33 +231,56 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: [
-                  Icon(Icons.admin_panel_settings_rounded, color: brandColor, size: 28),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            InkWell(
+              onTap: _showChangeAvatarModal,
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  children: [
+                    Stack(
                       children: [
-                        Text(
-                          'System Administrator',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF0F172A),
-                          ),
+                        CircleAvatar(
+                          radius: 26,
+                          backgroundColor: brandColor.withOpacity(0.12),
+                          backgroundImage: _customAvatarFile != null
+                              ? FileImage(_customAvatarFile!) as ImageProvider
+                              : NetworkImage(_currentAvatarUrl),
                         ),
-                        Text(
-                          'Super Admin Account • ${widget.adminEmail}',
-                          style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(color: brandColor, shape: BoxShape.circle),
+                            child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 11),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const Icon(Icons.verified_rounded, size: 18, color: Color(0xFF10B981)),
-                ],
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'System Administrator',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF0F172A),
+                            ),
+                          ),
+                          Text(
+                            'Super Admin Account • ${widget.adminEmail}',
+                            style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.verified_rounded, size: 18, color: Color(0xFF10B981)),
+                  ],
+                ),
               ),
             ),
 
@@ -280,56 +482,6 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showSettingDetailModal(BuildContext context, String title, String description) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(title, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
-              const SizedBox(height: 10),
-              Text(
-                description,
-                style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569), height: 1.5),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: brandColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    elevation: 0,
-                  ),
-                  child: Text('Close Configuration', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
