@@ -234,22 +234,19 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                 'Weekly Transactions',
                 style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 12),
-                    const SizedBox(width: 2),
-                    Text(
-                      '+12%',
-                      style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF10B981)),
+              Row(
+                children: [
+                  const Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    '+12%',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      color: const Color(0xFF10B981),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
