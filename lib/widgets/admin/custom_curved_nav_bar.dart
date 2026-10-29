@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomCurvedNavBarItem {
   final IconData icon;
@@ -97,10 +98,24 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
                       children: [
                         Opacity(
                           opacity: isSelected ? 0.0 : 1.0,
-                          child: Icon(
-                            item.icon,
-                            color: const Color(0xFF64748B),
-                            size: 22,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                item.icon,
+                                color: const Color(0xFF64748B),
+                                size: 20,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                item.label,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF64748B),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
