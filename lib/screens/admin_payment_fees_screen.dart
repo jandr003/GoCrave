@@ -251,11 +251,11 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
+        backgroundColor: brandColor,
+        elevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -263,7 +263,7 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
           style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF0F172A),
+            color: Colors.white,
           ),
         ),
         centerTitle: false,

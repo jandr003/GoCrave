@@ -101,10 +101,10 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
+        backgroundColor: brandColor,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -114,7 +114,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0F172A),
+                color: Colors.white,
               ),
             ),
             if (unreadCount > 0) ...[
@@ -122,7 +122,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: brandColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
@@ -130,7 +130,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: brandColor,
                   ),
                 ),
               ),
@@ -145,7 +145,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: brandColor,
+                color: Colors.white,
               ),
             ),
           ),
