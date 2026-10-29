@@ -72,7 +72,7 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
 
             Text(
               '1. Password & Authentication',
-              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: brandColor),
+              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
             const SizedBox(height: 12),
 
@@ -118,7 +118,7 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
 
             Text(
               '2. Login Activity',
-              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: brandColor),
+              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
             const SizedBox(height: 12),
 
@@ -164,7 +164,7 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
 
             Text(
               '3. Account Recovery',
-              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: brandColor),
+              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
             ),
             const SizedBox(height: 12),
 
