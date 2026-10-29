@@ -217,7 +217,7 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
             SizedBox(
               width: double.infinity,
               height: 52,
-              child: OutlinedButton.icon(
+              child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -225,13 +225,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     (route) => false,
                   );
                 },
-                icon: const Icon(Icons.logout_rounded, size: 18, color: Color(0xFFEF4444)),
+                icon: const Icon(Icons.logout_rounded, size: 18, color: Colors.white),
                 label: Text(
                   'Log Out of Admin Control Panel',
-                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFFEF4444)),
+                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color(0xFFEF4444), width: 1.5),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFEF4444),
+                  elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
               ),
