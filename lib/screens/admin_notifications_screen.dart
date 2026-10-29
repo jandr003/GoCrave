@@ -257,17 +257,10 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: item['bgColor'] as Color,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  item['icon'] as IconData,
-                  color: item['iconColor'] as Color,
-                  size: 22,
-                ),
+              Icon(
+                item['icon'] as IconData,
+                color: item['iconColor'] as Color,
+                size: 22,
               ),
               const SizedBox(width: 14),
               Expanded(
