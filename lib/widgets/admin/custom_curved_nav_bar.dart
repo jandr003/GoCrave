@@ -43,7 +43,7 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
         clipBehavior: Clip.none,
         children: [
           Positioned.fill(
-            top: 15,
+            top: 10,
             child: CustomPaint(
               painter: _CurvedNotchPainter(
                 activeX: activeX,
@@ -57,7 +57,7 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOutCubic,
             left: activeX - 26,
-            top: -2,
+            top: -10,
             child: Container(
               width: 52,
               height: 52,
@@ -81,7 +81,7 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
           ),
 
           Positioned.fill(
-            top: 22,
+            top: 8,
             child: Row(
               children: List.generate(widget.items.length, (index) {
                 final isSelected = widget.currentIndex == index;
