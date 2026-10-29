@@ -23,6 +23,7 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   int _selectedTab = 0;
   final Color brandColor = const Color(0xFFFF5622);
+  String _adminAvatarUrl = 'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622';
 
   final Map<String, bool> _foodStockStatus = {
     for (var item in allFoodItems) item['title']!: true,
@@ -180,13 +181,28 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
             tooltip: 'Admin Settings',
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final updatedAvatar = await Navigator.push<String>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AdminSettingsScreen(adminEmail: widget.adminEmail),
+                  builder: (context) => AdminSettingsScreen(
+                    adminEmail: widget.adminEmail,
+                    currentAvatarUrl: _adminAvatarUrl,
+                    onAvatarUpdated: (newUrl) {
+                      if (mounted) {
+                        setState(() {
+                          _adminAvatarUrl = newUrl;
+                        });
+                      }
+                    },
+                  ),
                 ),
               );
+              if (updatedAvatar != null && mounted) {
+                setState(() {
+                  _adminAvatarUrl = updatedAvatar;
+                });
+              }
             },
           ),
           const SizedBox(width: 8),
@@ -199,6 +215,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_selectedTab == 0)
               AdminHeaderCard(
                 brandColor: brandColor,
+                adminAvatarUrl: _adminAvatarUrl,
                 onTapAssignRider: () => setState(() => _selectedTab = 2),
                 onTapManageOrders: () => setState(() => _selectedTab = 1),
                 onTapManageRiders: () => setState(() => _selectedTab = 2),

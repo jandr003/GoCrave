@@ -14,9 +14,14 @@ import 'admin_account_security_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
+  final String? currentAvatarUrl;
+  final Function(String newAvatarUrl)? onAvatarUpdated;
+
   const AdminSettingsScreen({
     super.key,
     this.adminEmail = 'Admin01',
+    this.currentAvatarUrl,
+    this.onAvatarUpdated,
   });
 
   @override
@@ -27,7 +32,7 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
   final Color brandColor = const Color(0xFFFF5622);
   final ImagePicker _picker = ImagePicker();
 
-  String _currentAvatarUrl = 'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622';
+  late String _currentAvatarUrl;
   File? _customAvatarFile;
 
   final List<String> _cartoonAvatarPresets = [
@@ -38,6 +43,12 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
     'https://api.dicebear.com/7.x/avataaars/png?seed=ExecutiveAdmin04&backgroundColor=a855f7',
     'https://api.dicebear.com/7.x/avataaars/png?seed=LeaderAdmin05&backgroundColor=0284c7',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentAvatarUrl = widget.currentAvatarUrl ?? 'https://api.dicebear.com/7.x/avataaars/png?seed=AdminGoCrave&backgroundColor=ff5622';
+  }
 
   Future<void> _pickImageFromGallery(StateSetter setModalState) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -174,10 +185,11 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
+                        widget.onAvatarUpdated?.call(selectedUrl);
                         setState(() {
                           _currentAvatarUrl = selectedUrl;
                         });
-                        Navigator.pop(context);
+                        Navigator.pop(context, selectedUrl);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Admin profile avatar updated successfully!', style: GoogleFonts.poppins()),
