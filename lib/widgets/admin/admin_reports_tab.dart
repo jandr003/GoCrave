@@ -165,7 +165,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                 _buildDateDropdownPill(),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: Icon(Icons.cloud_download_rounded, color: widget.brandColor, size: 22),
+                  icon: Icon(Icons.download_rounded, color: widget.brandColor, size: 22),
                   tooltip: 'Export Monthly PDF Report',
                   onPressed: () {
                     Navigator.push(
