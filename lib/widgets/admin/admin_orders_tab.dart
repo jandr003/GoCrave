@@ -688,6 +688,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                               width: 68,
                               height: 68,
                               fit: BoxFit.cover,
+                              gaplessPlayback: true,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   width: 68,

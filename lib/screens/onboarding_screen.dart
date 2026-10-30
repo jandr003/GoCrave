@@ -184,14 +184,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       imgUrl,
                       key: ValueKey<String>(imgUrl),
                       fit: BoxFit.cover,
+                      gaplessPlayback: true,
                       height: double.infinity,
                       width: double.infinity,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white.withOpacity(0.5),
-                          ),
+                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                        return AnimatedOpacity(
+                          opacity: frame == null ? 0.0 : 1.0,
+                          duration: const Duration(milliseconds: 500),
+                          child: child,
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
