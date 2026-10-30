@@ -122,10 +122,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: brandColor,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         titleSpacing: 18,
         title: Row(
           children: [
@@ -133,6 +133,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               'assets/images/gocrave_app_logo.png',
               height: 38,
               fit: BoxFit.contain,
+              color: Colors.white,
             ),
             const SizedBox(width: 8),
             Transform.translate(
@@ -144,6 +145,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   'assets/images/gocrave_official_logo.png',
                   height: 32,
                   fit: BoxFit.contain,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -153,7 +155,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           IconButton(
             icon: Stack(
               children: [
-                const Icon(Icons.notifications_none_rounded, color: Color(0xFF0F172A), size: 22),
+                const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 22),
                 Positioned(
                   right: 0,
                   top: 0,
@@ -161,7 +163,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Color(0xFFFF5622),
+                      color: Colors.white,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -179,7 +181,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
+            icon: const Icon(Icons.settings_outlined, color: Colors.white, size: 22),
             tooltip: 'Admin Settings',
             onPressed: () async {
               final updatedAvatar = await Navigator.push<String>(
