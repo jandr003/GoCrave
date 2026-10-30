@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart' hide Path;
 import '../../data/order_model.dart';
+import '../../screens/admin_export_pdf_screen.dart';
 
 class AdminReportsTab extends StatefulWidget {
   final Color brandColor;
@@ -148,20 +149,37 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
         const SizedBox(height: 18),
 
         if (_viewMode == 0) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Orders Overview',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF0F172A),
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Orders Overview',
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF0F172A),
               ),
-              _buildDateDropdownPill(),
-            ],
-          ),
+            ),
+            Row(
+              children: [
+                _buildDateDropdownPill(),
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: Icon(Icons.picture_as_pdf_rounded, color: widget.brandColor, size: 22),
+                  tooltip: 'Export Monthly PDF Report',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminExportPdfScreen(brandColor: widget.brandColor),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
 
           const SizedBox(height: 16),
 
