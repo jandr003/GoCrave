@@ -458,11 +458,6 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
             color: Colors.white,
           ),
         ),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF0F172A),
-          ),
-        ),
         centerTitle: false,
       ),
       body: SingleChildScrollView(
