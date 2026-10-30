@@ -478,14 +478,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               ),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: widget.brandColor.withOpacity(0.12),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: widget.brandColor, size: 24),
-          ),
+          Icon(icon, color: widget.brandColor, size: 24),
         ],
       ),
     );
