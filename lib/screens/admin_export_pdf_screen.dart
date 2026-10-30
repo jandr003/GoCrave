@@ -204,6 +204,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                             'assets/images/gocrave_app_logo.png',
                             height: 32,
                             fit: BoxFit.contain,
+                            gaplessPlayback: true,
                           ),
                           const SizedBox(width: 8),
                           Text(

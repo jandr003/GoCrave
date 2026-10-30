@@ -170,8 +170,15 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => AdminExportPdfScreen(brandColor: widget.brandColor),
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 300),
+                        pageBuilder: (context, animation, secondaryAnimation) => AdminExportPdfScreen(brandColor: widget.brandColor),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
                       ),
                     );
                   },
