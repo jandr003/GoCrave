@@ -757,12 +757,12 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFEFF6FF),
+                                      color: const Color(0xFF2563EB),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
                                       'Customer',
-                                      style: GoogleFonts.poppins(fontSize: 9, fontWeight: FontWeight.bold, color: const Color(0xFF2563EB)),
+                                      style: GoogleFonts.poppins(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.white),
                                     ),
                                   ),
                                 ],
