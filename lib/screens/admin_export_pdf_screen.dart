@@ -304,6 +304,33 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                     ),
                   ),
 
+                  const SizedBox(height: 16),
+
+                  Text('4. Monthly Performance & Sales Trend', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                  const SizedBox(height: 6),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Weekly Order Volume & Revenue Curve', style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF64748B))),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 110,
+                          width: double.infinity,
+                          child: CustomPaint(
+                            painter: _PdfBezierChartPainter(lineColor: widget.brandColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(height: 20),
 
                   Row(
@@ -391,4 +418,101 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
       ],
     );
   }
+}
+
+class _PdfBezierChartPainter extends CustomPainter {
+  final Color lineColor;
+
+  _PdfBezierChartPainter({required this.lineColor});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const double leftPadding = 24.0;
+    const double bottomPadding = 20.0;
+    final double chartWidth = size.width - leftPadding;
+    final double chartHeight = size.height - bottomPadding;
+
+    final Paint gridPaint = Paint()
+      ..color = const Color(0xFFE2E8F0)
+      ..strokeWidth = 1.0;
+
+    final TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
+
+    final List<int> yLabels = [60, 40, 20, 0];
+    for (int i = 0; i < yLabels.length; i++) {
+      final double yPos = (i / (yLabels.length - 1)) * chartHeight;
+      canvas.drawLine(Offset(leftPadding, yPos), Offset(size.width, yPos), gridPaint);
+
+      textPainter.text = TextSpan(
+        text: '${yLabels[i]}',
+        style: GoogleFonts.poppins(fontSize: 9, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(0, yPos - textPainter.height / 2));
+    }
+
+    final List<String> xLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    for (int i = 0; i < xLabels.length; i++) {
+      final double xPos = leftPadding + (i / (xLabels.length - 1)) * chartWidth;
+      textPainter.text = TextSpan(
+        text: xLabels[i],
+        style: GoogleFonts.poppins(fontSize: 9, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(xPos - textPainter.width / 2, size.height - textPainter.height + 2));
+    }
+
+    final dataPoints = [15.0, 32.0, 28.0, 48.0];
+    final List<Offset> points = [];
+    final double stepX = chartWidth / (dataPoints.length - 1);
+    for (int i = 0; i < dataPoints.length; i++) {
+      final double x = leftPadding + (i * stepX);
+      final double normalizedY = (dataPoints[i] / 60.0).clamp(0.0, 1.0);
+      final double y = chartHeight - (normalizedY * chartHeight);
+      points.add(Offset(x, y));
+    }
+
+    final Path linePath = Path();
+    linePath.moveTo(points[0].dx, points[0].dy);
+
+    for (int i = 0; i < points.length - 1; i++) {
+      final Offset p0 = points[i];
+      final Offset p1 = points[i + 1];
+      final Offset controlPoint1 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p0.dy);
+      final Offset controlPoint2 = Offset(p0.dx + (p1.dx - p0.dx) / 2, p1.dy);
+      linePath.cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx, controlPoint2.dy, p1.dx, p1.dy);
+    }
+
+    final Path fillPath = Path.from(linePath);
+    fillPath.lineTo(points.last.dx, chartHeight);
+    fillPath.lineTo(points.first.dx, chartHeight);
+    fillPath.close();
+
+    final Paint fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          lineColor.withOpacity(0.25),
+          lineColor.withOpacity(0.0),
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, chartHeight));
+
+    canvas.drawPath(fillPath, fillPaint);
+
+    final Paint strokePaint = Paint()
+      ..color = lineColor
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawPath(linePath, strokePaint);
+
+    for (final Offset point in points) {
+      canvas.drawCircle(point, 4.0, Paint()..color = Colors.white);
+      canvas.drawCircle(point, 2.5, Paint()..color = lineColor);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
