@@ -26,7 +26,12 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
   int _selectedReportTypeIndex = 0;
   bool _isGenerating = false;
 
-  final List<String> _timeframes = ['Real-Time (Live Orders)', 'Today', 'This Week', 'This Month'];
+  List<String> get _timeframes => [
+        'Current Batch (${_effectiveOrders.length} Orders)',
+        'Today',
+        'This Week',
+        'This Month',
+      ];
   final List<String> _reportTypes = ['Executive Financial Summary', 'Detailed Order Log', 'Revenue & Commission Statement'];
 
   List<OrderModel> get _effectiveOrders {
