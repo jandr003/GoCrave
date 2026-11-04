@@ -150,45 +150,45 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('GoCrave Admin Suite', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#FF5622'))),
+                      pw.Text('GoCrave Admin Suite', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                       pw.SizedBox(height: 4),
-                      pw.Text('Official Executive & Financial Statement (Real-World Synced)', style: pw.TextStyle(fontSize: 11, color: pw.PdfColor.fromHex('#64748B'))),
+                      pw.Text('Official Executive & Financial Statement (Real-World Synced)', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#64748B'))),
                     ],
                   ),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text('Report ID: #PDF-REP-${DateTime.now().year}-${DateTime.now().month}', style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#0F172A'))),
-                      pw.Text('Generated: ${DateTime.now().toString().split('.').first}', style: pw.TextStyle(fontSize: 9, color: pw.PdfColor.fromHex('#94A3B8'))),
+                      pw.Text('Report ID: #PDF-REP-${DateTime.now().year}-${DateTime.now().month}', style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
+                      pw.Text('Generated: ${DateTime.now().toString().split('.').first}', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#94A3B8'))),
                     ],
                   ),
                 ],
               ),
               pw.SizedBox(height: 16),
-              pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), thickness: 1.5),
+              pw.Divider(color: PdfColor.fromHex('#E2E8F0'), thickness: 1.5),
               pw.SizedBox(height: 16),
 
-              pw.Text('Timeframe: ${_timeframes[_selectedTimeframeIndex]}', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#0F172A'))),
-              pw.Text('Report Type: ${_reportTypes[_selectedReportTypeIndex]}', style: pw.TextStyle(fontSize: 11, color: pw.PdfColor.fromHex('#475569'))),
+              pw.Text('Timeframe: ${_timeframes[_selectedTimeframeIndex]}', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
+              pw.Text('Report Type: ${_reportTypes[_selectedReportTypeIndex]}', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#475569'))),
               pw.SizedBox(height: 16),
 
-              pw.Text('1. Financial Executive Summary', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#FF5622'))),
+              pw.Text('1. Financial Executive Summary', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
               pw.SizedBox(height: 8),
               pw.Container(
                 padding: const pw.EdgeInsets.all(14),
                 decoration: pw.BoxDecoration(
-                  color: pw.PdfColor.fromHex('#F8FAFC'),
+                  color: PdfColor.fromHex('#F8FAFC'),
                   borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
-                  border: pw.Border.all(color: pw.PdfColor.fromHex('#E2E8F0')),
+                  border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
                 ),
                 child: pw.Column(
                   children: [
                     _buildPdfRow('Gross Platform Revenue', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('Platform Commission (15%)', '₱${_platformCommission.toStringAsFixed(2)}'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('Total Processed Orders', '$totalOrdersCount orders'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('Average Order Value (AOV)', '₱${_averageOrderValue.toStringAsFixed(2)}'),
                   ],
                 ),
@@ -196,23 +196,23 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
               pw.SizedBox(height: 16),
 
-              pw.Text('2. Order Status Breakdown', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#FF5622'))),
+              pw.Text('2. Order Status Breakdown', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
               pw.SizedBox(height: 8),
               pw.Container(
                 padding: const pw.EdgeInsets.all(14),
                 decoration: pw.BoxDecoration(
-                  color: pw.PdfColor.fromHex('#F8FAFC'),
+                  color: PdfColor.fromHex('#F8FAFC'),
                   borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
-                  border: pw.Border.all(color: pw.PdfColor.fromHex('#E2E8F0')),
+                  border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
                 ),
                 child: pw.Column(
                   children: [
                     _buildPdfRow('Completed Deliveries', '${counts['Completed']} orders'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('In Progress Orders', '${counts['In Progress']} orders'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('Assigned / On Delivery', '${(counts['Assigned'] ?? 0) + (counts['On Delivery'] ?? 0)} orders'),
-                    pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), height: 14),
+                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
                     _buildPdfRow('Pending Verification', '${counts['Pending']} orders'),
                   ],
                 ),
@@ -220,13 +220,13 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
               pw.Spacer(),
 
-              pw.Divider(color: pw.PdfColor.fromHex('#E2E8F0'), thickness: 1),
+              pw.Divider(color: PdfColor.fromHex('#E2E8F0'), thickness: 1),
               pw.SizedBox(height: 8),
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('Authorized GoCrave Admin Document', style: pw.TextStyle(fontSize: 9, color: pw.PdfColor.fromHex('#64748B'))),
-                  pw.Text('Security Hash: #GC-PDF-SECURE-2026', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#FF5622'))),
+                  pw.Text('Authorized GoCrave Admin Document', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#64748B'))),
+                  pw.Text('Security Hash: #GC-PDF-SECURE-2026', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 ],
               ),
             ],
@@ -242,8 +242,8 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        pw.Text(label, style: pw.TextStyle(fontSize: 11, color: pw.PdfColor.fromHex('#475569'))),
-        pw.Text(value, style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: pw.PdfColor.fromHex('#0F172A'))),
+        pw.Text(label, style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#475569'))),
+        pw.Text(value, style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
       ],
     );
   }
