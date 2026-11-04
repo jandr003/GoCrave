@@ -27,6 +27,14 @@ class RiderHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hour = DateTime.now().hour;
+    String greeting = 'Good morning';
+    if (hour >= 12 && hour < 18) {
+      greeting = 'Good afternoon';
+    } else if (hour >= 18) {
+      greeting = 'Good evening';
+    }
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
@@ -49,7 +57,7 @@ class RiderHeaderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Good morning,',
+                      '$greeting,',
                       style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
                     ),
                     Text(

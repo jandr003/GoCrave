@@ -27,6 +27,14 @@ class RestaurantHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hour = DateTime.now().hour;
+    String greeting = 'Good morning';
+    if (hour >= 12 && hour < 18) {
+      greeting = 'Good afternoon';
+    } else if (hour >= 18) {
+      greeting = 'Good evening';
+    }
+
     String formattedSales = todaySales.toInt().toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
       (Match m) => '${m[1]},',
@@ -83,7 +91,7 @@ class RestaurantHeaderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Good day, Restaurant Staff',
+                      '$greeting, Restaurant Staff',
                       style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
                     ),
                     const SizedBox(height: 1),

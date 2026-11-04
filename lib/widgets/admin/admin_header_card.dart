@@ -105,6 +105,14 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
 
   @override
   Widget build(BuildContext context) {
+    final hour = DateTime.now().hour;
+    String greeting = 'Good morning';
+    if (hour >= 12 && hour < 18) {
+      greeting = 'Good afternoon';
+    } else if (hour >= 18) {
+      greeting = 'Good evening';
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,7 +139,7 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Good morning, Admin',
+                      '$greeting, Admin',
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
