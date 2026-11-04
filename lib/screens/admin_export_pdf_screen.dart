@@ -56,7 +56,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
         routePoints: const [],
       )).toList();
     }
-    // Fallback professional real-world sample orders if none exist yet
     return [
       OrderModel(
         id: '#GOC10482',
@@ -131,7 +130,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
   }
 
   double get _platformCommission => _totalGrossRevenue * 0.15;
-  double get _deliveryFleetCut => _effectiveOrders.length * 25.0; // Standard rider fee allocation
+  double get _deliveryFleetCut => _effectiveOrders.length * 25.0;
   double get _netMerchantPayout => _totalGrossRevenue - _platformCommission - _deliveryFleetCut;
   double get _averageOrderValue => _effectiveOrders.isNotEmpty ? _totalGrossRevenue / _effectiveOrders.length : 306.67;
 
@@ -204,7 +203,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              // Header
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
@@ -232,9 +230,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
               pw.Text('Timeframe: ${_timeframes[_selectedTimeframeIndex]}', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#475569'))),
               pw.SizedBox(height: 14),
 
-              // DYNAMIC CONTENT BASED ON REPORT TYPE
               if (_selectedReportTypeIndex == 0) ...[
-                // 1. EXECUTIVE FINANCIAL SUMMARY
                 pw.Text('Executive Financial Overview', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 pw.SizedBox(height: 8),
                 pw.Container(
@@ -277,7 +273,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   ),
                 ),
               ] else if (_selectedReportTypeIndex == 1) ...[
-                // 2. DETAILED ORDER LOG
                 pw.Text('Itemized Live Order Log (${orders.length} Records)', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 pw.SizedBox(height: 8),
                 pw.Table(
@@ -312,7 +307,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   ],
                 ),
               ] else ...[
-                // 3. REVENUE & COMMISSION STATEMENT
                 pw.Text('Revenue, Commission & Payout Statement', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 pw.SizedBox(height: 8),
                 pw.Container(
@@ -345,7 +339,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('Authorized GoCrave Admin Document (Real-World Synced)', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#64748B'))),
+                  pw.Text('Authorized GoCrave Admin Document', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#64748B'))),
                   pw.Text('Security Hash: #GC-SECURE-2026', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 ],
               ),
@@ -490,7 +484,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
             ),
             const SizedBox(height: 10),
 
-            // DYNAMIC UI PREVIEW CARD BASED ON SELECTED REPORT TYPE
             Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
@@ -542,7 +535,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
                   const SizedBox(height: 16),
 
-                  // DYNAMIC UI BODY CONTENT
                   if (_selectedReportTypeIndex == 0) ...[
                     Text('1. Financial Summary (Live Data)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
                     const SizedBox(height: 6),
@@ -699,7 +691,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
             const SizedBox(height: 24),
 
-            // Print / Save Button
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -722,7 +713,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
             const SizedBox(height: 12),
 
-            // Share Button
             SizedBox(
               width: double.infinity,
               height: 48,
