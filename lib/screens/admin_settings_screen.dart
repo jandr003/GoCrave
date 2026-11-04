@@ -11,6 +11,7 @@ import 'admin_order_policies_screen.dart';
 import 'admin_delivery_settings_screen.dart';
 import 'admin_payment_fees_screen.dart';
 import 'admin_account_security_screen.dart';
+import 'admin_fleet_map_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -312,6 +313,20 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
 
             Column(
               children: [
+                _buildSettingTile(
+                  icon: Icons.map_rounded,
+                  title: 'Master Fleet Operations Map',
+                  subtitle: 'Real-time city-wide multi-rider live tracking',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminFleetMapScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
