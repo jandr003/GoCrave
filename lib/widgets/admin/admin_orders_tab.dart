@@ -501,18 +501,16 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return AdminTrackingModal(
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AdminLiveTrackingScreen(
                           rider: {
                             'orderModel': order,
                           },
                           brandColor: widget.brandColor,
-                        );
-                      },
+                        ),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.map_rounded, size: 18, color: Colors.white),

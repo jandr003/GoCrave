@@ -168,12 +168,10 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
 
   void _openLiveTracking(RiderModel rider) {
     widget.onRiderSelected?.call(rider);
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return AdminTrackingModal(
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AdminLiveTrackingScreen(
           rider: {
             'id': '#${rider.id}',
             'name': rider.name,
@@ -185,8 +183,8 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
             'avatar': rider.avatarUrl,
           },
           brandColor: widget.brandColor,
-        );
-      },
+        ),
+      ),
     );
   }
 

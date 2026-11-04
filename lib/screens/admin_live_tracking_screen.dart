@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
-import '../../data/order_model.dart';
+import '../data/order_model.dart';
 
-class AdminTrackingModal extends StatefulWidget {
+class AdminLiveTrackingScreen extends StatefulWidget {
   final Map<String, dynamic> rider;
   final Color brandColor;
 
-  const AdminTrackingModal({
+  const AdminLiveTrackingScreen({
     super.key,
     required this.rider,
     required this.brandColor,
   });
 
   @override
-  State<AdminTrackingModal> createState() => _AdminTrackingModalState();
+  State<AdminLiveTrackingScreen> createState() => _AdminLiveTrackingScreenState();
 }
 
-class _AdminTrackingModalState extends State<AdminTrackingModal> {
+class _AdminLiveTrackingScreenState extends State<AdminLiveTrackingScreen> {
   final MapController _mapController = MapController();
 
   @override
@@ -33,54 +33,50 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
         ? widget.rider['orderModel'] as OrderModel
         : OrderModel.fromJson(widget.rider);
 
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.82,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FC),
+      appBar: AppBar(
+        backgroundColor: widget.brandColor,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Live Tracking (${order.id.isNotEmpty ? order.id : '#R001'})',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: false,
       ),
-      child: Column(
+      body: Column(
         children: [
-          const SizedBox(height: 12),
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
-          ),
-          const SizedBox(height: 12),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Live Tracking (${order.id})',
-                      style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-                    ),
-                    if (order.cityName.isNotEmpty)
-                      Text(
-                        'Local Delivery in ${order.cityName}',
-                        style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
-                      ),
-                  ],
-                ),
-                IconButton(icon: const Icon(Icons.close_rounded, color: Colors.grey), onPressed: () => Navigator.pop(context)),
-              ],
+          if (order.cityName.isNotEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              color: Colors.white,
+              child: Text(
+                'Local Delivery in ${order.cityName}',
+                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600, color: const Color(0xFF64748B)),
+              ),
             ),
-          ),
 
-          const Divider(height: 1, color: Color(0xFFEEEEEE)),
+          const Divider(height: 1, color: Color(0xFFE2E8F0)),
 
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: const Color(0xFFBBDEFB)),
+                border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
+                boxShadow: [
+                  BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4)),
+                ],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(22),
@@ -135,7 +131,7 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
                                     const SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
-                                        order.storeName,
+                                        order.storeName.isNotEmpty ? order.storeName : 'Store',
                                         style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -181,7 +177,7 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
                                     const SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
-                                        order.customerName,
+                                        order.customerName.isNotEmpty ? order.customerName : 'Customer',
                                         style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -208,17 +204,18 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
                         ),
                         child: Row(
                           children: [
-                            if (order.riderAvatar.isNotEmpty)
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundImage: NetworkImage(order.riderAvatar),
-                              ),
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: widget.brandColor.withOpacity(0.15),
+                              backgroundImage: order.riderAvatar.isNotEmpty ? NetworkImage(order.riderAvatar) : null,
+                              child: order.riderAvatar.isEmpty ? Icon(Icons.person, color: widget.brandColor) : null,
+                            ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(order.riderName, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                                  Text(order.riderName.isNotEmpty ? order.riderName : 'Assigned Rider', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
                                   Text('${order.storeName} ➔ ${order.customerName}', style: GoogleFonts.poppins(fontSize: 11, color: widget.brandColor, fontWeight: FontWeight.bold)),
                                 ],
                               ),
@@ -294,8 +291,9 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -306,8 +304,6 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
               ],
             ),
           ),
-
-          const SizedBox(height: 16),
         ],
       ),
     );
@@ -316,9 +312,9 @@ class _AdminTrackingModalState extends State<AdminTrackingModal> {
   Widget _buildStepBadge(String label, bool isDone) {
     return Column(
       children: [
-        Icon(isDone ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded, size: 18, color: isDone ? const Color(0xFF2E7D32) : Colors.grey),
+        Icon(isDone ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded, size: 20, color: isDone ? const Color(0xFF2E7D32) : Colors.grey),
         const SizedBox(height: 4),
-        Text(label, style: GoogleFonts.poppins(fontSize: 10, fontWeight: isDone ? FontWeight.bold : FontWeight.normal, color: isDone ? const Color(0xFF0F172A) : Colors.grey)),
+        Text(label, style: GoogleFonts.poppins(fontSize: 11, fontWeight: isDone ? FontWeight.bold : FontWeight.normal, color: isDone ? const Color(0xFF0F172A) : Colors.grey)),
       ],
     );
   }
