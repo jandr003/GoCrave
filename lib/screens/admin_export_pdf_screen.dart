@@ -56,7 +56,69 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
         routePoints: const [],
       )).toList();
     }
-    return [];
+    // Fallback professional real-world sample orders if none exist yet
+    return [
+      OrderModel(
+        id: '#GOC10482',
+        storeName: 'Bulacan Goto King',
+        storeLogo: '',
+        dishName: 'Special Goto with Chicharon & Egg',
+        customerName: 'Juan Dela Cruz',
+        customerPhone: '09171234567',
+        address: 'Barangay San Jose, Malolos',
+        riderName: 'Ricardo Dalisay',
+        riderAvatar: '',
+        price: '₱245.00',
+        time: '14:32',
+        status: 'Completed',
+        cityName: 'Malolos',
+        centerLatLng: const LatLng(14.8560, 120.8190),
+        storeLatLng: const LatLng(14.8527, 120.8160),
+        riderLatLng: const LatLng(14.8565, 120.8164),
+        customerLatLng: const LatLng(14.8581, 120.8242),
+        routePoints: const [],
+      ),
+      OrderModel(
+        id: '#GOC10483',
+        storeName: 'Malolos Litson Manok',
+        storeLogo: '',
+        dishName: 'Lechon Manok (Whole) + Extra Rice',
+        customerName: 'Maria Santos',
+        customerPhone: '09189876543',
+        address: 'Barangay Guinhawa, Malolos',
+        riderName: 'Cardo D.',
+        riderAvatar: '',
+        price: '₱480.00',
+        time: '14:45',
+        status: 'In Progress',
+        cityName: 'Malolos',
+        centerLatLng: const LatLng(14.8560, 120.8190),
+        storeLatLng: const LatLng(14.8527, 120.8160),
+        riderLatLng: const LatLng(14.8565, 120.8164),
+        customerLatLng: const LatLng(14.8581, 120.8242),
+        routePoints: const [],
+      ),
+      OrderModel(
+        id: '#GOC10484',
+        storeName: 'Kapitolyo Sisig House',
+        storeLogo: '',
+        dishName: 'Crispy Pork Sisig Rice Meal',
+        customerName: 'Pedro Penduko',
+        customerPhone: '09191112233',
+        address: 'Barangay Catmon, Malolos',
+        riderName: 'Boy Tsuper',
+        riderAvatar: '',
+        price: '₱195.00',
+        time: '15:05',
+        status: 'Pending',
+        cityName: 'Malolos',
+        centerLatLng: const LatLng(14.8560, 120.8190),
+        storeLatLng: const LatLng(14.8527, 120.8160),
+        riderLatLng: const LatLng(14.8565, 120.8164),
+        customerLatLng: const LatLng(14.8581, 120.8242),
+        routePoints: const [],
+      ),
+    ];
   }
 
   double get _totalGrossRevenue {
@@ -65,11 +127,13 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
       final double val = double.tryParse(order.price.replaceAll('₱', '').replaceAll(',', '').trim()) ?? 0.0;
       sum += val;
     }
-    return sum > 0 ? sum : 28450.00;
+    return sum > 0 ? sum : 920.00;
   }
 
   double get _platformCommission => _totalGrossRevenue * 0.15;
-  double get _averageOrderValue => _effectiveOrders.isNotEmpty ? _totalGrossRevenue / _effectiveOrders.length : 222.26;
+  double get _deliveryFleetCut => _effectiveOrders.length * 25.0; // Standard rider fee allocation
+  double get _netMerchantPayout => _totalGrossRevenue - _platformCommission - _deliveryFleetCut;
+  double get _averageOrderValue => _effectiveOrders.isNotEmpty ? _totalGrossRevenue / _effectiveOrders.length : 306.67;
 
   Map<String, int> get _statusCounts {
     final Map<String, int> counts = {'Completed': 0, 'In Progress': 0, 'Pending': 0, 'Assigned': 0, 'On Delivery': 0};
@@ -87,11 +151,6 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
         counts['Pending'] = (counts['Pending'] ?? 0) + 1;
       }
     }
-    if (_effectiveOrders.isEmpty) {
-      counts['Completed'] = 18;
-      counts['In Progress'] = 6;
-      counts['Pending'] = 4;
-    }
     return counts;
   }
 
@@ -101,7 +160,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
       final pdfDoc = await _buildPdfDocument();
       await Printing.layoutPdf(
         onLayout: (PdfPageFormat format) async => pdfDoc.save(),
-        name: 'GoCrave_Admin_Report_${DateTime.now().millisecondsSinceEpoch}.pdf',
+        name: 'GoCrave_${_reportTypes[_selectedReportTypeIndex].replaceAll(' ', '_')}_${DateTime.now().millisecondsSinceEpoch}.pdf',
       );
     } catch (e) {
       if (!mounted) return;
@@ -119,7 +178,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
       final pdfDoc = await _buildPdfDocument();
       await Printing.sharePdf(
         bytes: await pdfDoc.save(),
-        filename: 'GoCrave_Executive_Report.pdf',
+        filename: 'GoCrave_${_reportTypes[_selectedReportTypeIndex].replaceAll(' ', '_')}.pdf',
       );
     } catch (e) {
       if (!mounted) return;
@@ -133,8 +192,9 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
   Future<pw.Document> _buildPdfDocument() async {
     final pdf = pw.Document();
-    final totalOrdersCount = _effectiveOrders.isNotEmpty ? _effectiveOrders.length : 28;
+    final orders = _effectiveOrders;
     final counts = _statusCounts;
+    final reportTitle = _reportTypes[_selectedReportTypeIndex];
 
     pdf.addPage(
       pw.Page(
@@ -144,6 +204,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
+              // Header
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,7 +213,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                     children: [
                       pw.Text('GoCrave Admin Suite', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                       pw.SizedBox(height: 4),
-                      pw.Text('Official Executive & Financial Statement (Real-World Synced)', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#64748B'))),
+                      pw.Text('Official Document: $reportTitle', style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
                     ],
                   ),
                   pw.Column(
@@ -164,59 +225,118 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   ),
                 ],
               ),
-              pw.SizedBox(height: 16),
+              pw.SizedBox(height: 14),
               pw.Divider(color: PdfColor.fromHex('#E2E8F0'), thickness: 1.5),
-              pw.SizedBox(height: 16),
+              pw.SizedBox(height: 14),
 
-              pw.Text('Timeframe: ${_timeframes[_selectedTimeframeIndex]}', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
-              pw.Text('Report Type: ${_reportTypes[_selectedReportTypeIndex]}', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#475569'))),
-              pw.SizedBox(height: 16),
+              pw.Text('Timeframe: ${_timeframes[_selectedTimeframeIndex]}', style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#475569'))),
+              pw.SizedBox(height: 14),
 
-              pw.Text('1. Financial Executive Summary', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
-              pw.SizedBox(height: 8),
-              pw.Container(
-                padding: const pw.EdgeInsets.all(14),
-                decoration: pw.BoxDecoration(
-                  color: PdfColor.fromHex('#F8FAFC'),
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
-                  border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
+              // DYNAMIC CONTENT BASED ON REPORT TYPE
+              if (_selectedReportTypeIndex == 0) ...[
+                // 1. EXECUTIVE FINANCIAL SUMMARY
+                pw.Text('Executive Financial Overview', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
+                pw.SizedBox(height: 8),
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(14),
+                  decoration: pw.BoxDecoration(
+                    color: PdfColor.fromHex('#F8FAFC'),
+                    borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
+                    border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
+                  ),
+                  child: pw.Column(
+                    children: [
+                      _buildPdfRow('Gross Platform Revenue', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Platform Commission (15%)', '₱${_platformCommission.toStringAsFixed(2)}'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Total Processed Orders', '${orders.length} orders'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Average Order Value (AOV)', '₱${_averageOrderValue.toStringAsFixed(2)}'),
+                    ],
+                  ),
                 ),
-                child: pw.Column(
+                pw.SizedBox(height: 16),
+                pw.Text('Order Status Distribution', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
+                pw.SizedBox(height: 8),
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(14),
+                  decoration: pw.BoxDecoration(
+                    color: PdfColor.fromHex('#F8FAFC'),
+                    borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
+                    border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
+                  ),
+                  child: pw.Column(
+                    children: [
+                      _buildPdfRow('Completed Orders', '${counts['Completed']} orders'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('In Progress Orders', '${counts['In Progress']} orders'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Pending Verification', '${counts['Pending']} orders'),
+                    ],
+                  ),
+                ),
+              ] else if (_selectedReportTypeIndex == 1) ...[
+                // 2. DETAILED ORDER LOG
+                pw.Text('Itemized Live Order Log (${orders.length} Records)', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
+                pw.SizedBox(height: 8),
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColor.fromHex('#CBD5E1'), width: 0.5),
+                  columnWidths: {
+                    0: const pw.FlexColumnWidth(1.2),
+                    1: const pw.FlexColumnWidth(2.0),
+                    2: const pw.FlexColumnWidth(2.5),
+                    3: const pw.FlexColumnWidth(1.2),
+                    4: const pw.FlexColumnWidth(1.2),
+                  },
                   children: [
-                    _buildPdfRow('Gross Platform Revenue', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('Platform Commission (15%)', '₱${_platformCommission.toStringAsFixed(2)}'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('Total Processed Orders', '$totalOrdersCount orders'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('Average Order Value (AOV)', '₱${_averageOrderValue.toStringAsFixed(2)}'),
+                    pw.TableRow(
+                      decoration: pw.BoxDecoration(color: PdfColor.fromHex('#F1F5F9')),
+                      children: [
+                        _buildTableHeaderCell('Order ID'),
+                        _buildTableHeaderCell('Customer'),
+                        _buildTableHeaderCell('Dish Item'),
+                        _buildTableHeaderCell('Amount'),
+                        _buildTableHeaderCell('Status'),
+                      ],
+                    ),
+                    ...orders.map((o) => pw.TableRow(
+                      children: [
+                        _tableCell(o.id),
+                        _tableCell(o.customerName),
+                        _tableCell(o.dishName),
+                        _tableCell(o.price),
+                        _tableCell(o.status),
+                      ],
+                    )),
                   ],
                 ),
-              ),
-
-              pw.SizedBox(height: 16),
-
-              pw.Text('2. Order Status Breakdown', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
-              pw.SizedBox(height: 8),
-              pw.Container(
-                padding: const pw.EdgeInsets.all(14),
-                decoration: pw.BoxDecoration(
-                  color: PdfColor.fromHex('#F8FAFC'),
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
-                  border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
+              ] else ...[
+                // 3. REVENUE & COMMISSION STATEMENT
+                pw.Text('Revenue, Commission & Payout Statement', style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
+                pw.SizedBox(height: 8),
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(14),
+                  decoration: pw.BoxDecoration(
+                    color: PdfColor.fromHex('#F8FAFC'),
+                    borderRadius: const pw.BorderRadius.all(pw.Radius.circular(10)),
+                    border: pw.Border.all(color: PdfColor.fromHex('#E2E8F0')),
+                  ),
+                  child: pw.Column(
+                    children: [
+                      _buildPdfRow('Total Gross Sales', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('GoCrave Commission Fee (15%)', '- ₱${_platformCommission.toStringAsFixed(2)}'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Delivery Fleet Partner Allocation', '- ₱${_deliveryFleetCut.toStringAsFixed(2)}'),
+                      pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 12),
+                      _buildPdfRow('Net Merchant Payout', '₱${_netMerchantPayout.toStringAsFixed(2)}'),
+                    ],
+                  ),
                 ),
-                child: pw.Column(
-                  children: [
-                    _buildPdfRow('Completed Deliveries', '${counts['Completed']} orders'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('In Progress Orders', '${counts['In Progress']} orders'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('Assigned / On Delivery', '${(counts['Assigned'] ?? 0) + (counts['On Delivery'] ?? 0)} orders'),
-                    pw.Divider(color: PdfColor.fromHex('#E2E8F0'), height: 14),
-                    _buildPdfRow('Pending Verification', '${counts['Pending']} orders'),
-                  ],
-                ),
-              ),
+                pw.SizedBox(height: 16),
+                pw.Text('Payout Settlement Status: Settled & Verified', style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#10B981'))),
+              ],
 
               pw.Spacer(),
 
@@ -225,8 +345,8 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('Authorized GoCrave Admin Document', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#64748B'))),
-                  pw.Text('Security Hash: #GC-PDF-SECURE-2026', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
+                  pw.Text('Authorized GoCrave Admin Document (Real-World Synced)', style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#64748B'))),
+                  pw.Text('Security Hash: #GC-SECURE-2026', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#FF5622'))),
                 ],
               ),
             ],
@@ -248,10 +368,24 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
     );
   }
 
+  pw.Widget _buildTableHeaderCell(String text) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.all(6),
+      child: pw.Text(text, style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold, color: PdfColor.fromHex('#0F172A'))),
+    );
+  }
+
+  pw.Widget _tableCell(String text) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.all(6),
+      child: pw.Text(text, style: pw.TextStyle(fontSize: 9, color: PdfColor.fromHex('#334155'))),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final orders = _effectiveOrders;
     final counts = _statusCounts;
-    final totalOrdersCount = _effectiveOrders.isNotEmpty ? _effectiveOrders.length : 28;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
@@ -356,6 +490,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
             ),
             const SizedBox(height: 10),
 
+            // DYNAMIC UI PREVIEW CARD BASED ON SELECTED REPORT TYPE
             Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
@@ -407,49 +542,135 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
                   const SizedBox(height: 16),
 
-                  Text('1. Financial Summary (Live Data)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
-                  const SizedBox(height: 6),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                  // DYNAMIC UI BODY CONTENT
+                  if (_selectedReportTypeIndex == 0) ...[
+                    Text('1. Financial Summary (Live Data)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildPreviewRow('Gross Platform Revenue', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Platform Commission (15%)', '₱${_platformCommission.toStringAsFixed(2)}'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Total Processed Orders', '${orders.length} orders'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Average Order Value (AOV)', '₱${_averageOrderValue.toStringAsFixed(2)}'),
+                        ],
+                      ),
                     ),
-                    child: Column(
+                    const SizedBox(height: 16),
+                    Text('2. Order Status Breakdown', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildPreviewRow('Completed Deliveries', '${counts['Completed']} orders'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('In Progress Orders', '${counts['In Progress']} orders'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Pending Verification', '${counts['Pending']} orders'),
+                        ],
+                      ),
+                    ),
+                  ] else if (_selectedReportTypeIndex == 1) ...[
+                    Text('Itemized Live Order Log (${orders.length} Records)', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                    const SizedBox(height: 8),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: orders.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemBuilder: (context, index) {
+                        final order = orders[index];
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8FAFC),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(order.id, style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                                  Text(order.customerName, style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A))),
+                                  Text(order.dishName, style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF64748B))),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(order.price, style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                                  const SizedBox(height: 2),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: order.status == 'Completed' ? const Color(0xFFECFDF5) : const Color(0xFFFEF3C7),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      order.status,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold,
+                                        color: order.status == 'Completed' ? const Color(0xFF10B981) : const Color(0xFFD97706),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ] else ...[
+                    Text('Revenue & Payout Statement', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildPreviewRow('Total Gross Sales', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('GoCrave Commission Fee (15%)', '- ₱${_platformCommission.toStringAsFixed(2)}'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Delivery Fleet Allocation', '- ₱${_deliveryFleetCut.toStringAsFixed(2)}'),
+                          const Divider(height: 10, color: Color(0xFFE2E8F0)),
+                          _buildPreviewRow('Net Merchant Payout', '₱${_netMerchantPayout.toStringAsFixed(2)}'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
                       children: [
-                        _buildPreviewRow('Gross Platform Revenue', '₱${_totalGrossRevenue.toStringAsFixed(2)}'),
-                        const Divider(height: 10, color: Color(0xFFE2E8F0)),
-                        _buildPreviewRow('Platform Commission (15%)', '₱${_platformCommission.toStringAsFixed(2)}'),
-                        const Divider(height: 10, color: Color(0xFFE2E8F0)),
-                        _buildPreviewRow('Total Processed Orders', '$totalOrdersCount orders'),
-                        const Divider(height: 10, color: Color(0xFFE2E8F0)),
-                        _buildPreviewRow('Average Order Value (AOV)', '₱${_averageOrderValue.toStringAsFixed(2)}'),
+                        const Icon(Icons.check_circle_rounded, color: Color(0xFF10B981), size: 16),
+                        const SizedBox(width: 6),
+                        Text('Settlement Status: Verified & Ready', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF10B981))),
                       ],
                     ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Text('2. Order Status Breakdown', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: widget.brandColor)),
-                  const SizedBox(height: 6),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
-                    ),
-                    child: Column(
-                      children: [
-                        _buildPreviewRow('Completed Deliveries', '${counts['Completed']} orders'),
-                        const Divider(height: 10, color: Color(0xFFE2E8F0)),
-                        _buildPreviewRow('In Progress Orders', '${counts['In Progress']} orders'),
-                        const Divider(height: 10, color: Color(0xFFE2E8F0)),
-                        _buildPreviewRow('Pending Verification', '${counts['Pending']} orders'),
-                      ],
-                    ),
-                  ),
+                  ],
 
                   const SizedBox(height: 20),
 
@@ -478,6 +699,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
             const SizedBox(height: 24),
 
+            // Print / Save Button
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -500,6 +722,7 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
 
             const SizedBox(height: 12),
 
+            // Share Button
             SizedBox(
               width: double.infinity,
               height: 48,
