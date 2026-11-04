@@ -148,9 +148,9 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
     super.dispose();
   }
 
-  int get _totalCount => _riders.length + 19; // 24 total fleet benchmark
-  int get _availableCount => _riders.where((r) => r.status == 'Available').length + 6; // 8 available benchmark
-  int get _onDeliveryCount => _riders.where((r) => r.status == 'On Delivery').length + 11; // 12 on delivery benchmark
+  int get _totalCount => _riders.length + 19;
+  int get _availableCount => _riders.where((r) => r.status == 'Available').length + 6;
+  int get _onDeliveryCount => _riders.where((r) => r.status == 'On Delivery').length + 11;
 
   List<RiderModel> get _filteredRiders {
     return _riders.where((rider) {
@@ -160,7 +160,7 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
 
       if (!matchesSearch) return false;
 
-      if (_selectedFilterIndex == 0) return true; // All
+      if (_selectedFilterIndex == 0) return true;
       final selectedChip = _filterChips[_selectedFilterIndex];
       return rider.status == selectedChip;
     }).toList();
