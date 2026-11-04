@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../screens/chat_screen.dart';
 import '../../screens/admin_add_rider_screen.dart';
-import 'admin_tracking_modal.dart';
+import '../../screens/admin_live_tracking_screen.dart';
 
 class RiderModel {
   final String id;

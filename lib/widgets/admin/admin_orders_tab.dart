@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import '../../data/order_model.dart';
 import '../../screens/chat_screen.dart';
-import 'admin_tracking_modal.dart';
+import '../../screens/admin_live_tracking_screen.dart';
 import 'admin_contact_rider_modal.dart';
 
 class AdminOrdersTab extends StatefulWidget {
