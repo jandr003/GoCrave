@@ -10,7 +10,7 @@
 
 ---
 > [!IMPORTANT]
-> **Project Status: Temporarily Paused**
+> **Project Status: Under Development**
 >
 > GoCrave development is temporarily paused while I focus on the AquaTech project.
 > 
