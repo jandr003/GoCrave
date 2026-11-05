@@ -1,18 +1,5 @@
 # GoCrave On-Demand Food Delivery Platform
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.27.0-02569B?style=flat-square&logo=flutter&logoColor=white)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-3.6.0-0175C2?style=flat-square&logo=dart&logoColor=white)](https://dart.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-4.21.0-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.x-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![GoCrave Orange](https://img.shields.io/badge/Theme-GoCrave_Orange_%23FF5622-FF5622?style=flat-square)](https://m3.material.io/)
-[![Flutter Map](https://img.shields.io/badge/Flutter_Map-7.0.2-1C7C54?style=flat-square&logo=openstreetmap&logoColor=white)](https://pub.dev/packages/flutter_map)
-
-<p align="center">
-  <br>
-  <img src="https://img.shields.io/badge/STATUS-PAUSED_FOR_AQUATECH-FF5622?style=for-the-badge&logo=rocket&logoColor=white" alt="Repository Status Sticker" height="38">
-</p>
-
 ---
 > [!IMPORTANT]
 > **Repository Status: Temporarily Paused (Focusing on AquaTech)**
@@ -22,7 +9,7 @@
 
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
 
-Built using **Flutter** and **Dart** for the client application, backed by a **Node.js** and **Express.js** REST API with a **PostgreSQL** database.
+Built using **Flutter** and **Dart** for the client application, backed by a **Node.js** and Express.js REST API with a PostgreSQL database.
 
 ---
 
