@@ -8,10 +8,12 @@
 [![GoCrave Orange](https://img.shields.io/badge/Theme-GoCrave_Orange_%23FF5622-FF5622?style=flat-square)](https://m3.material.io/)
 [![Flutter Map](https://img.shields.io/badge/Flutter_Map-7.0.2-1C7C54?style=flat-square&logo=openstreetmap&logoColor=white)](https://pub.dev/packages/flutter_map)
 
-> [!NOTE]
-> **Project Status: Paused (Focusing on AquaTech)**
+---
+> [!IMPORTANT]
+> **Repository Status: Temporarily Paused**
 > 
-> Active development on GoCrave is temporarily paused as focus and attention are shifted toward the **AquaTech** project.
+> Active development on the **GoCrave On-Demand Food Delivery Platform** is currently suspended. Engineering efforts and strategic focus have been fully transitioned to the **AquaTech** initiative. This repository is preserved in its latest stable release state.
+---
 
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
 
