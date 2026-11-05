@@ -71,10 +71,3 @@ Built using **Flutter** and **Dart** for the client application, backed by a **N
 | **Google Fonts** | 6.2.1 | Typography (Poppins font) |
 | **Android Studio** | Ladybug 2026.1.2 | Primary IDE |
 | **Postman** | 11.x | API testing and endpoint debugging |
-
----
-
-> [!IMPORTANT]
-> **GoCrave Food Delivery Platform Development Notice**
->
-> GoCrave is actively being integrated with its **Node.js / Express.js REST API** and **PostgreSQL** database to support dynamic live ordering, real-time rider tracking, and merchant menu synchronization.
