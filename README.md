@@ -10,11 +10,15 @@
 
 <p align="center">
   <br>
-  <img src="https://img.shields.io/badge/STATUS-PAUSED_FOR_AQUATECH-FF5622?style=for-the-badge&logo=rocket&logoColor=white" alt="Repository Status Sticker" height="36">
-  <br><br>
-  <b>Active development on GoCrave is temporarily suspended as engineering focus has transitioned entirely to the AquaTech initiative.</b>
+  <img src="https://img.shields.io/badge/STATUS-PAUSED_FOR_AQUATECH-FF5622?style=for-the-badge&logo=rocket&logoColor=white" alt="Repository Status Sticker" height="38">
 </p>
-<br>
+
+---
+> [!IMPORTANT]
+> **Repository Status: Temporarily Paused (Focusing on AquaTech)**
+> 
+> Active development on the **GoCrave On-Demand Food Delivery Platform** is currently suspended. Engineering efforts and strategic focus have been fully transitioned to the **AquaTech** initiative. This repository is preserved in its latest stable release state.
+---
 
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
 
