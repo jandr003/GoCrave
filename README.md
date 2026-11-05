@@ -10,9 +10,9 @@
 
 ---
 > [!IMPORTANT]
-> **Repository Status: Temporarily Paused (Focusing on AquaTech)**
+> GoCrave development is temporarily paused while I focus on the AquaTech project.
 > 
-> Active development on the **GoCrave On-Demand Food Delivery Platform** is currently suspended. Engineering efforts and strategic focus have been fully transitioned to the **AquaTech** initiative. This repository is preserved in its latest stable release state.
+> The repository will remain available, and development may resume at a later date.
 ---
 
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
