@@ -8,6 +8,11 @@
 [![GoCrave Orange](https://img.shields.io/badge/Theme-GoCrave_Orange_%23FF5622-FF5622?style=flat-square)](https://m3.material.io/)
 [![Flutter Map](https://img.shields.io/badge/Flutter_Map-7.0.2-1C7C54?style=flat-square&logo=openstreetmap&logoColor=white)](https://pub.dev/packages/flutter_map)
 
+> [!NOTE]
+> **Project Status: Paused for Polish & Enhancement**
+> 
+> Active feature development on GoCrave is currently paused. The current focus is entirely on code enhancement, performance optimization, and UI/UX smoothing to ensure an exceptional, buttery-smooth production-ready experience.
+
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
 
 Built using **Flutter** and **Dart** for the client application, backed by a **Node.js** and **Express.js** REST API with a **PostgreSQL** database.
@@ -38,6 +43,8 @@ Built using **Flutter** and **Dart** for the client application, backed by a **N
 ### Admin Command Center
 - **Overview & Analytics:** Monitor live operations, order volume, and revenue trends.
 - **Status Monitoring:** Real-time counts for Pending, Assigned, In Progress, On Delivery, and Completed orders.
+- **Master Fleet Map:** Real-time city-wide multi-rider live tracking map.
+- **PDF Export Suite:** Generate, print, and share real-world synced executive PDF reports.
 - **Rider Verification:** Review and verify submitted government IDs and driver licenses.
 - **Notification Hub:** Alerts for order updates, verification requests, and daily totals.
 
