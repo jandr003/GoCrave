@@ -9,9 +9,9 @@
 [![Flutter Map](https://img.shields.io/badge/Flutter_Map-7.0.2-1C7C54?style=flat-square&logo=openstreetmap&logoColor=white)](https://pub.dev/packages/flutter_map)
 
 > [!NOTE]
-> **Project Status: Paused for Polish & Enhancement**
+> **Project Status: Paused (Focusing on AquaTech)**
 > 
-> Active feature development on GoCrave is currently paused. The current focus is entirely on code enhancement, performance optimization, and UI/UX smoothing to ensure an exceptional, buttery-smooth production-ready experience.
+> Active development on GoCrave is temporarily paused as focus and attention are shifted toward the **AquaTech** project.
 
 **GoCrave** is a multi-role food delivery platform connecting **Customers**, **Restaurant Merchants**, **Delivery Riders**, and **Super Admins** within a single application.
 
