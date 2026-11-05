@@ -10,6 +10,8 @@
 
 ---
 > [!IMPORTANT]
+> **Project Status: Temporarily Paused**
+>
 > GoCrave development is temporarily paused while I focus on the AquaTech project.
 > 
 > The repository will remain available, and development may resume at a later date.
