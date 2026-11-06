@@ -129,168 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showPlatformPortalsModal() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Explore Platform Portals',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                'Select a platform role to test its live dashboard',
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
-              ),
-              const SizedBox(height: 20),
-              _buildPortalTile(
-                icon: Icons.admin_panel_settings_rounded,
-                color: const Color(0xFF1E1E2C),
-                title: 'Admin Control Panel',
-                subtitle: 'Super Admin Admin01 • Sales, orders & menu',
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AdminDashboardScreen(adminEmail: 'Admin01'),
-                    ),
-                  );
-                },
-              ),
-              _buildPortalTile(
-                icon: Icons.store_rounded,
-                color: const Color(0xFF1B2430),
-                title: 'Restaurant Merchant Portal',
-                subtitle: 'GoCrave Central Kitchen • Kitchen order pipeline',
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RestaurantDashboardScreen(merchantEmail: 'resto@gocrave.app'),
-                    ),
-                  );
-                },
-              ),
-              _buildPortalTile(
-                icon: Icons.two_wheeler_rounded,
-                color: brandColor,
-                title: 'Rider Delivery Portal',
-                subtitle: 'Ricardo Dalisay • Active delivery workflow',
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RiderDashboardScreen(riderEmail: 'rider@gocrave.app'),
-                    ),
-                  );
-                },
-              ),
-              _buildPortalTile(
-                icon: Icons.person_rounded,
-                color: Colors.blueAccent,
-                title: 'Customer Mobile App',
-                subtitle: 'Browse food menu, place orders & rewards',
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainNavWrapper(initialIndex: 0),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPortalTile({
-    required IconData icon,
-    required Color color,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF8F9FC),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: color, size: 22),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      subtitle,
-                      style: GoogleFonts.poppins(
-                        fontSize: 11,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -325,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
             top: size.height * 0.32,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Color(0xFF0F172A),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(60),
                   topRight: Radius.circular(60),
@@ -342,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -358,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -424,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: BoxShape.circle,
                               color: _isAgreed ? brandColor : Colors.transparent,
                               border: Border.all(
-                                color: _isAgreed ? brandColor : Colors.grey[300]!,
+                                color: _isAgreed ? brandColor : Colors.grey[600]!,
                                 width: 2,
                               ),
                             ),
@@ -436,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: RichText(
                               text: TextSpan(
-                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[400]),
                                 children: [
                                   const TextSpan(text: "I've read and agreed to "),
                                   TextSpan(
@@ -496,7 +334,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'other ways to sign in',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
-                          color: Colors.grey[400],
+                          color: Colors.grey[500],
                         ),
                       ),
                     ),
@@ -524,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: RichText(
                           text: TextSpan(
-                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[600]),
+                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[400]),
                             children: [
                               const TextSpan(text: "Don't have an account? "),
                               TextSpan(
@@ -561,24 +399,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFFFBFBFB),
+        color: const Color(0xFF1E293B),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!, width: 1.5),
+        border: Border.all(color: const Color(0xFF334155), width: 1.5),
       ),
       child: TextField(
         controller: controller,
         focusNode: focusNode,
         obscureText: obscure,
-        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
+        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 14),
+          hintStyle: GoogleFonts.poppins(color: Colors.grey[500], fontSize: 14),
           border: InputBorder.none,
           suffixIcon: isPassword
               ? IconButton(
                   icon: Icon(
                     obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    color: Colors.grey[400],
+                    color: Colors.grey[500],
                     size: 20,
                   ),
                   onPressed: onToggle,
@@ -594,12 +432,12 @@ class _LoginScreenState extends State<LoginScreen> {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF1E293B),
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: const Color(0xFF334155)),
       ),
       child: Center(
-        child: customChild ?? Icon(icon, size: 28, color: iconColor ?? Colors.black87),
+        child: customChild ?? Icon(icon, size: 28, color: iconColor ?? Colors.white70),
       ),
     );
   }
