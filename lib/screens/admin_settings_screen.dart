@@ -12,6 +12,7 @@ import 'admin_delivery_settings_screen.dart';
 import 'admin_payment_fees_screen.dart';
 import 'admin_account_security_screen.dart';
 import 'admin_fleet_map_screen.dart';
+import 'admin_promo_manager_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
