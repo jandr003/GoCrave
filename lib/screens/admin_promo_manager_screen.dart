@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../data/promo_manager.dart';
 
 class AdminPromoManagerScreen extends StatefulWidget {
   final Color brandColor;
@@ -14,32 +15,23 @@ class AdminPromoManagerScreen extends StatefulWidget {
 }
 
 class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
-  final List<Map<String, dynamic>> _vouchers = [
-    {
-      'code': 'CRAVE30DEAL',
-      'discount': '30% OFF',
-      'save': 'Save 30% on this order',
-      'desc': 'Maximum discount up to ₱125 on orders above ₱500',
-      'expiry': 'Valid till 31 Dec 2027',
-      'isActive': true,
-    },
-    {
-      'code': 'GOCRAVE50',
-      'discount': '₱50 OFF',
-      'save': 'Save ₱50 on food delivery',
-      'desc': 'Minimum spend of ₱300 required',
-      'expiry': 'Valid till 31 Dec 2026',
-      'isActive': true,
-    },
-    {
-      'code': 'FREEDELIVERY',
-      'discount': 'FREE',
-      'save': 'Free Delivery on any order',
-      'desc': 'Valid for all restaurants in Malolos',
-      'expiry': 'Valid till 30 Nov 2026',
-      'isActive': false,
-    },
-  ];
+  final PromoManager _promoManager = PromoManager();
+
+  @override
+  void initState() {
+    super.initState();
+    _promoManager.addListener(_onPromoChanged);
+  }
+
+  @override
+  void dispose() {
+    _promoManager.removeListener(_onPromoChanged);
+    super.dispose();
+  }
+
+  void _onPromoChanged() {
+    if (mounted) setState(() {});
+  }
 
   void _showCreatePromoModal() {
     final codeCtrl = TextEditingController();
@@ -93,15 +85,14 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (codeCtrl.text.isNotEmpty && discountCtrl.text.isNotEmpty) {
-                      setState(() {
-                        _vouchers.insert(0, {
-                          'code': codeCtrl.text.toUpperCase(),
-                          'discount': discountCtrl.text,
-                          'save': saveCtrl.text.isNotEmpty ? saveCtrl.text : 'Special Promo Deal',
-                          'desc': descCtrl.text.isNotEmpty ? descCtrl.text : 'Valid for all orders',
-                          'expiry': expiryCtrl.text.isNotEmpty ? expiryCtrl.text : 'Valid till end of month',
-                          'isActive': true,
-                        });
+                      _promoManager.addPromo({
+                        'code': codeCtrl.text.toUpperCase(),
+                        'discount': discountCtrl.text,
+                        'save': saveCtrl.text.isNotEmpty ? saveCtrl.text : 'Special Promo Deal',
+                        'desc': descCtrl.text.isNotEmpty ? descCtrl.text : 'Valid for all orders',
+                        'expiry': expiryCtrl.text.isNotEmpty ? expiryCtrl.text : 'Valid till end of month',
+                        'percentage': 0.2,
+                        'isActive': true,
                       });
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -130,6 +121,8 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final vouchers = _promoManager.vouchers;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -157,7 +150,7 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ..._vouchers.map((coupon) => _buildCouponCard(context, coupon, widget.brandColor)).toList(),
+              ...vouchers.map((coupon) => _buildCouponCard(context, coupon, widget.brandColor)).toList(),
               const SizedBox(height: 40),
             ],
           ),
@@ -252,9 +245,7 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                             value: isActive,
                             activeColor: brandColor,
                             onChanged: (val) {
-                              setState(() {
-                                coupon['isActive'] = val;
-                              });
+                              _promoManager.togglePromoStatus(coupon['code']);
                             },
                           ),
                         ],

@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/cart_manager.dart';
+import '../data/promo_manager.dart';
 
-class CouponScreen extends StatelessWidget {
+class CouponScreen extends StatefulWidget {
   const CouponScreen({super.key});
+
+  @override
+  State<CouponScreen> createState() => _CouponScreenState();
+}
+
+class _CouponScreenState extends State<CouponScreen> {
+  final PromoManager _promoManager = PromoManager();
+
+  @override
+  void initState() {
+    super.initState();
+    _promoManager.addListener(_onPromoChanged);
+  }
+
+  @override
+  void dispose() {
+    _promoManager.removeListener(_onPromoChanged);
+    super.dispose();
+  }
+
+  void _onPromoChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color brandColor = Color(0xFFFF5622);
-
-    final List<Map<String, dynamic>> availableCoupons = [
-      {
-        'code': 'CRAVE30DEAL',
-        'discount': '30% OFF',
-        'save': 'Save 30% on this order',
-        'desc': 'Maximum discount up to ₱125 on orders above ₱500',
-        'expiry': 'Valid till 31 Dec 2027',
-        'percentage': 0.3,
-      },
-      {
-        'code': 'HELLO20',
-        'discount': '20% OFF',
-        'save': 'Save 20% on your next meal',
-        'desc': 'No minimum spend required',
-        'expiry': 'Valid till 31 Oct 2026',
-        'percentage': 0.2,
-      },
-      {
-        'code': 'FREESHIP',
-        'discount': 'FREE',
-        'save': 'Free Delivery on any order',
-        'desc': 'Valid for all restaurants in Manila',
-        'expiry': 'Valid till 15 Nov 2026',
-        'percentage': 0.05,
-      },
-    ];
+    final availableCoupons = _promoManager.activeVouchers;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
@@ -228,7 +226,8 @@ class CouponScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              CartManager().applyCoupon(coupon['code'], coupon['percentage']);
+                              final double pct = (coupon['percentage'] as num?)?.toDouble() ?? 0.2;
+                              CartManager().applyCoupon(coupon['code'], pct);
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -264,7 +263,6 @@ class CouponScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      // Horizontal Dashed Divider
                       Row(
                         children: List.generate(
                           20,
