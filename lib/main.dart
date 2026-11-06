@@ -19,12 +19,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'GoCrave',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF5622)),
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.dark,
+          seedColor: const Color(0xFFFF5622),
+          primary: const Color(0xFFFF5622),
+          surface: const Color(0xFF1E293B),
+        ),
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF8F9FC),
-        canvasColor: const Color(0xFFF8F9FC),
-        cardColor: Colors.white,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
+        canvasColor: const Color(0xFF0F172A),
+        cardColor: const Color(0xFF1E293B),
+        dialogBackgroundColor: const Color(0xFF1E293B),
+        textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
             TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
