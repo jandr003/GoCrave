@@ -18,24 +18,24 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
     {
       'code': 'CRAVE30DEAL',
       'discount': '30% OFF',
-      'title': 'Save 30% on this order',
-      'minSpend': 'Maximum discount up to ₱125 on orders above ₱500',
+      'save': 'Save 30% on this order',
+      'desc': 'Maximum discount up to ₱125 on orders above ₱500',
       'expiry': 'Valid till 31 Dec 2027',
       'isActive': true,
     },
     {
       'code': 'GOCRAVE50',
       'discount': '₱50 OFF',
-      'title': 'Save ₱50 on food delivery',
-      'minSpend': 'Minimum spend of ₱300 required',
+      'save': 'Save ₱50 on food delivery',
+      'desc': 'Minimum spend of ₱300 required',
       'expiry': 'Valid till 31 Dec 2026',
       'isActive': true,
     },
     {
       'code': 'FREEDELIVERY',
-      'discount': 'FREE DEL',
-      'title': 'Free delivery voucher',
-      'minSpend': 'Minimum spend of ₱250 required',
+      'discount': 'FREE',
+      'save': 'Free Delivery on any order',
+      'desc': 'Valid for all restaurants in Malolos',
       'expiry': 'Valid till 30 Nov 2026',
       'isActive': false,
     },
@@ -44,8 +44,8 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
   void _showCreatePromoModal() {
     final codeCtrl = TextEditingController();
     final discountCtrl = TextEditingController();
-    final titleCtrl = TextEditingController();
-    final minSpendCtrl = TextEditingController();
+    final saveCtrl = TextEditingController();
+    final descCtrl = TextEditingController();
     final expiryCtrl = TextEditingController();
 
     showModalBottomSheet(
@@ -69,17 +69,17 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
               const SizedBox(height: 12),
               TextField(
                 controller: discountCtrl,
-                decoration: const InputDecoration(labelText: 'Discount Badge Text (e.g. 30% OFF or ₱50 OFF)'),
+                decoration: const InputDecoration(labelText: 'Discount Badge (e.g. 30% OFF or ₱50 OFF)'),
               ),
               const SizedBox(height: 12),
               TextField(
-                controller: titleCtrl,
-                decoration: const InputDecoration(labelText: 'Subtitle Title (e.g. Save 30% on this order)'),
+                controller: saveCtrl,
+                decoration: const InputDecoration(labelText: 'Subtitle (e.g. Save 30% on this order)'),
               ),
               const SizedBox(height: 12),
               TextField(
-                controller: minSpendCtrl,
-                decoration: const InputDecoration(labelText: 'Rules Details (e.g. Max discount up to ₱125 above ₱500)'),
+                controller: descCtrl,
+                decoration: const InputDecoration(labelText: 'Details (e.g. Max discount up to ₱125 above ₱500)'),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -97,8 +97,8 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                         _vouchers.insert(0, {
                           'code': codeCtrl.text.toUpperCase(),
                           'discount': discountCtrl.text,
-                          'title': titleCtrl.text.isNotEmpty ? titleCtrl.text : 'Special Promo Deal',
-                          'minSpend': minSpendCtrl.text.isNotEmpty ? minSpendCtrl.text : 'Valid for all orders',
+                          'save': saveCtrl.text.isNotEmpty ? saveCtrl.text : 'Special Promo Deal',
+                          'desc': descCtrl.text.isNotEmpty ? descCtrl.text : 'Valid for all orders',
                           'expiry': expiryCtrl.text.isNotEmpty ? expiryCtrl.text : 'Valid till end of month',
                           'isActive': true,
                         });
@@ -131,7 +131,7 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FC),
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         backgroundColor: widget.brandColor,
         elevation: 0,
@@ -150,163 +150,18 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
         ),
         centerTitle: false,
       ),
-      body: ListView.separated(
+      body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        itemCount: _vouchers.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 16),
-        itemBuilder: (context, index) {
-          final voucher = _vouchers[index];
-          final bool isActive = voucher['isActive'];
-
-          return Container(
-            height: 136,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 104,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        widget.brandColor,
-                        widget.brandColor.withOpacity(0.85),
-                      ],
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(21),
-                      bottomLeft: Radius.circular(21),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: -12,
-                        right: -12,
-                        child: CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.white.withOpacity(0.15),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: -12,
-                        right: -12,
-                        child: CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.white.withOpacity(0.15),
-                        ),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            voucher['discount'],
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  width: 1,
-                  height: double.infinity,
-                  color: const Color(0xFFE2E8F0),
-                ),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              voucher['code'],
-                              style: GoogleFonts.poppins(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w900,
-                                color: const Color(0xFF0F172A),
-                              ),
-                            ),
-                            Switch.adaptive(
-                              value: isActive,
-                              activeColor: widget.brandColor,
-                              onChanged: (val) {
-                                setState(() {
-                                  voucher['isActive'] = val;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          voucher['title'],
-                          style: GoogleFonts.poppins(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF10B981),
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          voucher['minSpend'],
-                          style: GoogleFonts.poppins(fontSize: 10.5, color: const Color(0xFF64748B)),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 2),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              voucher['expiry'],
-                              style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: isActive ? const Color(0xFFECFDF5) : Colors.grey[100],
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                isActive ? 'Active' : 'Inactive',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.bold,
-                                  color: isActive ? const Color(0xFF10B981) : Colors.grey[600],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ..._vouchers.map((coupon) => _buildCouponCard(context, coupon, widget.brandColor)).toList(),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showCreatePromoModal,
@@ -314,6 +169,207 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: Text('Create Voucher', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
       ),
+    );
+  }
+
+  Widget _buildCouponCard(BuildContext context, Map<String, dynamic> coupon, Color brandColor) {
+    final bool isActive = coupon['isActive'];
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      height: 190,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 70,
+                decoration: BoxDecoration(
+                  color: brandColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    bottomLeft: Radius.circular(24),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Text(
+                    coupon['discount'],
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(24),
+                      bottomRight: Radius.circular(24),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 36,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: brandColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.all(4),
+                                child: Image.asset(
+                                  'assets/images/gocrave_app_logo.png',
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                coupon['code'],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.black,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Switch.adaptive(
+                            value: isActive,
+                            activeColor: brandColor,
+                            onChanged: (val) {
+                              setState(() {
+                                coupon['isActive'] = val;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(Icons.stars_rounded, color: Color(0xFF4CAF50), size: 18),
+                          const SizedBox(width: 8),
+                          Text(
+                            coupon['save'],
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF4CAF50),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: List.generate(
+                          20,
+                          (index) => Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 2),
+                              height: 1,
+                              color: Colors.grey[300],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildDetailRow(Icons.account_balance_wallet_outlined, coupon['desc']),
+                      const SizedBox(height: 6),
+                      _buildDetailRow(Icons.access_time, coupon['expiry']),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          Positioned(
+            left: 69,
+            top: 15,
+            bottom: 15,
+            child: Column(
+              children: List.generate(
+                12,
+                (index) => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  width: 1.5,
+                  height: 6,
+                  color: Colors.black.withOpacity(0.1),
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(left: -10, top: 40, child: _buildSideNotch()),
+          Positioned(left: -10, top: 80, child: _buildSideNotch()),
+          Positioned(left: -10, top: 120, child: _buildSideNotch()),
+
+          Positioned(left: 58, top: -12, child: _buildPunchHole(size: 24)),
+          Positioned(left: 58, bottom: -12, child: _buildPunchHole(size: 24)),
+
+          Positioned(right: -10, top: 40, child: _buildSideNotch()),
+          Positioned(right: -10, top: 80, child: _buildSideNotch()),
+          Positioned(right: -10, top: 120, child: _buildSideNotch()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPunchHole({double size = 20}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: const BoxDecoration(
+        color: Color(0xFFF8F9FA),
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
+  Widget _buildSideNotch() {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: const BoxDecoration(
+        color: Color(0xFFF8F9FA),
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.grey[500]),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            text,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }
