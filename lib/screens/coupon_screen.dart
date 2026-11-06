@@ -35,20 +35,21 @@ class _CouponScreenState extends State<CouponScreen> {
     final availableCoupons = _promoManager.activeVouchers;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: const Color(0xFF0F172A),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF0F172A),
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Apply Coupon',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         actions: [
@@ -56,7 +57,7 @@ class _CouponScreenState extends State<CouponScreen> {
             alignment: Alignment.center,
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
                 onPressed: () {},
               ),
               if (CartManager().items.isNotEmpty)
@@ -85,24 +86,17 @@ class _CouponScreenState extends State<CouponScreen> {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                height: 56,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  color: const Color(0xFF1E293B),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFF334155)),
                 ),
                 child: Row(
                   children: [
@@ -110,9 +104,10 @@ class _CouponScreenState extends State<CouponScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: TextField(
+                        style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
                         decoration: InputDecoration(
                           hintText: 'Enter Coupon Code',
-                          hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 15),
+                          hintStyle: GoogleFonts.poppins(color: Colors.grey[500], fontSize: 14),
                           border: InputBorder.none,
                         ),
                       ),
@@ -122,25 +117,25 @@ class _CouponScreenState extends State<CouponScreen> {
                       child: Text(
                         'APPLY',
                         style: GoogleFonts.poppins(
-                          color: Colors.grey[400],
+                          color: brandColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 13,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
               Text(
-                'More Offers',
+                'Available Offers',
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               ...availableCoupons.map((coupon) => _buildCouponCard(context, coupon, brandColor)).toList(),
               const SizedBox(height: 40),
             ],
@@ -152,212 +147,152 @@ class _CouponScreenState extends State<CouponScreen> {
 
   Widget _buildCouponCard(BuildContext context, Map<String, dynamic> coupon, Color brandColor) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      height: 190,
-      width: double.infinity,
-      child: Stack(
+      margin: const EdgeInsets.only(bottom: 20),
+      height: 136,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E293B),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: const Color(0xFF334155), width: 1.2),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 70,
-                decoration: BoxDecoration(
-                  color: brandColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    bottomLeft: Radius.circular(24),
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: RotatedBox(
-                  quarterTurns: 3,
-                  child: Text(
-                    coupon['discount'],
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
+          Container(
+            width: 104,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  brandColor,
+                  brandColor.withOpacity(0.85),
+                ],
               ),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(24),
-                      bottomRight: Radius.circular(24),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(21),
+                bottomLeft: Radius.circular(21),
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -12,
+                  right: -12,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white.withOpacity(0.15),
+                  ),
+                ),
+                Positioned(
+                  bottom: -12,
+                  right: -12,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white.withOpacity(0.15),
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      coupon['discount'],
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            width: 1,
+            height: double.infinity,
+            color: const Color(0xFF334155),
+          ),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 36,
-                                height: 36,
-                                decoration: BoxDecoration(
-                                  color: brandColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: Image.asset(
-                                  'assets/images/gocrave_app_logo.png',
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                coupon['code'],
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.black,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              final double pct = (coupon['percentage'] as num?)?.toDouble() ?? 0.2;
-                              CartManager().applyCoupon(coupon['code'], pct);
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Coupon ${coupon['code']} applied!'),
-                                  backgroundColor: brandColor,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'APPLY',
-                              style: GoogleFonts.poppins(
-                                color: brandColor,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        coupon['code'],
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
                       ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          const Icon(Icons.stars_rounded, color: Color(0xFF4CAF50), size: 18),
-                          const SizedBox(width: 8),
-                          Text(
-                            coupon['save'],
+                      GestureDetector(
+                        onTap: () {
+                          final double pct = (coupon['percentage'] as num?)?.toDouble() ?? 0.2;
+                          CartManager().applyCoupon(coupon['code'], pct);
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Coupon ${coupon['code']} applied!', style: GoogleFonts.poppins()),
+                              backgroundColor: brandColor,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: brandColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'APPLY',
                             style: GoogleFonts.poppins(
-                              color: const Color(0xFF4CAF50),
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: List.generate(
-                          20,
-                          (index) => Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2),
-                              height: 1,
-                              color: Colors.grey[300],
+                              fontSize: 11,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      _buildDetailRow(Icons.account_balance_wallet_outlined, coupon['desc']),
-                      const SizedBox(height: 6),
-                      _buildDetailRow(Icons.access_time, coupon['expiry']),
                     ],
                   ),
-                ),
-              ),
-            ],
-          ),
-          
-          Positioned(
-            left: 69,
-            top: 15,
-            bottom: 15,
-            child: Column(
-              children: List.generate(
-                12,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  width: 1.5,
-                  height: 6,
-                  color: Colors.black.withOpacity(0.1),
-                ),
+                  const SizedBox(height: 2),
+                  Text(
+                    coupon['save'] ?? '',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF10B981),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    coupon['desc'] ?? '',
+                    style: GoogleFonts.poppins(fontSize: 10.5, color: Colors.grey[400]),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    coupon['expiry'] ?? '',
+                    style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[500], fontWeight: FontWeight.w500),
+                  ),
+                ],
               ),
             ),
           ),
-
-          Positioned(left: -10, top: 40, child: _buildSideNotch()),
-          Positioned(left: -10, top: 80, child: _buildSideNotch()),
-          Positioned(left: -10, top: 120, child: _buildSideNotch()),
-
-          Positioned(left: 58, top: -12, child: _buildPunchHole(size: 24)),
-          Positioned(left: 58, bottom: -12, child: _buildPunchHole(size: 24)),
-
-          Positioned(right: -10, top: 40, child: _buildSideNotch()),
-          Positioned(right: -10, top: 80, child: _buildSideNotch()),
-          Positioned(right: -10, top: 120, child: _buildSideNotch()),
         ],
       ),
-    );
-  }
-
-  Widget _buildPunchHole({double size = 20}) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: const BoxDecoration(
-        color: Color(0xFFF8F9FA),
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-
-  Widget _buildSideNotch() {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: const BoxDecoration(
-        color: Color(0xFFF8F9FA),
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 16, color: Colors.grey[500]),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            text,
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
     );
   }
 }
