@@ -335,7 +335,7 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminPromoManagerScreen(),
+                        builder: (context) => AdminPromoManagerScreen(),
                       ),
                     );
                   },
