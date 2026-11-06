@@ -160,52 +160,78 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
           final bool isActive = voucher['isActive'];
 
           return Container(
-            height: 140,
+            height: 136,
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFCBD5E1), width: 1.2),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
+                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4)),
               ],
             ),
             child: Row(
               children: [
                 Container(
-                  width: 100,
+                  width: 104,
                   decoration: BoxDecoration(
-                    color: widget.brandColor,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        widget.brandColor,
+                        widget.brandColor.withOpacity(0.85),
+                      ],
+                    ),
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(19),
-                      bottomLeft: Radius.circular(19),
+                      topLeft: Radius.circular(21),
+                      bottomLeft: Radius.circular(21),
                     ),
                   ),
-                  child: Center(
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Text(
-                        voucher['discount'],
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                          letterSpacing: 1.2,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: -12,
+                        right: -12,
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.white.withOpacity(0.15),
                         ),
                       ),
-                    ),
+                      Positioned(
+                        bottom: -12,
+                        right: -12,
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.white.withOpacity(0.15),
+                        ),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            voucher['discount'],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
+                Container(
+                  width: 1,
+                  height: double.infinity,
+                  color: const Color(0xFFE2E8F0),
+                ),
+
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(19),
-                        bottomRight: Radius.circular(19),
-                      ),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -213,26 +239,13 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: BoxDecoration(
-                                    color: widget.brandColor.withOpacity(0.12),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(Icons.local_offer_rounded, color: widget.brandColor, size: 16),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  voucher['code'],
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w900,
-                                    color: const Color(0xFF0F172A),
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              voucher['code'],
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                                color: const Color(0xFF0F172A),
+                              ),
                             ),
                             Switch.adaptive(
                               value: isActive,
@@ -245,26 +258,46 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 2),
                         Text(
                           voucher['title'],
                           style: GoogleFonts.poppins(
-                            fontSize: 13,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF10B981),
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         Text(
                           voucher['minSpend'],
-                          style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF64748B)),
+                          style: GoogleFonts.poppins(fontSize: 10.5, color: const Color(0xFF64748B)),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 2),
-                        Text(
-                          voucher['expiry'],
-                          style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              voucher['expiry'],
+                              style: GoogleFonts.poppins(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: isActive ? const Color(0xFFECFDF5) : Colors.grey[100],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                isActive ? 'Active' : 'Inactive',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: isActive ? const Color(0xFF10B981) : Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
