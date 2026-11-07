@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +46,128 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
     if (_selectedFilterIndex == 0) return riders;
     final filter = _filters[_selectedFilterIndex];
     return riders.where((r) => r['status'] == filter).toList();
+  }
+
+  void _showDispatchRiderModal() {
+    final nameCtrl = TextEditingController();
+    final plateCtrl = TextEditingController();
+    final phoneCtrl = TextEditingController();
+    String selectedStatus = 'Available';
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Dispatch New Active Rider', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: nameCtrl,
+                    decoration: const InputDecoration(labelText: 'Rider Full Name (e.g. Juan Cruz)'),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: plateCtrl,
+                    decoration: const InputDecoration(labelText: 'Vehicle Plate Number (e.g. ABC 1234)'),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: phoneCtrl,
+                    keyboardType: TextInputType.phone,
+                    decoration: const InputDecoration(labelText: 'Phone Number (e.g. 09179876543)'),
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Initial Status', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: ['Available', 'On Delivery', 'Offline'].map((status) {
+                      final isSelected = selectedStatus == status;
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 6),
+                          child: InkWell(
+                            onTap: () => setModalState(() => selectedStatus = status),
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: isSelected ? widget.brandColor : const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: isSelected ? widget.brandColor : const Color(0xFFE2E8F0)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  status,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                                    color: isSelected ? Colors.white : const Color(0xFF64748B),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (nameCtrl.text.isNotEmpty && plateCtrl.text.isNotEmpty) {
+                          final random = Random();
+                          final lat = 14.8520 + (random.nextDouble() * 0.012);
+                          final lng = 120.8120 + (random.nextDouble() * 0.015);
+
+                          _fleetManager.addRider({
+                            'id': 'R${_fleetManager.riders.length + 101}',
+                            'name': nameCtrl.text,
+                            'status': selectedStatus,
+                            'plate': plateCtrl.text.toUpperCase(),
+                            'rating': '5.0',
+                            'deliveries': '0',
+                            'phone': phoneCtrl.text.isNotEmpty ? phoneCtrl.text : '09170000000',
+                            'latLng': LatLng(lat, lng),
+                            'avatar': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop',
+                          });
+
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Rider ${nameCtrl.text} successfully dispatched to fleet!', style: GoogleFonts.poppins()),
+                              backgroundColor: widget.brandColor,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: widget.brandColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        elevation: 0,
+                      ),
+                      child: Text('Dispatch to Fleet Map', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -312,6 +435,12 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showDispatchRiderModal,
+        backgroundColor: widget.brandColor,
+        icon: const Icon(Icons.person_add_rounded, color: Colors.white),
+        label: Text('Dispatch Rider', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
       ),
     );
   }
