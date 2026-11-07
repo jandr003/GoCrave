@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
             top: size.height * 0.32,
             child: Container(
               decoration: const BoxDecoration(
-                color: Color(0xFF0F172A),
+                color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(60),
                   topRight: Radius.circular(60),
@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: BoxShape.circle,
                               color: _isAgreed ? brandColor : Colors.transparent,
                               border: Border.all(
-                                color: _isAgreed ? brandColor : Colors.grey[600]!,
+                                color: _isAgreed ? brandColor : Colors.grey[300]!,
                                 width: 2,
                               ),
                             ),
@@ -274,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: RichText(
                               text: TextSpan(
-                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[400]),
+                                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
                                 children: [
                                   const TextSpan(text: "I've read and agreed to "),
                                   TextSpan(
@@ -334,7 +334,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'other ways to sign in',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
-                          color: Colors.grey[500],
+                          color: Colors.grey[400],
                         ),
                       ),
                     ),
@@ -362,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: RichText(
                           text: TextSpan(
-                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[400]),
+                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.grey[600]),
                             children: [
                               const TextSpan(text: "Don't have an account? "),
                               TextSpan(
@@ -399,24 +399,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
+        color: const Color(0xFFFBFBFB),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF334155), width: 1.5),
+        border: Border.all(color: Colors.grey[200]!, width: 1.5),
       ),
       child: TextField(
         controller: controller,
         focusNode: focusNode,
         obscureText: obscure,
-        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),
+        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(color: Colors.grey[500], fontSize: 14),
+          hintStyle: GoogleFonts.poppins(color: Colors.grey[400], fontSize: 14),
           border: InputBorder.none,
           suffixIcon: isPassword
               ? IconButton(
                   icon: Icon(
                     obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    color: Colors.grey[500],
+                    color: Colors.grey[400],
                     size: 20,
                   ),
                   onPressed: onToggle,
@@ -432,12 +432,12 @@ class _LoginScreenState extends State<LoginScreen> {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
+        color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFF334155)),
+        border: Border.all(color: Colors.grey[200]!),
       ),
       child: Center(
-        child: customChild ?? Icon(icon, size: 28, color: iconColor ?? Colors.white70),
+        child: customChild ?? Icon(icon, size: 28, color: iconColor ?? Colors.black87),
       ),
     );
   }
