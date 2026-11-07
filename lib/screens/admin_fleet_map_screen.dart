@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
+import '../data/rider_fleet_manager.dart';
 
 class AdminFleetMapScreen extends StatefulWidget {
   final Color brandColor;
@@ -17,73 +18,39 @@ class AdminFleetMapScreen extends StatefulWidget {
 
 class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
   final MapController _mapController = MapController();
+  final RiderFleetManager _fleetManager = RiderFleetManager();
   int _selectedFilterIndex = 0;
   final List<String> _filters = ['All Riders', 'Available', 'On Delivery', 'Offline'];
-
-  final List<Map<String, dynamic>> _fleetRiders = [
-    {
-      'id': 'R001',
-      'name': 'Ricardo Dalisay',
-      'status': 'On Delivery',
-      'plate': 'MVC 1234',
-      'rating': '4.9',
-      'deliveries': '1,420',
-      'phone': '09171234567',
-      'latLng': const LatLng(14.8565, 120.8164),
-      'avatar': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': 'R002',
-      'name': 'Cardo D.',
-      'status': 'Available',
-      'plate': 'XYZ 5678',
-      'rating': '4.8',
-      'deliveries': '980',
-      'phone': '09189876543',
-      'latLng': const LatLng(14.8520, 120.8210),
-      'avatar': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': 'R003',
-      'name': 'Boy Tsuper',
-      'status': 'On Delivery',
-      'plate': 'ABC 9988',
-      'rating': '4.95',
-      'deliveries': '2,150',
-      'phone': '09191112233',
-      'latLng': const LatLng(14.8600, 120.8150),
-      'avatar': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': 'R004',
-      'name': 'Juan Makisig',
-      'status': 'Offline',
-      'plate': 'DEF 4321',
-      'rating': '4.7',
-      'deliveries': '540',
-      'phone': '09205556677',
-      'latLng': const LatLng(14.8505, 120.8120),
-      'avatar': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-    },
-  ];
-
   Map<String, dynamic>? _selectedRider;
 
-  List<Map<String, dynamic>> get _filteredRiders {
-    if (_selectedFilterIndex == 0) return _fleetRiders;
-    final filter = _filters[_selectedFilterIndex];
-    return _fleetRiders.where((r) => r['status'] == filter).toList();
+  @override
+  void initState() {
+    super.initState();
+    _fleetManager.addListener(_onFleetChanged);
   }
 
   @override
   void dispose() {
+    _fleetManager.removeListener(_onFleetChanged);
     _mapController.dispose();
     super.dispose();
+  }
+
+  void _onFleetChanged() {
+    if (mounted) setState(() {});
+  }
+
+  List<Map<String, dynamic>> get _filteredRiders {
+    final riders = _fleetManager.riders;
+    if (_selectedFilterIndex == 0) return riders;
+    final filter = _filters[_selectedFilterIndex];
+    return riders.where((r) => r['status'] == filter).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final filtered = _filteredRiders;
+    final totalCount = _fleetManager.riders.length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
@@ -216,7 +183,7 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Active Fleet: ${_fleetRiders.length} Riders',
+                          'Active Fleet: $totalCount Riders',
                           style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
                         ),
                       ],
