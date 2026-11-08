@@ -343,6 +343,20 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
+                  icon: Icons.store_rounded,
+                  title: 'Merchant Approval Pipeline',
+                  subtitle: 'Review restaurant applications & set commission rates',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminMerchantApprovalScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
