@@ -13,6 +13,8 @@ import 'admin_payment_fees_screen.dart';
 import 'admin_account_security_screen.dart';
 import 'admin_fleet_map_screen.dart';
 import 'admin_promo_manager_screen.dart';
+import 'admin_merchant_approval_screen.dart';
+import 'admin_dispute_center_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -351,6 +353,20 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AdminMerchantApprovalScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.support_agent_rounded,
+                  title: 'Dispute & Refund Center',
+                  subtitle: 'Manage order complaints, disputes and issue refunds',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminDisputeCenterScreen(),
                       ),
                     );
                   },
