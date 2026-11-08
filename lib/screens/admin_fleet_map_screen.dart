@@ -163,10 +163,10 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                   ),
                 ],
               ),
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
