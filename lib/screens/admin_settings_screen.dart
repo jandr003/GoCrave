@@ -387,6 +387,20 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
+                  icon: Icons.chat_bubble_rounded,
+                  title: 'Support Live Chat Desk',
+                  subtitle: 'Manage live omnichannel support chats with users',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminSupportChatScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
