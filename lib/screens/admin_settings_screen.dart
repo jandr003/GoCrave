@@ -373,6 +373,20 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
+                  icon: Icons.campaign_rounded,
+                  title: 'Broadcast Push Notifications',
+                  subtitle: 'Send announcements & push alerts to users or riders',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminBroadcastScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
