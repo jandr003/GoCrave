@@ -401,6 +401,62 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
+                  icon: Icons.account_balance_rounded,
+                  title: 'Financial Settlement Ledger',
+                  subtitle: 'Track merchant payouts and rider cashout settlements',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminSettlementLedgerScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.inventory_2_rounded,
+                  title: 'Global Menu & Inventory Stock',
+                  subtitle: 'Platform-wide stock toggle for restaurant items',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminInventoryScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.security_rounded,
+                  title: 'Security Audit Logs',
+                  subtitle: 'Activity trail recording admin actions and IP logs',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminAuditLogsScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.bolt_rounded,
+                  title: 'Surge Pricing & Delivery Zones',
+                  subtitle: 'Configure base delivery fees and peak surge multipliers',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminSurgePricingScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
