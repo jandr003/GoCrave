@@ -457,6 +457,62 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildSettingTile(
+                  icon: Icons.store_mall_directory_rounded,
+                  title: 'Multi-Store Branch Manager',
+                  subtitle: 'Manage multi-branch restaurant locations & sales',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminBranchManagerScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.speed_rounded,
+                  title: 'Rider Performance & Shifts',
+                  subtitle: 'Track driver metrics, ratings and shift schedules',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminRiderPerformanceScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.receipt_long_rounded,
+                  title: 'Automated Tax Compliance',
+                  subtitle: 'Generate BIR withholding tax statements (Form 2307)',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminTaxComplianceScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.gpp_bad_rounded,
+                  title: 'AI Fraud Detection & Risk',
+                  subtitle: 'Monitor suspicious orders and block fraudulent accounts',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminFraudDetectionScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
                   icon: Icons.shield_outlined,
                   title: 'Account & Security',
                   subtitle: 'Password reset, 2FA & email credentials',
