@@ -27,7 +27,9 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'App Preferences',
@@ -51,7 +53,11 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 title: 'Push Notifications',
                 subtitle: 'Get alerts for all activity',
                 value: _pushNotifications,
-                onChanged: (v) => setState(() => _pushNotifications = v),
+                onChanged: (v) {
+                  setState(() {
+                    _pushNotifications = v;
+                  });
+                },
               ),
               _buildDivider(),
               _buildToggleItem(
@@ -59,7 +65,11 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 title: 'Order Updates',
                 subtitle: 'Important alerts about your food',
                 value: _orderUpdates,
-                onChanged: (v) => setState(() => _orderUpdates = v),
+                onChanged: (v) {
+                  setState(() {
+                    _orderUpdates = v;
+                  });
+                },
               ),
               _buildDivider(),
               _buildToggleItem(
@@ -67,7 +77,11 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 title: 'Promotional Emails',
                 subtitle: 'Exclusive deals and newsletters',
                 value: _promoEmails,
-                onChanged: (v) => setState(() => _promoEmails = v),
+                onChanged: (v) {
+                  setState(() {
+                    _promoEmails = v;
+                  });
+                },
               ),
             ]),
 
@@ -78,7 +92,11 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 title: 'Dark Mode',
                 subtitle: 'Switch to a darker theme',
                 value: _darkMode,
-                onChanged: (v) => setState(() => _darkMode = v),
+                onChanged: (v) {
+                  setState(() {
+                    _darkMode = v;
+                  });
+                },
               ),
               _buildDivider(),
               _buildNavigationItem(
@@ -96,13 +114,19 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 title: 'Precise Location',
                 subtitle: 'Better accuracy for delivery',
                 value: _preciseLocation,
-                onChanged: (v) => setState(() => _preciseLocation = v),
+                onChanged: (v) {
+                  setState(() {
+                    _preciseLocation = v;
+                  });
+                },
               ),
               _buildDivider(),
               _buildNavigationItem(
                 icon: Icons.shield_outlined,
                 title: 'Data Permissions',
-                onTap: () {},
+                onTap: () {
+                  
+                },
               ),
             ]),
 
@@ -112,7 +136,9 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
                 icon: Icons.delete_outline,
                 title: 'Clear Cache',
                 subtitle: 'Free up space on your device',
-                onTap: () => _showConfirmationDialog('Clear Cache', 'Are you sure you want to clear the app cache?'),
+                onTap: () {
+                  _showConfirmationDialog('Clear Cache', 'Are you sure you want to clear the app cache?');
+                },
               ),
             ]),
             
@@ -325,7 +351,9 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
     bool isSelected = _selectedLanguage == lang;
     return ListTile(
       onTap: () {
-        setState(() => _selectedLanguage = lang);
+        setState(() {
+          _selectedLanguage = lang;
+        });
         Navigator.pop(context);
       },
       title: Text(
@@ -342,25 +370,31 @@ class _AppPreferencesScreenState extends State<AppPreferencesScreen> {
   void _showConfirmationDialog(String title, String message) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
-        content: Text(message, style: GoogleFonts.poppins()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+          content: Text(message, style: GoogleFonts.poppins()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
             ),
-            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              child: const Text('Confirm', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 }
