@@ -31,7 +31,9 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
   }
 
   String get _maskedEmail {
-    if (_email.isEmpty || !_email.contains('@')) return 'ad••••@gocrave.app';
+    if (_email.isEmpty || !_email.contains('@')) {
+      return 'ad••••@gocrave.app';
+    }
     final parts = _email.split('@');
     final name = parts[0];
     final domain = parts[1];
@@ -40,7 +42,9 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
   }
 
   String get _maskedPhone {
-    if (_phone.length < 10) return '+63 9•• ••• ••21';
+    if (_phone.length < 10) {
+      return '+63 9•• ••• ••21';
+    }
     final clean = _phone.replaceAll(' ', '');
     final last2 = clean.substring(clean.length - 2);
     final first4 = clean.substring(0, clean.length >= 5 ? 5 : clean.length);
@@ -116,9 +120,14 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
                                 return;
                               }
 
-                              setModalState(() => isSaving = true);
+                              setModalState(() {
+                                isSaving = true;
+                              });
+
                               await Future.delayed(const Duration(seconds: 1));
-                              if (!mounted) return;
+                              if (!mounted) {
+                                return;
+                              }
 
                               setState(() {
                                 _email = emailCtrl.text.trim();
@@ -224,9 +233,14 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
                                 return;
                               }
 
-                              setModalState(() => isSaving = true);
+                              setModalState(() {
+                                isSaving = true;
+                              });
+
                               await Future.delayed(const Duration(seconds: 1));
-                              if (!mounted) return;
+                              if (!mounted) {
+                                return;
+                              }
 
                               setState(() {
                                 _phone = phoneCtrl.text.trim();
@@ -273,7 +287,9 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Recovery Information',
@@ -404,7 +420,9 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
                     width: double.infinity,
                     height: 44,
                     child: OutlinedButton(
-                      onPressed: _showUpdateEmailModal,
+                      onPressed: () {
+                        _showUpdateEmailModal();
+                      },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: brandColor),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -460,7 +478,9 @@ class _AdminRecoveryInfoScreenState extends State<AdminRecoveryInfoScreen> {
                     width: double.infinity,
                     height: 44,
                     child: OutlinedButton(
-                      onPressed: _showUpdatePhoneModal,
+                      onPressed: () {
+                        _showUpdatePhoneModal();
+                      },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: brandColor),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
