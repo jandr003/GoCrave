@@ -113,17 +113,43 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
     super.dispose();
   }
 
-  int get _totalStaff => _staffList.length;
-  int get _activeStaff => _staffList.where((s) => s.status == 'Active').length;
-  int get _pendingStaff => _staffList.where((s) => s.status == 'Pending').length;
+  int get _totalStaff {
+    return _staffList.length;
+  }
+
+  int get _activeStaff {
+    int count = 0;
+    for (var s in _staffList) {
+      if (s.status == 'Active') {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  int get _pendingStaff {
+    int count = 0;
+    for (var s in _staffList) {
+      if (s.status == 'Pending') {
+        count++;
+      }
+    }
+    return count;
+  }
 
   List<StaffMember> get _filteredStaff {
-    if (_searchQuery.isEmpty) return _staffList;
-    return _staffList.where((s) {
-      return s.name.toLowerCase().contains(_searchQuery) ||
-             s.email.toLowerCase().contains(_searchQuery) ||
-             s.role.toLowerCase().contains(_searchQuery);
-    }).toList();
+    if (_searchQuery.isEmpty) {
+      return _staffList;
+    }
+    List<StaffMember> results = [];
+    for (var s in _staffList) {
+      if (s.name.toLowerCase().contains(_searchQuery) ||
+          s.email.toLowerCase().contains(_searchQuery) ||
+          s.role.toLowerCase().contains(_searchQuery)) {
+        results.add(s);
+      }
+    }
+    return results;
   }
 
   void _notifyUpdated() {
@@ -212,9 +238,15 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
                         icon: Icon(Icons.keyboard_arrow_down_rounded, color: brandColor),
                         style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                         onChanged: (val) {
-                          if (val != null) setModalState(() => selectedRole = val);
+                          if (val != null) {
+                            setModalState(() {
+                              selectedRole = val;
+                            });
+                          }
                         },
-                        items: _roles.map<DropdownMenuItem<String>>((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
+                        items: _roles.map<DropdownMenuItem<String>>((r) {
+                          return DropdownMenuItem(value: r, child: Text(r));
+                        }).toList(),
                       ),
                     ),
                   ),
@@ -345,8 +377,12 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
                           backgroundColor: const Color(0xFFF1F5F9),
                           onSelected: (bool selected) {
                             if (selected) {
-                              setModalState(() => staff.status = st);
-                              setState(() {});
+                              setModalState(() {
+                                staff.status = st;
+                              });
+                              setState(() {
+                                
+                              });
                               _notifyUpdated();
                             }
                           },
@@ -377,8 +413,12 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
                           activeColor: brandColor,
                           value: val,
                           onChanged: (bool newVal) {
-                            setModalState(() => staff.permissions[permKey] = newVal);
-                            setState(() {});
+                            setModalState(() {
+                              staff.permissions[permKey] = newVal;
+                            });
+                            setState(() {
+                              
+                            });
                             _notifyUpdated();
                           },
                         );
@@ -392,7 +432,9 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: brandColor,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -448,7 +490,9 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Staff & Permissions',
@@ -560,7 +604,9 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
                   return Column(
                     children: [
                       InkWell(
-                        onTap: () => _showStaffDetailModal(staff),
+                        onTap: () {
+                          _showStaffDetailModal(staff);
+                        },
                         borderRadius: BorderRadius.circular(22),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
@@ -623,7 +669,9 @@ class _AdminStaffPermissionsScreenState extends State<AdminStaffPermissionsScree
               width: double.infinity,
               height: 48,
               child: ElevatedButton.icon(
-                onPressed: _showAddStaffModal,
+                onPressed: () {
+                  _showAddStaffModal();
+                },
                 icon: const Icon(Icons.add_rounded, size: 20, color: Colors.white),
                 label: Text(
                   'Add Staff',
