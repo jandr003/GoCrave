@@ -11,7 +11,9 @@ class AdminAuditLogsScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminAuditLogsScreen> createState() => _AdminAuditLogsScreenState();
+  State<AdminAuditLogsScreen> createState() {
+    return _AdminAuditLogsScreenState();
+  }
 }
 
 class _AdminAuditLogsScreenState extends State<AdminAuditLogsScreen> {
@@ -30,7 +32,9 @@ class _AdminAuditLogsScreenState extends State<AdminAuditLogsScreen> {
   }
 
   void _onAuditChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -45,7 +49,9 @@ class _AdminAuditLogsScreenState extends State<AdminAuditLogsScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            return Navigator.pop(context);
+          },
         ),
         title: Text(
           'Security Audit Logs & Activity Tracker',
@@ -61,7 +67,9 @@ class _AdminAuditLogsScreenState extends State<AdminAuditLogsScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         itemCount: logs.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        separatorBuilder: (_, __) {
+          return const SizedBox(height: 14);
+        },
         itemBuilder: (context, index) {
           final log = logs[index];
 

@@ -73,63 +73,74 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
 
   void _markChanged() {
     if (!_hasUnsavedChanges) {
-      setState(() => _hasUnsavedChanges = true);
+      setState(() {
+        _hasUnsavedChanges = true;
+      });
     }
   }
 
   void _showResetConfirmationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Reset Notification Settings?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'Are you sure you want to restore all notification channels and alert preferences to platform defaults?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Reset Notification Settings?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _channels = {'Push Notifications': true, 'Email Notifications': true, 'SMS Notifications': false};
-                _orderAlerts = {'New Orders': true, 'Order Cancellations': true, 'Pending Actions': true, 'Order Status Updates': true};
-                _riderAlerts = {'Rider Assignment': true, 'Delivery Status Updates': true, 'Delayed Deliveries': true, 'Failed Deliveries': true};
-                _paymentAlerts = {'Payment Verification': true, 'Payment Status Updates': true, 'Payment Issues': true};
-                _securityAlerts = {'Account Security Alerts': true, 'Account Changes': true, 'System Announcements': true};
-                _hasUnsavedChanges = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Notification settings reset to defaults.', style: GoogleFonts.poppins()),
-                  backgroundColor: const Color(0xFF475569),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'Are you sure you want to restore all notification channels and alert preferences to platform defaults?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _channels = {'Push Notifications': true, 'Email Notifications': true, 'SMS Notifications': false};
+                  _orderAlerts = {'New Orders': true, 'Order Cancellations': true, 'Pending Actions': true, 'Order Status Updates': true};
+                  _riderAlerts = {'Rider Assignment': true, 'Delivery Status Updates': true, 'Delayed Deliveries': true, 'Failed Deliveries': true};
+                  _paymentAlerts = {'Payment Verification': true, 'Payment Status Updates': true, 'Payment Issues': true};
+                  _securityAlerts = {'Account Security Alerts': true, 'Account Changes': true, 'System Announcements': true};
+                  _hasUnsavedChanges = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Notification settings reset to defaults.', style: GoogleFonts.poppins()),
+                    backgroundColor: const Color(0xFF475569),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
   void _saveChanges() async {
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final updatedData = {
       'channels': _channels,
@@ -158,7 +169,13 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
-        final activeChannelsCount = _channels.values.where((v) => v).length;
+        int activeChannelsCount = 0;
+        for (var entry in _channels.entries) {
+          if (entry.value) {
+            activeChannelsCount++;
+          }
+        }
+
         return Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -224,7 +241,9 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -267,7 +286,9 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Notification Settings',
@@ -422,7 +443,9 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
             value: val,
             activeColor: brandColor,
             onChanged: (newVal) {
-              setState(() => _channels[key] = newVal);
+              setState(() {
+                _channels[key] = newVal;
+              });
               _markChanged();
             },
           ),
@@ -462,7 +485,9 @@ class _AdminNotificationSettingsScreenState extends State<AdminNotificationSetti
                       value: val,
                       activeColor: brandColor,
                       onChanged: (newVal) {
-                        setState(() => map[k] = newVal);
+                        setState(() {
+                          map[k] = newVal;
+                        });
                         _markChanged();
                       },
                     ),

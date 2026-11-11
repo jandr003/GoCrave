@@ -18,7 +18,6 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  // timing settings
   late Animation<double> _iconPopScale;
   late Animation<double> _iconPopFade;
   late Animation<double> _circleReveal;
@@ -42,14 +41,14 @@ class _SplashScreenState extends State<SplashScreen>
       ),
       Image.asset(
         'assets/images/gocrave_app_logo.png',
-        width: 100, // app icon size
+        width: 100,
         height: 100,
         fit: BoxFit.contain,
         key: const ValueKey('logo_final_icon'),
       ),
       Image.asset(
         'assets/images/gocrave_official_logo.png',
-        width: 750, // massively bigger official wordmark
+        width: 750,
         height: 250,
         fit: BoxFit.contain,
         key: const ValueKey('logo_final_text'),
@@ -61,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 3000),
     );
 
-    // icon pop reveal
     _iconPopFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -75,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // orange boom effect
     _circleReveal = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -83,7 +80,6 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // horizontal reveal
     _finalLogoReveal = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -102,7 +98,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startTransitionTimer() {
-    // wait for sequence and go to next screen
     Timer(const Duration(milliseconds: 6500), () {
       _checkPersistence();
     });

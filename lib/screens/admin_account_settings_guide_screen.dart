@@ -72,7 +72,9 @@ class AdminAccountSettingsGuideScreen extends StatelessWidget {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            return Navigator.pop(context);
+          },
         ),
         title: Text(
           'Account & Settings Guide',

@@ -32,12 +32,18 @@ class _AdminDisputeCenterScreenState extends State<AdminDisputeCenterScreen> {
   }
 
   void _onDisputeChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   List<Map<String, dynamic>> get _filteredDisputes {
     final disputes = _disputeManager.disputes;
-    if (_selectedFilterIndex == 0) return disputes;
+    if (_selectedFilterIndex == 0) {
+      return disputes;
+    }
     final filter = _filters[_selectedFilterIndex];
     return disputes.where((d) => d['status'] == filter).toList();
   }
@@ -54,7 +60,9 @@ class _AdminDisputeCenterScreenState extends State<AdminDisputeCenterScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Dispute & Refund Resolution Center',
@@ -80,7 +88,11 @@ class _AdminDisputeCenterScreenState extends State<AdminDisputeCenterScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: InkWell(
-                      onTap: () => setState(() => _selectedFilterIndex = idx),
+                      onTap: () {
+                        setState(() {
+                          _selectedFilterIndex = idx;
+                        });
+                      },
                       borderRadius: BorderRadius.circular(14),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -112,14 +124,20 @@ class _AdminDisputeCenterScreenState extends State<AdminDisputeCenterScreen> {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 14),
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 14);
+              },
               itemBuilder: (context, index) {
                 final dispute = filtered[index];
                 final status = dispute['status'];
 
                 Color statusColor = const Color(0xFFEF4444);
-                if (status == 'Resolved') statusColor = const Color(0xFF10B981);
-                if (status == 'Refunded') statusColor = const Color(0xFF2563EB);
+                if (status == 'Resolved') {
+                  statusColor = const Color(0xFF10B981);
+                }
+                if (status == 'Refunded') {
+                  statusColor = const Color(0xFF2563EB);
+                }
 
                 return Container(
                   padding: const EdgeInsets.all(18),

@@ -42,7 +42,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   void _showAddFoodModal(BuildContext context) {
@@ -175,7 +179,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AdminNotificationsScreen(),
+                  builder: (context) {
+                    return const AdminNotificationsScreen();
+                  },
                 ),
               );
             },
@@ -187,17 +193,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               final updatedAvatar = await Navigator.push<String>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AdminSettingsScreen(
-                    adminEmail: widget.adminEmail,
-                    currentAvatarUrl: _adminAvatarUrl,
-                    onAvatarUpdated: (newUrl) {
-                      if (mounted) {
-                        setState(() {
-                          _adminAvatarUrl = newUrl;
-                        });
-                      }
-                    },
-                  ),
+                  builder: (context) {
+                    return AdminSettingsScreen(
+                      adminEmail: widget.adminEmail,
+                      currentAvatarUrl: _adminAvatarUrl,
+                      onAvatarUpdated: (newUrl) {
+                        if (mounted) {
+                          setState(() {
+                            _adminAvatarUrl = newUrl;
+                          });
+                        }
+                      },
+                    );
+                  },
                 ),
               );
               if (updatedAvatar != null && mounted) {
@@ -218,9 +226,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             child: AdminHeaderCard(
               brandColor: brandColor,
               adminAvatarUrl: _adminAvatarUrl,
-              onTapAssignRider: () => setState(() => _selectedTab = 2),
-              onTapManageOrders: () => setState(() => _selectedTab = 1),
-              onTapManageRiders: () => setState(() => _selectedTab = 2),
+              onTapAssignRider: () {
+                setState(() {
+                  _selectedTab = 2;
+                });
+              },
+              onTapManageOrders: () {
+                setState(() {
+                  _selectedTab = 1;
+                });
+              },
+              onTapManageRiders: () {
+                setState(() {
+                  _selectedTab = 2;
+                });
+              },
             ),
           ),
           SingleChildScrollView(
@@ -271,192 +291,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSelectedTabContent() {
-    switch (_selectedTab) {
-      case 1:
-        return AdminOrdersTab(brandColor: brandColor);
-      case 2:
-        return AdminRidersTab(brandColor: brandColor);
-      case 3:
-        return AdminReportsTab(brandColor: brandColor);
-      case 0:
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
-  Widget _buildOverviewAnalyticsTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Top Performing Food Items',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF0F172A),
-          ),
-        ),
-        const SizedBox(height: 12),
-        ...allFoodItems.take(4).map((food) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    food['image']!,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        food['title']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        food['category']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.grey[500],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      food['price']!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: brandColor,
-                      ),
-                    ),
-                    Text(
-                      '${food['rating']} ⭐ Rating',
-                      style: GoogleFonts.poppins(
-                        fontSize: 11,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
-  Widget _buildMenuManagementTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Menu Stock & Availability',
-              style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                _showAddFoodModal(context);
-              },
-              icon: const Icon(Icons.add, size: 16, color: Colors.white),
-              label: Text('Add Item', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: brandColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 14),
-        ...allFoodItems.map((food) {
-          final title = food['title']!;
-          final inStock = _foodStockStatus[title] ?? true;
-
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    food['image']!,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        '${food['category']} • ${food['price']}',
-                        style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-                Switch(
-                  value: inStock,
-                  activeColor: brandColor,
-                  onChanged: (val) {
-                    setState(() {
-                      _foodStockStatus[title] = val;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('$title is now ${val ? "IN STOCK" : "OUT OF STOCK"}'),
-                        backgroundColor: val ? Colors.green : Colors.grey[700],
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
     );
   }
 }

@@ -56,7 +56,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
 
   void _markChanged() {
     if (!_hasUnsavedChanges) {
-      setState(() => _hasUnsavedChanges = true);
+      setState(() {
+        _hasUnsavedChanges = true;
+      });
     }
   }
 
@@ -124,7 +126,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -143,57 +147,66 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
   void _showResetConfirmationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Reset Delivery Settings?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'Are you sure you want to restore all delivery distances, assignment rules, and operating schedules back to platform defaults?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Reset Delivery Settings?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _maxDistance = '15 km';
-                _assignmentMethod = 'Manual Assignment';
-                _unassignedAction = 'Keep Order Unassigned';
-                _operationsEnabled = true;
-                _openingTime = '8:00 AM';
-                _closingTime = '5:00 PM';
-                _hasUnsavedChanges = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Delivery settings reset to platform defaults.', style: GoogleFonts.poppins()),
-                  backgroundColor: const Color(0xFF475569),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'Are you sure you want to restore all delivery distances, assignment rules, and operating schedules back to platform defaults?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _maxDistance = '15 km';
+                  _assignmentMethod = 'Manual Assignment';
+                  _unassignedAction = 'Keep Order Unassigned';
+                  _operationsEnabled = true;
+                  _openingTime = '8:00 AM';
+                  _closingTime = '5:00 PM';
+                  _hasUnsavedChanges = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Delivery settings reset to platform defaults.', style: GoogleFonts.poppins()),
+                    backgroundColor: const Color(0xFF475569),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
   void _saveChanges() async {
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final updatedData = {
       'maxDistance': _maxDistance,
@@ -291,7 +304,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -327,7 +342,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Delivery Settings',
@@ -373,7 +390,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                   Text('Maximum Delivery Distance', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_maxDistance, _maxDistances, (val) {
-                    setState(() => _maxDistance = val);
+                    setState(() {
+                      _maxDistance = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -431,7 +450,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                   Text('Assignment Method', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_assignmentMethod, _assignmentMethods, (val) {
-                    setState(() => _assignmentMethod = val);
+                    setState(() {
+                      _assignmentMethod = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -442,7 +463,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                   Text('When No Rider Is Available', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_unassignedAction, _unassignedActions, (val) {
-                    setState(() => _unassignedAction = val);
+                    setState(() {
+                      _unassignedAction = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -488,7 +511,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                         value: _operationsEnabled,
                         activeColor: brandColor,
                         onChanged: (val) {
-                          setState(() => _operationsEnabled = val);
+                          setState(() {
+                            _operationsEnabled = val;
+                          });
                           _markChanged();
                         },
                       ),
@@ -509,7 +534,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                               onTap: () async {
                                 final picked = await showTimePicker(context: context, initialTime: const TimeOfDay(hour: 8, minute: 0));
                                 if (picked != null) {
-                                  setState(() => _openingTime = picked.format(context));
+                                  setState(() {
+                                    _openingTime = picked.format(context);
+                                  });
                                   _markChanged();
                                 }
                               },
@@ -544,7 +571,9 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
                               onTap: () async {
                                 final picked = await showTimePicker(context: context, initialTime: const TimeOfDay(hour: 17, minute: 0));
                                 if (picked != null) {
-                                  setState(() => _closingTime = picked.format(context));
+                                  setState(() {
+                                    _closingTime = picked.format(context);
+                                  });
                                   _markChanged();
                                 }
                               },
@@ -636,9 +665,16 @@ class _AdminDeliverySettingsScreenState extends State<AdminDeliverySettingsScree
           icon: Icon(Icons.keyboard_arrow_down_rounded, color: brandColor),
           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
           onChanged: (val) {
-            if (val != null) onChanged(val);
+            if (val != null) {
+              onChanged(val);
+            }
           },
-          items: options.map<DropdownMenuItem<String>>((opt) => DropdownMenuItem(value: opt, child: Text(opt))).toList(),
+          items: options.map<DropdownMenuItem<String>>((opt) {
+            return DropdownMenuItem(
+              value: opt,
+              child: Text(opt),
+            );
+          }).toList(),
         ),
       ),
     );

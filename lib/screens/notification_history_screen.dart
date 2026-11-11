@@ -27,9 +27,7 @@ class NotificationHistoryScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              // add the clear all logic here later
-            },
+            onPressed: () {},
             child: Text(
               'Clear All',
               style: GoogleFonts.poppins(color: Colors.deepOrangeAccent),

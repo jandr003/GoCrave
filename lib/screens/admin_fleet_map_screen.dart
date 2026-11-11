@@ -38,14 +38,22 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
   }
 
   void _onFleetChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   List<Map<String, dynamic>> get _filteredRiders {
     final riders = _fleetManager.riders;
-    if (_selectedFilterIndex == 0) return riders;
+    if (_selectedFilterIndex == 0) {
+      return riders;
+    }
     final filter = _filters[_selectedFilterIndex];
-    return riders.where((r) => r['status'] == filter).toList();
+    return riders.where((r) {
+      return r['status'] == filter;
+    }).toList();
   }
 
   void _showDispatchRiderModal() {
@@ -95,7 +103,11 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: InkWell(
-                            onTap: () => setModalState(() => selectedStatus = status),
+                            onTap: () {
+                              setModalState(() {
+                                selectedStatus = status;
+                              });
+                            },
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -183,7 +195,9 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Master Fleet Operations Map',
@@ -209,7 +223,11 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: InkWell(
-                      onTap: () => setState(() => _selectedFilterIndex = idx),
+                      onTap: () {
+                        setState(() {
+                          _selectedFilterIndex = idx;
+                        });
+                      },
                       borderRadius: BorderRadius.circular(14),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -257,8 +275,12 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                       markers: filtered.map((rider) {
                         final status = rider['status'];
                         Color markerColor = const Color(0xFF10B981);
-                        if (status == 'On Delivery') markerColor = widget.brandColor;
-                        if (status == 'Offline') markerColor = Colors.grey;
+                        if (status == 'On Delivery') {
+                          markerColor = widget.brandColor;
+                        }
+                        if (status == 'Offline') {
+                          markerColor = Colors.grey;
+                        }
 
                         return Marker(
                           point: rider['latLng'],
@@ -266,7 +288,9 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                           height: 44,
                           child: GestureDetector(
                             onTap: () {
-                              setState(() => _selectedRider = rider);
+                              setState(() {
+                                _selectedRider = rider;
+                              });
                               _mapController.move(rider['latLng'], 16.0);
                             },
                             child: Container(
@@ -425,7 +449,11 @@ class _AdminFleetMapScreenState extends State<AdminFleetMapScreen> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.close_rounded, color: Colors.grey, size: 20),
-                            onPressed: () => setState(() => _selectedRider = null),
+                            onPressed: () {
+                              setState(() {
+                                _selectedRider = null;
+                              });
+                            },
                           ),
                         ],
                       ),

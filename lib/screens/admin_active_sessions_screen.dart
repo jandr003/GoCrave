@@ -12,7 +12,9 @@ class AdminActiveSessionsScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminActiveSessionsScreen> createState() => _AdminActiveSessionsScreenState();
+  State<AdminActiveSessionsScreen> createState()  {
+    return _AdminActiveSessionsScreenState();
+  }
 }
 
 class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
@@ -24,20 +26,40 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
   void initState() {
     super.initState();
     _sessions = widget.initialSessions ?? [
-      {'device': 'Android Emulator / Studio', 'location': 'Manila, PH', 'time': 'Current Session', 'isCurrent': 'true'},
-      {'device': 'Chrome Browser (Mac OS)', 'location': 'Quezon City, PH', 'time': '2 hours ago', 'isCurrent': 'false'},
-      {'device': 'GoCrave Admin iOS App', 'location': 'Makati City, PH', 'time': 'Yesterday at 4:15 PM', 'isCurrent': 'false'},
+      {
+        'device': 'Android Emulator / Studio',
+        'location': 'Manila, PH',
+        'time': 'Current Session',
+        'isCurrent': 'true',
+      },
+      {
+        'device': 'Chrome Browser (Mac OS)',
+        'location': 'Quezon City, PH',
+        'time': '2 hours ago',
+        'isCurrent': 'false',
+      },
+      {
+        'device': 'GoCrave Admin iOS App',
+        'location': 'Makati City, PH',
+        'time': 'Yesterday at 4:15 PM',
+        'isCurrent': 'false',
+      },
     ];
   }
 
   void _signOutSession(int index) {
     final removed = _sessions.removeAt(index);
     widget.onSessionsUpdated?.call(_sessions);
-    setState(() {});
+    setState(() {
+      
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Signed out session from ${removed['device']}.', style: GoogleFonts.poppins()),
+        content: Text(
+          'Signed out session from ${removed['device']}.',
+          style: GoogleFonts.poppins(),
+        ),
         backgroundColor: brandColor,
         behavior: SnackBarBehavior.floating,
       ),
@@ -53,8 +75,14 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
         elevation: 0.5,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Color(0xFF0F172A),
+            size: 18,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Active Sessions',
@@ -74,13 +102,20 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
           children: [
             Text(
               'Review signed-in devices and manage session access.',
-              style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF64748B)),
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                color: const Color(0xFF64748B),
+              ),
             ),
             const SizedBox(height: 20),
 
             Text(
               'Signed-In Devices (${_sessions.length})',
-              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF0F172A),
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -90,7 +125,11 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(color: const Color(0xFFE2E8F0)),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.02),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
                 ],
               ),
               child: Column(
@@ -110,7 +149,9 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
-                                isCurrent ? Icons.phone_android_rounded : Icons.laptop_mac_rounded,
+                                isCurrent
+                                    ? Icons.phone_android_rounded
+                                    : Icons.laptop_mac_rounded,
                                 color: brandColor,
                                 size: 22,
                               ),
@@ -120,32 +161,78 @@ class _AdminActiveSessionsScreenState extends State<AdminActiveSessionsScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(session['device']!, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                                  Text(
+                                    session['device']!,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF0F172A),
+                                    ),
+                                  ),
                                   const SizedBox(height: 2),
-                                  Text('${session['location']} • ${session['time']}', style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B))),
+                                  Text(
+                                    '${session['location']} • ${session['time']}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 11,
+                                      color: const Color(0xFF64748B),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                             if (isCurrent)
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                decoration: BoxDecoration(color: const Color(0xFFECFDF5), borderRadius: BorderRadius.circular(8)),
-                                child: Text('Current', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFF10B981))),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFECFDF5),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  'Current',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF10B981),
+                                  ),
+                                ),
                               )
                             else
                               OutlinedButton(
-                                onPressed: () => _signOutSession(idx),
+                                onPressed: () {
+                                  _signOutSession(idx);
+                                },
                                 style: OutlinedButton.styleFrom(
-                                  side: const BorderSide(color: Color(0xFFEF4444)),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  side: const BorderSide(
+                                    color: Color(0xFFEF4444),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
                                 ),
-                                child: Text('Sign Out', style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: const Color(0xFFEF4444))),
+                                child: Text(
+                                  'Sign Out',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFFEF4444),
+                                  ),
+                                ),
                               ),
                           ],
                         ),
                       ),
-                      if (idx < _sessions.length - 1) const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                      if (idx < _sessions.length - 1)
+                        const Divider(
+                          height: 1,
+                          color: Color(0xFFF1F5F9),
+                        ),
                     ],
                   );
                 }),

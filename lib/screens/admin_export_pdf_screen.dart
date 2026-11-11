@@ -26,13 +26,20 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
   int _selectedReportTypeIndex = 0;
   bool _isGenerating = false;
 
-  List<String> get _timeframes => [
-        'Current Batch (${_effectiveOrders.length} Orders)',
-        'Today',
-        'This Week',
-        'This Month',
-      ];
-  final List<String> _reportTypes = ['Executive Financial Summary', 'Detailed Order Log', 'Revenue & Commission Statement'];
+  List<String> get _timeframes {
+    return [
+      'Current Batch (${_effectiveOrders.length} Orders)',
+      'Today',
+      'This Week',
+      'This Month',
+    ];
+  }
+
+  final List<String> _reportTypes = [
+    'Executive Financial Summary',
+    'Detailed Order Log',
+    'Revenue & Commission Statement',
+  ];
 
   List<OrderModel> get _effectiveOrders {
     if (widget.orders != null && widget.orders!.isNotEmpty) {
@@ -40,26 +47,28 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
     }
     final managerOrders = OrderManager().orders;
     if (managerOrders.isNotEmpty) {
-      return managerOrders.map((o) => OrderModel(
-        id: o.id,
-        storeName: o.title,
-        storeLogo: '',
-        dishName: o.subtitle,
-        customerName: o.customerName,
-        customerPhone: '09171234567',
-        address: o.location,
-        riderName: o.riderName,
-        riderAvatar: o.riderPhoto,
-        price: o.totalAmount,
-        time: '${o.timestamp.hour}:${o.timestamp.minute.toString().padLeft(2, '0')}',
-        status: o.status,
-        cityName: 'Malolos',
-        centerLatLng: const LatLng(14.8560, 120.8190),
-        storeLatLng: const LatLng(14.8527, 120.8160),
-        riderLatLng: const LatLng(14.8565, 120.8164),
-        customerLatLng: const LatLng(14.8581, 120.8242),
-        routePoints: const [],
-      )).toList();
+      return managerOrders.map((o) {
+        return OrderModel(
+          id: o.id,
+          storeName: o.title,
+          storeLogo: '',
+          dishName: o.subtitle,
+          customerName: o.customerName,
+          customerPhone: '09171234567',
+          address: o.location,
+          riderName: o.riderName,
+          riderAvatar: o.riderPhoto,
+          price: o.totalAmount,
+          time: '${o.timestamp.hour}:${o.timestamp.minute.toString().padLeft(2, '0')}',
+          status: o.status,
+          cityName: 'Malolos',
+          centerLatLng: const LatLng(14.8560, 120.8190),
+          storeLatLng: const LatLng(14.8527, 120.8160),
+          riderLatLng: const LatLng(14.8565, 120.8164),
+          customerLatLng: const LatLng(14.8581, 120.8242),
+          routePoints: const [],
+        );
+      }).toList();
     }
     return [
       OrderModel(
@@ -134,10 +143,24 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
     return sum > 0 ? sum : 920.00;
   }
 
-  double get _platformCommission => _totalGrossRevenue * 0.15;
-  double get _deliveryFleetCut => _effectiveOrders.length * 25.0;
-  double get _netMerchantPayout => _totalGrossRevenue - _platformCommission - _deliveryFleetCut;
-  double get _averageOrderValue => _effectiveOrders.isNotEmpty ? _totalGrossRevenue / _effectiveOrders.length : 306.67;
+  double get _platformCommission {
+    return _totalGrossRevenue * 0.15;
+  }
+
+  double get _deliveryFleetCut {
+    return _effectiveOrders.length * 25.0;
+  }
+
+  double get _netMerchantPayout {
+    return _totalGrossRevenue - _platformCommission - _deliveryFleetCut;
+  }
+
+  double get _averageOrderValue {
+    if (_effectiveOrders.isNotEmpty) {
+      return _totalGrossRevenue / _effectiveOrders.length;
+    }
+    return 306.67;
+  }
 
   Map<String, int> get _statusCounts {
     final Map<String, int> counts = {'Completed': 0, 'In Progress': 0, 'Pending': 0, 'Assigned': 0, 'On Delivery': 0};
@@ -159,25 +182,37 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
   }
 
   Future<void> _generateAndPrintPdf() async {
-    setState(() => _isGenerating = true);
+    setState(() {
+      _isGenerating = true;
+    });
     try {
       final pdfDoc = await _buildPdfDocument();
       await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => pdfDoc.save(),
+        onLayout: (PdfPageFormat format) async {
+          return pdfDoc.save();
+        },
         name: 'GoCrave_${_reportTypes[_selectedReportTypeIndex].replaceAll(' ', '_')}_${DateTime.now().millisecondsSinceEpoch}.pdf',
       );
     } catch (e) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error generating PDF: $e', style: GoogleFonts.poppins()), backgroundColor: Colors.red),
       );
     } finally {
-      if (mounted) setState(() => _isGenerating = false);
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+      }
     }
   }
 
   Future<void> _sharePdf() async {
-    setState(() => _isGenerating = true);
+    setState(() {
+      _isGenerating = true;
+    });
     try {
       final pdfDoc = await _buildPdfDocument();
       await Printing.sharePdf(
@@ -185,12 +220,18 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
         filename: 'GoCrave_${_reportTypes[_selectedReportTypeIndex].replaceAll(' ', '_')}.pdf',
       );
     } catch (e) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error sharing PDF: $e', style: GoogleFonts.poppins()), backgroundColor: Colors.red),
       );
     } finally {
-      if (mounted) setState(() => _isGenerating = false);
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+      }
     }
   }
 
@@ -300,15 +341,17 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                         _buildTableHeaderCell('Status'),
                       ],
                     ),
-                    ...orders.map((o) => pw.TableRow(
-                      children: [
-                        _tableCell(o.id),
-                        _tableCell(o.customerName),
-                        _tableCell(o.dishName),
-                        _tableCell(o.price),
-                        _tableCell(o.status),
-                      ],
-                    )),
+                    ...orders.map((o) {
+                      return pw.TableRow(
+                        children: [
+                          _tableCell(o.id),
+                          _tableCell(o.customerName),
+                          _tableCell(o.dishName),
+                          _tableCell(o.price),
+                          _tableCell(o.status),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ] else ...[
@@ -394,7 +437,9 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Live PDF Report & Analytics Export',
@@ -434,7 +479,11 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   icon: Icon(Icons.keyboard_arrow_down_rounded, color: widget.brandColor),
                   style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                   onChanged: (val) {
-                    if (val != null) setState(() => _selectedTimeframeIndex = val);
+                    if (val != null) {
+                      setState(() {
+                        _selectedTimeframeIndex = val;
+                      });
+                    }
                   },
                   items: List.generate(_timeframes.length, (idx) {
                     return DropdownMenuItem(value: idx, child: Text(_timeframes[idx]));
@@ -461,7 +510,11 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                   icon: Icon(Icons.keyboard_arrow_down_rounded, color: widget.brandColor),
                   style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                   onChanged: (val) {
-                    if (val != null) setState(() => _selectedReportTypeIndex = val);
+                    if (val != null) {
+                      setState(() {
+                        _selectedReportTypeIndex = val;
+                      });
+                    }
                   },
                   items: List.generate(_reportTypes.length, (idx) {
                     return DropdownMenuItem(value: idx, child: Text(_reportTypes[idx]));
@@ -598,7 +651,9 @@ class _AdminExportPdfScreenState extends State<AdminExportPdfScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: orders.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 8);
+                      },
                       itemBuilder: (context, index) {
                         final order = orders[index];
                         return Container(

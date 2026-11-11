@@ -49,7 +49,6 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   ];
 
   final List<Map<String, dynamic>> _availableRequests = [
-    //my sample data
     {
       'id': '#GOC98231',
       'restaurant': 'Jollibee - Malolos',

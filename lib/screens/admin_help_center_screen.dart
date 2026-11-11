@@ -69,7 +69,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -95,7 +97,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Help Center',
@@ -178,7 +182,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AdminAppOverviewScreen(),
+                      builder: (context) {
+                        return const AdminAppOverviewScreen();
+                      },
                     ),
                   );
                 },
@@ -220,7 +226,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminOrderManagementGuideScreen(),
+                          builder: (context) {
+                            return const AdminOrderManagementGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -234,7 +242,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminRiderDeliveryGuideScreen(),
+                          builder: (context) {
+                            return const AdminRiderDeliveryGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -248,7 +258,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminRestaurantManagementGuideScreen(),
+                          builder: (context) {
+                            return const AdminRestaurantManagementGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -262,7 +274,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminPaymentsFeesGuideScreen(),
+                          builder: (context) {
+                            return const AdminPaymentsFeesGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -276,7 +290,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminReportsAnalyticsGuideScreen(),
+                          builder: (context) {
+                            return const AdminReportsAnalyticsGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -290,7 +306,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminAccountSettingsGuideScreen(),
+                          builder: (context) {
+                            return const AdminAccountSettingsGuideScreen();
+                          },
                         ),
                       );
                     },
@@ -399,7 +417,9 @@ class _AdminHelpCenterScreenState extends State<AdminHelpCenterScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AdminContactSupportScreen(),
+                            builder: (context) {
+                              return const AdminContactSupportScreen();
+                            },
                           ),
                         );
                       },

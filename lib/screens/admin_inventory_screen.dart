@@ -30,7 +30,11 @@ class _AdminInventoryScreenState extends State<AdminInventoryScreen> {
   }
 
   void _onInventoryChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -45,7 +49,9 @@ class _AdminInventoryScreenState extends State<AdminInventoryScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Global Menu & Inventory Stock Central',
@@ -61,7 +67,9 @@ class _AdminInventoryScreenState extends State<AdminInventoryScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 14);
+        },
         itemBuilder: (context, index) {
           final item = items[index];
           final bool inStock = item['inStock'];

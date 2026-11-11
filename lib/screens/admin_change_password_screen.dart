@@ -67,13 +67,20 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
       return;
     }
 
-    setState(() => _isUpdating = true);
+    setState(() {
+      _isUpdating = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     widget.onPasswordUpdated?.call(_newPassCtrl.text);
 
-    setState(() => _isUpdating = false);
+    setState(() {
+      _isUpdating = false;
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -96,7 +103,9 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Change Password',
@@ -140,7 +149,9 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                   Text('Current Password', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildPasswordField(_currentPassCtrl, 'Enter current password', _obscureCurrent, () {
-                    setState(() => _obscureCurrent = !_obscureCurrent);
+                    setState(() {
+                      _obscureCurrent = !_obscureCurrent;
+                    });
                   }),
 
                   const SizedBox(height: 18),
@@ -148,7 +159,9 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                   Text('New Password', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildPasswordField(_newPassCtrl, 'Enter new strong password', _obscureNew, () {
-                    setState(() => _obscureNew = !_obscureNew);
+                    setState(() {
+                      _obscureNew = !_obscureNew;
+                    });
                   }),
 
                   const SizedBox(height: 18),
@@ -156,7 +169,9 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                   Text('Confirm New Password', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildPasswordField(_confirmPassCtrl, 'Re-enter new password', _obscureConfirm, () {
-                    setState(() => _obscureConfirm = !_obscureConfirm);
+                    setState(() {
+                      _obscureConfirm = !_obscureConfirm;
+                    });
                   }),
 
                   const SizedBox(height: 24),

@@ -32,14 +32,22 @@ class _AdminMerchantApprovalScreenState extends State<AdminMerchantApprovalScree
   }
 
   void _onMerchantChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   List<Map<String, dynamic>> get _filteredMerchants {
     final merchants = _merchantManager.merchants;
-    if (_selectedFilterIndex == 0) return merchants;
+    if (_selectedFilterIndex == 0) {
+      return merchants;
+    }
     final filter = _filters[_selectedFilterIndex];
-    return merchants.where((m) => m['status'] == filter).toList();
+    return merchants.where((m) {
+      return m['status'] == filter;
+    }).toList();
   }
 
   void _showApprovalDialog(Map<String, dynamic> merchant) {
@@ -138,7 +146,9 @@ class _AdminMerchantApprovalScreenState extends State<AdminMerchantApprovalScree
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Merchant Approval Pipeline',
@@ -164,7 +174,11 @@ class _AdminMerchantApprovalScreenState extends State<AdminMerchantApprovalScree
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: InkWell(
-                      onTap: () => setState(() => _selectedFilterIndex = idx),
+                      onTap: () {
+                        setState(() {
+                          _selectedFilterIndex = idx;
+                        });
+                      },
                       borderRadius: BorderRadius.circular(14),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -196,14 +210,20 @@ class _AdminMerchantApprovalScreenState extends State<AdminMerchantApprovalScree
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 14),
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 14);
+              },
               itemBuilder: (context, index) {
                 final merchant = filtered[index];
                 final status = merchant['status'];
 
                 Color statusColor = const Color(0xFFF59E0B);
-                if (status == 'Approved') statusColor = const Color(0xFF10B981);
-                if (status == 'Rejected') statusColor = const Color(0xFFEF4444);
+                if (status == 'Approved') {
+                  statusColor = const Color(0xFF10B981);
+                }
+                if (status == 'Rejected') {
+                  statusColor = const Color(0xFFEF4444);
+                }
 
                 return Container(
                   padding: const EdgeInsets.all(18),
@@ -302,7 +322,9 @@ class _AdminMerchantApprovalScreenState extends State<AdminMerchantApprovalScree
                               child: SizedBox(
                                 height: 42,
                                 child: ElevatedButton(
-                                  onPressed: () => _showApprovalDialog(merchant),
+                                  onPressed: () {
+                                    _showApprovalDialog(merchant);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF10B981),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

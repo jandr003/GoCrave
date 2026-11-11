@@ -88,40 +88,50 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
 
   void _markChanged() {
     if (!_hasUnsavedChanges) {
-      setState(() => _hasUnsavedChanges = true);
+      setState(() {
+        _hasUnsavedChanges = true;
+      });
     }
   }
 
   Future<bool> _onWillPop() async {
-    if (!_hasUnsavedChanges) return true;
+    if (!_hasUnsavedChanges) {
+      return true;
+    }
 
     final shouldLeave = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Discard Unsaved Changes?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'You have unsaved changes to your general preferences. Do you want to discard them and exit?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('Keep Editing', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Discard Unsaved Changes?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF4444),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'You have unsaved changes to your general preferences. Do you want to discard them and exit?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: Text('Keep Editing', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Discard & Exit', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFEF4444),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Discard & Exit', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
 
     return shouldLeave ?? false;
@@ -130,58 +140,67 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
   void _showResetConfirmationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Reset Preferences to Defaults?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'Are you sure you want to reset all regional settings, appearance, and dashboard preferences back to platform defaults?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Reset Preferences to Defaults?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _currency = 'PHP — Philippine Peso (₱)';
-                _language = 'English';
-                _timeZone = 'Philippine Time (Asia/Manila, UTC+8)';
-                _dateFormat = 'DD/MM/YYYY  ·  25/10/2026';
-                _timeFormat = 0;
-                _themeMode = 0;
-                _dashboardPeriod = 'Today';
-                _hasUnsavedChanges = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Preferences reset to platform defaults.', style: GoogleFonts.poppins()),
-                  backgroundColor: const Color(0xFF475569),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'Are you sure you want to reset all regional settings, appearance, and dashboard preferences back to platform defaults?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currency = 'PHP — Philippine Peso (₱)';
+                  _language = 'English';
+                  _timeZone = 'Philippine Time (Asia/Manila, UTC+8)';
+                  _dateFormat = 'DD/MM/YYYY  ·  25/10/2026';
+                  _timeFormat = 0;
+                  _themeMode = 0;
+                  _dashboardPeriod = 'Today';
+                  _hasUnsavedChanges = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Preferences reset to platform defaults.', style: GoogleFonts.poppins()),
+                    backgroundColor: const Color(0xFF475569),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
   void _saveChanges() async {
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final updatedData = {
       'currency': _currency,
@@ -281,7 +300,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -308,8 +329,12 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
   }
 
   String get _formattedPreviewOrderDate {
-    if (_dateFormat.contains('MM/DD/YYYY')) return '10/25/2026';
-    if (_dateFormat.contains('YYYY-MM-DD')) return '2026-10-25';
+    if (_dateFormat.contains('MM/DD/YYYY')) {
+      return '10/25/2026';
+    }
+    if (_dateFormat.contains('YYYY-MM-DD')) {
+      return '2026-10-25';
+    }
     return '25/10/2026';
   }
 
@@ -323,7 +348,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
     return PopScope(
       canPop: !_hasUnsavedChanges,
       onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) return;
+        if (didPop) {
+          return;
+        }
         final shouldPop = await _onWillPop();
         if (shouldPop && mounted) {
           Navigator.pop(context);
@@ -425,7 +452,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                           onChanged: (String? val) {
                             if (val != null) {
-                              setState(() => _currency = val);
+                              setState(() {
+                                _currency = val;
+                              });
                               _markChanged();
                             }
                           },
@@ -463,7 +492,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                           onChanged: (String? val) {
                             if (val != null) {
-                              setState(() => _language = val);
+                              setState(() {
+                                _language = val;
+                              });
                               _markChanged();
                             }
                           },
@@ -501,7 +532,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                           onChanged: (String? val) {
                             if (val != null) {
-                              setState(() => _timeZone = val);
+                              setState(() {
+                                _timeZone = val;
+                              });
                               _markChanged();
                             }
                           },
@@ -534,7 +567,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                           onChanged: (String? val) {
                             if (val != null) {
-                              setState(() => _dateFormat = val);
+                              setState(() {
+                                _dateFormat = val;
+                              });
                               _markChanged();
                             }
                           },
@@ -563,7 +598,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                setState(() => _timeFormat = 0);
+                                setState(() {
+                                  _timeFormat = 0;
+                                });
                                 _markChanged();
                               },
                               borderRadius: BorderRadius.circular(12),
@@ -590,7 +627,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                setState(() => _timeFormat = 1);
+                                setState(() {
+                                  _timeFormat = 1;
+                                });
                                 _markChanged();
                               },
                               borderRadius: BorderRadius.circular(12),
@@ -659,7 +698,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() => _themeMode = idx);
+                            setState(() {
+                              _themeMode = idx;
+                            });
                             _markChanged();
                           },
                           borderRadius: BorderRadius.circular(22),
@@ -750,7 +791,9 @@ class _AdminGeneralPreferencesScreenState extends State<AdminGeneralPreferencesS
                           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
                           onChanged: (String? val) {
                             if (val != null) {
-                              setState(() => _dashboardPeriod = val);
+                              setState(() {
+                                _dashboardPeriod = val;
+                              });
                               _markChanged();
                             }
                           },

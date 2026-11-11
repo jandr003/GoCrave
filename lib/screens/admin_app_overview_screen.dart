@@ -61,7 +61,9 @@ class AdminAppOverviewScreen extends StatelessWidget {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            return Navigator.pop(context);
+          },
         ),
         title: Text(
           'Admin App Overview',
@@ -79,8 +81,6 @@ class AdminAppOverviewScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -293,8 +293,6 @@ class AdminAppOverviewScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-
 
             const SizedBox(height: 20),
           ],

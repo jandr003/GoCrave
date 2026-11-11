@@ -110,7 +110,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image + Badges
           Stack(
             children: [
               ClipRRect(
@@ -122,7 +121,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // Rating Badge
               Positioned(
                 top: 12,
                 left: 12,

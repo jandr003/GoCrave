@@ -37,7 +37,11 @@ class _AdminBroadcastScreenState extends State<AdminBroadcastScreen> {
   }
 
   void _onBroadcastChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   void _sendBroadcast() {
@@ -77,7 +81,9 @@ class _AdminBroadcastScreenState extends State<AdminBroadcastScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Broadcast Push Notification Center',
@@ -103,7 +109,11 @@ class _AdminBroadcastScreenState extends State<AdminBroadcastScreen> {
               children: _targets.map((target) {
                 final isSelected = _selectedTarget == target;
                 return InkWell(
-                  onTap: () => setState(() => _selectedTarget = target),
+                  onTap: () {
+                    setState(() {
+                      _selectedTarget = target;
+                    });
+                  },
                   borderRadius: BorderRadius.circular(14),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -197,7 +207,9 @@ class _AdminBroadcastScreenState extends State<AdminBroadcastScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: broadcasts.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 12);
+              },
               itemBuilder: (context, index) {
                 final broadcast = broadcasts[index];
                 return Container(

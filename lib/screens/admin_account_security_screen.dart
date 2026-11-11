@@ -15,7 +15,9 @@ class AdminAccountSecurityScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminAccountSecurityScreen> createState() => _AdminAccountSecurityScreenState();
+  State<AdminAccountSecurityScreen> createState()  {
+    return _AdminAccountSecurityScreenState();
+  }
 }
 
 class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen> {
@@ -46,7 +48,9 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Account & Security',
@@ -95,7 +99,9 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminChangePasswordScreen(),
+                          builder: (context) {
+                            return const AdminChangePasswordScreen();
+                          },
                         ),
                       );
                     },
@@ -106,8 +112,12 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
                     subtitle: 'Require an additional verification step during sign-in.',
                     value: _twoFactorEnabled,
                     onChanged: (val) {
-                      setState(() => _twoFactorEnabled = val);
-                      widget.onSave?.call({'twoFactorEnabled': val});
+                      setState(() {
+                        _twoFactorEnabled = val;
+                      });
+                      widget.onSave?.call({
+                        'twoFactorEnabled': val,
+                      });
                     },
                   ),
                 ],
@@ -141,7 +151,9 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminActiveSessionsScreen(),
+                          builder: (context) {
+                            return const AdminActiveSessionsScreen();
+                          },
                         ),
                       );
                     },
@@ -152,8 +164,12 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
                     subtitle: 'Receive alerts for suspicious logins and important security changes.',
                     value: _securityAlertsEnabled,
                     onChanged: (val) {
-                      setState(() => _securityAlertsEnabled = val);
-                      widget.onSave?.call({'securityAlertsEnabled': val});
+                      setState(() {
+                        _securityAlertsEnabled = val;
+                      });
+                      widget.onSave?.call({
+                        'securityAlertsEnabled': val,
+                      });
                     },
                   ),
                 ],
@@ -185,16 +201,18 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AdminRecoveryInfoScreen(
-                        initialEmail: _recoveryEmail,
-                        initialPhone: _recoveryPhone,
-                        onRecoveryUpdated: (email, phone) {
-                          setState(() {
-                            _recoveryEmail = email;
-                            _recoveryPhone = phone;
-                          });
-                        },
-                      ),
+                      builder: (context) {
+                        return AdminRecoveryInfoScreen(
+                          initialEmail: _recoveryEmail,
+                          initialPhone: _recoveryPhone,
+                          onRecoveryUpdated: (email, phone) {
+                            setState(() {
+                              _recoveryEmail = email;
+                              _recoveryPhone = phone;
+                            });
+                          },
+                        );
+                      },
                     ),
                   );
                 },
@@ -227,9 +245,15 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                  ),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B))),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B)),
+                  ),
                 ],
               ),
             ),
@@ -254,16 +278,24 @@ class _AdminAccountSecurityScreenState extends State<AdminAccountSecurityScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A))),
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                ),
                 const SizedBox(height: 2),
-                Text(subtitle, style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B))),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(fontSize: 11, color: const Color(0xFF64748B)),
+                ),
               ],
             ),
           ),
           Switch(
             value: value,
             activeColor: brandColor,
-            onChanged: onChanged,
+            onChanged: (val) {
+              onChanged(val);
+            },
           ),
         ],
       ),

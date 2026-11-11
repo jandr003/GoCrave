@@ -89,11 +89,20 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final unreadCount = _notifications.where((n) => n['isUnread'] == true).length;
+    int unreadCount = 0;
+    for (var n in _notifications) {
+      if (n['isUnread'] == true) {
+        unreadCount++;
+      }
+    }
 
     final filteredList = _notifications.where((n) {
-      if (_selectedFilterIndex == 0) return true;
-      if (_selectedFilterIndex == 1) return n['isUnread'] == true;
+      if (_selectedFilterIndex == 0) {
+        return true;
+      }
+      if (_selectedFilterIndex == 1) {
+        return n['isUnread'] == true;
+      }
       final categoryFilter = _filters[_selectedFilterIndex].toLowerCase();
       return n['category'].toString().toLowerCase().contains(categoryFilter);
     }).toList();
@@ -105,7 +114,9 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Row(
           children: [
@@ -167,7 +178,11 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: InkWell(
-                      onTap: () => setState(() => _selectedFilterIndex = idx),
+                      onTap: () {
+                        setState(() {
+                          _selectedFilterIndex = idx;
+                        });
+                      },
                       borderRadius: BorderRadius.circular(18),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),

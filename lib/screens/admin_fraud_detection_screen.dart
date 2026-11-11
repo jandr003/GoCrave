@@ -30,7 +30,11 @@ class _AdminFraudDetectionScreenState extends State<AdminFraudDetectionScreen> {
   }
 
   void _onFraudChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -45,7 +49,9 @@ class _AdminFraudDetectionScreenState extends State<AdminFraudDetectionScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'AI Fraud Detection & Risk Dashboard',
@@ -61,14 +67,20 @@ class _AdminFraudDetectionScreenState extends State<AdminFraudDetectionScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         itemCount: flags.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 14);
+        },
         itemBuilder: (context, index) {
           final flag = flags[index];
           final status = flag['status'];
 
           Color statusColor = const Color(0xFFEF4444);
-          if (status == 'Cleared & Resolved') statusColor = const Color(0xFF10B981);
-          if (status == 'Blocked & Banned') statusColor = Colors.black87;
+          if (status == 'Cleared & Resolved') {
+            statusColor = const Color(0xFF10B981);
+          }
+          if (status == 'Blocked & Banned') {
+            statusColor = Colors.black87;
+          }
 
           return Container(
             padding: const EdgeInsets.all(18),

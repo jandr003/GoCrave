@@ -17,10 +17,19 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
   bool _isCheckingUpdates = false;
 
   void _checkForUpdates() async {
-    setState(() => _isCheckingUpdates = true);
+    setState(() {
+      _isCheckingUpdates = true;
+    });
+
     await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    setState(() => _isCheckingUpdates = false);
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isCheckingUpdates = false;
+    });
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('GoCrave Admin v1.0.0 is up to date!', style: GoogleFonts.poppins()),
@@ -64,7 +73,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -90,7 +101,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Help & About',
@@ -146,7 +159,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminHelpCenterScreen(),
+                          builder: (context) {
+                            return const AdminHelpCenterScreen();
+                          },
                         ),
                       );
                     },
@@ -160,7 +175,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminContactSupportScreen(),
+                          builder: (context) {
+                            return const AdminContactSupportScreen();
+                          },
                         ),
                       );
                     },
@@ -174,7 +191,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminTermsScreen(),
+                          builder: (context) {
+                            return const AdminTermsScreen();
+                          },
                         ),
                       );
                     },
@@ -188,7 +207,9 @@ class _AdminHelpAboutScreenState extends State<AdminHelpAboutScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminPrivacyPolicyScreen(),
+                          builder: (context) {
+                            return const AdminPrivacyPolicyScreen();
+                          },
                         ),
                       );
                     },

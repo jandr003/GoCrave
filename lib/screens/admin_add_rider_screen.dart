@@ -11,7 +11,9 @@ class AdminAddRiderScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminAddRiderScreen> createState() => _AdminAddRiderScreenState();
+  State<AdminAddRiderScreen> createState()  {
+    return _AdminAddRiderScreenState();
+  }
 }
 
 class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
@@ -50,9 +52,14 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
       return;
     }
 
-    setState(() => _isRegistering = true);
+    setState(() {
+      _isRegistering = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final riderId = 'R${(DateTime.now().millisecondsSinceEpoch % 1000).toString().padLeft(3, '0')}';
     final emailVal = _emailCtrl.text.trim().isNotEmpty
@@ -78,7 +85,9 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
 
     widget.onRiderAdded?.call(newRider);
 
-    setState(() => _isRegistering = false);
+    setState(() {
+      _isRegistering = false;
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -101,7 +110,9 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0F172A), size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Register Fleet Rider',
@@ -187,7 +198,9 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
                   Text('Vehicle Type *', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_selectedVehicleType, _vehicleTypes, (val) {
-                    setState(() => _selectedVehicleType = val);
+                    setState(() {
+                      _selectedVehicleType = val;
+                    });
                   }),
 
                   const SizedBox(height: 16),
@@ -257,7 +270,11 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: _isRegistering ? null : _submitRiderRegistration,
+                onPressed: _isRegistering
+                    ? null
+                    : () {
+                        _submitRiderRegistration();
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: brandColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -312,9 +329,16 @@ class _AdminAddRiderScreenState extends State<AdminAddRiderScreen> {
           icon: Icon(Icons.keyboard_arrow_down_rounded, color: brandColor),
           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
           onChanged: (val) {
-            if (val != null) onChanged(val);
+            if (val != null) {
+              onChanged(val);
+            }
           },
-          items: options.map<DropdownMenuItem<String>>((opt) => DropdownMenuItem(value: opt, child: Text(opt))).toList(),
+          items: options.map<DropdownMenuItem<String>>((opt) {
+            return DropdownMenuItem(
+              value: opt,
+              child: Text(opt),
+            );
+          }).toList(),
         ),
       ),
     );
