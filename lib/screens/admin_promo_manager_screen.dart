@@ -30,7 +30,11 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
   }
 
   void _onPromoChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   void _showCreatePromoModal() {
@@ -131,7 +135,9 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Promo & Voucher Campaign Manager',
@@ -150,7 +156,9 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...vouchers.map((coupon) => _buildCouponCard(context, coupon, widget.brandColor)).toList(),
+              ...vouchers.map((coupon) {
+                return _buildCouponCard(context, coupon, widget.brandColor);
+              }).toList(),
               const SizedBox(height: 40),
             ],
           ),
@@ -269,13 +277,15 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
                       Row(
                         children: List.generate(
                           20,
-                          (index) => Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2),
-                              height: 1,
-                              color: Colors.grey[300],
-                            ),
-                          ),
+                          (index) {
+                            return Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 2),
+                                height: 1,
+                                color: Colors.grey[300],
+                              ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -296,12 +306,14 @@ class _AdminPromoManagerScreenState extends State<AdminPromoManagerScreen> {
             child: Column(
               children: List.generate(
                 12,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  width: 1.5,
-                  height: 6,
-                  color: Colors.black.withOpacity(0.1),
-                ),
+                (index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 2),
+                    width: 1.5,
+                    height: 6,
+                    color: Colors.black.withOpacity(0.1),
+                  );
+                },
               ),
             ),
           ),
