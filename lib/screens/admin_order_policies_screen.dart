@@ -61,67 +61,78 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
 
   void _markChanged() {
     if (!_hasUnsavedChanges) {
-      setState(() => _hasUnsavedChanges = true);
+      setState(() {
+        _hasUnsavedChanges = true;
+      });
     }
   }
 
   void _showResetConfirmationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Reset Order Policies?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'Are you sure you want to restore all order cancellation, merchant acceptance, and refund rules back to platform defaults?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Reset Order Policies?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _allowCustomerCancellation = true;
-                _cancellationGracePeriod = '5 minutes';
-                _cancellationAfterAcceptance = 'Request cancellation review';
-                _autoAcceptOrders = false;
-                _merchantResponseLimit = '10 minutes';
-                _unresponsiveMerchantAction = 'Notify admin';
-                _allowRefundRequests = true;
-                _refundReviewType = 'Admin review required';
-                _refundWindow = 'Within 24 hours';
-                _hasUnsavedChanges = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Order policies reset to platform defaults.', style: GoogleFonts.poppins()),
-                  backgroundColor: const Color(0xFF475569),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'Are you sure you want to restore all order cancellation, merchant acceptance, and refund rules back to platform defaults?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _allowCustomerCancellation = true;
+                  _cancellationGracePeriod = '5 minutes';
+                  _cancellationAfterAcceptance = 'Request cancellation review';
+                  _autoAcceptOrders = false;
+                  _merchantResponseLimit = '10 minutes';
+                  _unresponsiveMerchantAction = 'Notify admin';
+                  _allowRefundRequests = true;
+                  _refundReviewType = 'Admin review required';
+                  _refundWindow = 'Within 24 hours';
+                  _hasUnsavedChanges = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Order policies reset to platform defaults.', style: GoogleFonts.poppins()),
+                    backgroundColor: const Color(0xFF475569),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
   void _saveChanges() async {
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final updatedData = {
       'allowCustomerCancellation': _allowCustomerCancellation,
@@ -221,7 +232,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -257,7 +270,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Order Policies',
@@ -316,7 +331,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                         value: _allowCustomerCancellation,
                         activeColor: brandColor,
                         onChanged: (val) {
-                          setState(() => _allowCustomerCancellation = val);
+                          setState(() {
+                            _allowCustomerCancellation = val;
+                          });
                           _markChanged();
                         },
                       ),
@@ -328,7 +345,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('Cancellation Grace Period', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_cancellationGracePeriod, _gracePeriods, (val) {
-                    setState(() => _cancellationGracePeriod = val);
+                    setState(() {
+                      _cancellationGracePeriod = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -339,7 +358,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('Cancellation After Merchant Acceptance', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_cancellationAfterAcceptance, _afterAcceptanceOptions, (val) {
-                    setState(() => _cancellationAfterAcceptance = val);
+                    setState(() {
+                      _cancellationAfterAcceptance = val;
+                    });
                     _markChanged();
                   }),
                 ],
@@ -383,7 +404,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                         value: _autoAcceptOrders,
                         activeColor: brandColor,
                         onChanged: (val) {
-                          setState(() => _autoAcceptOrders = val);
+                          setState(() {
+                            _autoAcceptOrders = val;
+                          });
                           _markChanged();
                         },
                       ),
@@ -397,7 +420,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('Merchant Response Time Limit', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_merchantResponseLimit, _merchantTimeLimits, (val) {
-                    setState(() => _merchantResponseLimit = val);
+                    setState(() {
+                      _merchantResponseLimit = val;
+                    });
                     _markChanged();
                   }),
 
@@ -406,7 +431,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('If the Merchant Does Not Respond', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_unresponsiveMerchantAction, _unresponsiveActions, (val) {
-                    setState(() => _unresponsiveMerchantAction = val);
+                    setState(() {
+                      _unresponsiveMerchantAction = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -452,7 +479,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                         value: _allowRefundRequests,
                         activeColor: brandColor,
                         onChanged: (val) {
-                          setState(() => _allowRefundRequests = val);
+                          setState(() {
+                            _allowRefundRequests = val;
+                          });
                           _markChanged();
                         },
                       ),
@@ -464,7 +493,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('Refund Request Review', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_refundReviewType, _refundReviewTypes, (val) {
-                    setState(() => _refundReviewType = val);
+                    setState(() {
+                      _refundReviewType = val;
+                    });
                     _markChanged();
                   }),
 
@@ -473,7 +504,9 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
                   Text('Refund Request Window After Completion', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155))),
                   const SizedBox(height: 6),
                   _buildDropdown(_refundWindow, _refundWindows, (val) {
-                    setState(() => _refundWindow = val);
+                    setState(() {
+                      _refundWindow = val;
+                    });
                     _markChanged();
                   }),
                   const SizedBox(height: 4),
@@ -591,9 +624,16 @@ class _AdminOrderPoliciesScreenState extends State<AdminOrderPoliciesScreen> {
           icon: Icon(Icons.keyboard_arrow_down_rounded, color: brandColor),
           style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
           onChanged: (val) {
-            if (val != null) onChanged(val);
+            if (val != null) {
+              onChanged(val);
+            }
           },
-          items: options.map<DropdownMenuItem<String>>((opt) => DropdownMenuItem(value: opt, child: Text(opt))).toList(),
+          items: options.map<DropdownMenuItem<String>>((opt) {
+            return DropdownMenuItem(
+              value: opt,
+              child: Text(opt),
+            );
+          }).toList(),
         ),
       ),
     );
