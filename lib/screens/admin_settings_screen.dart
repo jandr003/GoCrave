@@ -15,6 +15,16 @@ import 'admin_fleet_map_screen.dart';
 import 'admin_promo_manager_screen.dart';
 import 'admin_merchant_approval_screen.dart';
 import 'admin_dispute_center_screen.dart';
+import 'admin_broadcast_screen.dart';
+import 'admin_support_chat_screen.dart';
+import 'admin_settlement_ledger_screen.dart';
+import 'admin_inventory_screen.dart';
+import 'admin_audit_logs_screen.dart';
+import 'admin_surge_pricing_screen.dart';
+import 'admin_branch_manager_screen.dart';
+import 'admin_rider_performance_screen.dart';
+import 'admin_tax_compliance_screen.dart';
+import 'admin_fraud_detection_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -172,7 +182,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     width: double.infinity,
                     height: 48,
                     child: OutlinedButton.icon(
-                      onPressed: () => _pickImageFromGallery(setModalState),
+                      onPressed: () {
+                        _pickImageFromGallery(setModalState);
+                      },
                       icon: Icon(Icons.photo_library_rounded, size: 18, color: brandColor),
                       label: Text('Pick Image from Gallery', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: brandColor)),
                       style: OutlinedButton.styleFrom(
@@ -229,7 +241,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Admin Settings',
@@ -324,7 +338,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminFleetMapScreen(),
+                        builder: (context) {
+                          return const AdminFleetMapScreen();
+                        },
                       ),
                     );
                   },
@@ -338,7 +354,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminPromoManagerScreen(),
+                        builder: (context) {
+                          return AdminPromoManagerScreen();
+                        },
                       ),
                     );
                   },
@@ -352,7 +370,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminMerchantApprovalScreen(),
+                        builder: (context) {
+                          return AdminMerchantApprovalScreen();
+                        },
                       ),
                     );
                   },
@@ -366,7 +386,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminDisputeCenterScreen(),
+                        builder: (context) {
+                          return AdminDisputeCenterScreen();
+                        },
                       ),
                     );
                   },
@@ -380,7 +402,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminBroadcastScreen(),
+                        builder: (context) {
+                          return AdminBroadcastScreen();
+                        },
                       ),
                     );
                   },
@@ -394,7 +418,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminSupportChatScreen(),
+                        builder: (context) {
+                          return AdminSupportChatScreen();
+                        },
                       ),
                     );
                   },
@@ -408,7 +434,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminSettlementLedgerScreen(),
+                        builder: (context) {
+                          return AdminSettlementLedgerScreen();
+                        },
                       ),
                     );
                   },
@@ -422,7 +450,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminInventoryScreen(),
+                        builder: (context) {
+                          return AdminInventoryScreen();
+                        },
                       ),
                     );
                   },
@@ -436,7 +466,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminAuditLogsScreen(),
+                        builder: (context) {
+                          return AdminAuditLogsScreen();
+                        },
                       ),
                     );
                   },
@@ -450,7 +482,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminSurgePricingScreen(),
+                        builder: (context) {
+                          return AdminSurgePricingScreen();
+                        },
                       ),
                     );
                   },
@@ -464,7 +498,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminBranchManagerScreen(),
+                        builder: (context) {
+                          return AdminBranchManagerScreen();
+                        },
                       ),
                     );
                   },
@@ -478,7 +514,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminRiderPerformanceScreen(),
+                        builder: (context) {
+                          return AdminRiderPerformanceScreen();
+                        },
                       ),
                     );
                   },
@@ -492,7 +530,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminTaxComplianceScreen(),
+                        builder: (context) {
+                          return AdminTaxComplianceScreen();
+                        },
                       ),
                     );
                   },
@@ -506,7 +546,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminFraudDetectionScreen(),
+                        builder: (context) {
+                          return AdminFraudDetectionScreen();
+                        },
                       ),
                     );
                   },
@@ -520,7 +562,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminAccountSecurityScreen(),
+                        builder: (context) {
+                          return const AdminAccountSecurityScreen();
+                        },
                       ),
                     );
                   },
@@ -534,7 +578,7 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminPaymentFeesScreen(),
+                        builder: (context) => const AdminPaymentFeesScreen();
                       ),
                     );
                   },
@@ -548,7 +592,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminDeliverySettingsScreen(),
+                        builder: (context) {
+                          return const AdminDeliverySettingsScreen();
+                        },
                       ),
                     );
                   },
@@ -562,7 +608,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminOrderPoliciesScreen(),
+                        builder: (context) {
+                          return const AdminOrderPoliciesScreen();
+                        },
                       ),
                     );
                   },
@@ -576,7 +624,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminNotificationSettingsScreen(),
+                        builder: (context) {
+                          return const AdminNotificationSettingsScreen();
+                        },
                       ),
                     );
                   },
@@ -590,7 +640,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminStaffPermissionsScreen(),
+                        builder: (context) {
+                          return const AdminStaffPermissionsScreen();
+                        },
                       ),
                     );
                   },
@@ -604,7 +656,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminGeneralPreferencesScreen(),
+                        builder: (context) {
+                          return const AdminGeneralPreferencesScreen();
+                        },
                       ),
                     );
                   },
@@ -618,7 +672,9 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AdminHelpAboutScreen(),
+                        builder: (context) {
+                          return const AdminHelpAboutScreen();
+                        },
                       ),
                     );
                   },
@@ -635,8 +691,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const LoginScreen();
+                      },
+                    ),
+                    (route) {
+                      return false;
+                    },
                   );
                 },
                 icon: const Icon(Icons.logout_rounded, size: 18, color: Colors.white),
