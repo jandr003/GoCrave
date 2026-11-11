@@ -36,11 +36,17 @@ class _AdminSupportChatScreenState extends State<AdminSupportChatScreen> {
   }
 
   void _onSupportChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   void _sendMessage() {
-    if (_activeThreadId == null || _messageCtrl.text.trim().isEmpty) return;
+    if (_activeThreadId == null || _messageCtrl.text.trim().isEmpty) {
+      return;
+    }
     _supportManager.sendMessage(_activeThreadId!, _messageCtrl.text.trim(), 'Admin');
     _messageCtrl.clear();
   }
@@ -49,8 +55,12 @@ class _AdminSupportChatScreenState extends State<AdminSupportChatScreen> {
   Widget build(BuildContext context) {
     final threads = _supportManager.threads;
     final activeThread = threads.firstWhere(
-      (t) => t['id'] == _activeThreadId,
-      orElse: () => threads.isNotEmpty ? threads.first : {},
+      (t) {
+        return t['id'] == _activeThreadId;
+      },
+      orElse: () {
+        return threads.isNotEmpty ? threads.first : {};
+      },
     );
 
     return Scaffold(
@@ -61,7 +71,9 @@ class _AdminSupportChatScreenState extends State<AdminSupportChatScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Omnichannel Support Live Chat Desk',
@@ -105,14 +117,20 @@ class _AdminSupportChatScreenState extends State<AdminSupportChatScreen> {
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     itemCount: threads.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                    separatorBuilder: (context, index) {
+                      return const Divider(height: 1, color: Color(0xFFF1F5F9));
+                    },
                     itemBuilder: (context, index) {
                       final thread = threads[index];
                       final bool isSelected = thread['id'] == _activeThreadId;
                       final bool isResolved = thread['status'] == 'Resolved';
 
                       return InkWell(
-                        onTap: () => setState(() => _activeThreadId = thread['id']),
+                        onTap: () {
+                          setState(() {
+                            _activeThreadId = thread['id'];
+                          });
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(14),
                           color: isSelected ? widget.brandColor.withOpacity(0.06) : Colors.transparent,
@@ -309,7 +327,9 @@ class _AdminSupportChatScreenState extends State<AdminSupportChatScreen> {
                                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: widget.brandColor, width: 1.5)),
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 ),
-                                onSubmitted: (_) => _sendMessage(),
+                                onSubmitted: (val) {
+                                  _sendMessage();
+                                },
                               ),
                             ),
                             const SizedBox(width: 12),
