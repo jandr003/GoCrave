@@ -56,7 +56,9 @@ class BrowseMenuScreen extends StatelessWidget {
         leading: showBackButton 
           ? IconButton(
               icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           : null,
         title: Text(
@@ -123,16 +125,18 @@ class BrowseMenuScreen extends StatelessWidget {
   Widget _buildCategoryCard(BuildContext context, Map<String, String> category) {
     return InkWell(
       onTap: () {
-        final filteredItems = allFoodItems
-            .where((item) => item['category'] == category['title'])
-            .toList();
+        final filteredItems = allFoodItems.where((item) {
+          return item['category'] == category['title'];
+        }).toList();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CategoryDetailScreen(
-              categoryName: category['title']!,
-              foodItems: filteredItems,
-            ),
+            builder: (context) {
+              return CategoryDetailScreen(
+                categoryName: category['title']!,
+                foodItems: filteredItems,
+              );
+            },
           ),
         );
       },
