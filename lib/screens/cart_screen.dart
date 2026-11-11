@@ -34,7 +34,11 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -51,8 +55,14 @@ class _CartScreenState extends State<CartScreen> {
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
-              (route) => false,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const MainNavWrapper(initialIndex: 0);
+                },
+              ),
+              (route) {
+                return false;
+              },
             );
           },
         ),
@@ -73,7 +83,9 @@ class _CartScreenState extends State<CartScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
-                  ...cart.items.map((item) => _buildCartItemCard(item)).toList(),
+                  ...cart.items.map((item) {
+                    return _buildCartItemCard(item);
+                  }).toList(),
 
                   const SizedBox(height: 8),
 
@@ -82,7 +94,11 @@ class _CartScreenState extends State<CartScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CouponScreen()),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const CouponScreen();
+                            },
+                          ),
                         );
                       },
                       child: Row(
@@ -129,7 +145,11 @@ class _CartScreenState extends State<CartScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LocationPickerScreen()),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const LocationPickerScreen();
+                            },
+                          ),
                         );
                       },
                       child: Column(
@@ -335,7 +355,12 @@ class _CartScreenState extends State<CartScreen> {
           ),
           Column(
             children: [
-              _buildSmallQtyBtn(Icons.add, () => CartManager().updateQuantity(item.foodItem['title']!, 1)),
+              _buildSmallQtyBtn(
+                Icons.add,
+                () {
+                  CartManager().updateQuantity(item.foodItem['title']!, 1);
+                },
+              ),
               const SizedBox(height: 8),
               Text(
                 item.quantity.toString(),
@@ -345,7 +370,12 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              _buildSmallQtyBtn(Icons.remove, () => CartManager().updateQuantity(item.foodItem['title']!, -1)),
+              _buildSmallQtyBtn(
+                Icons.remove,
+                () {
+                  CartManager().updateQuantity(item.foodItem['title']!, -1);
+                },
+              ),
             ],
           ),
         ],
@@ -434,7 +464,11 @@ class _CartScreenState extends State<CartScreen> {
               onCompleted: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PaymentScreen()),
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const PaymentScreen();
+                    },
+                  ),
                 );
               },
             ),
