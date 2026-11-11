@@ -30,7 +30,11 @@ class _AdminSettlementLedgerScreenState extends State<AdminSettlementLedgerScree
   }
 
   void _onSettlementChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -45,7 +49,9 @@ class _AdminSettlementLedgerScreenState extends State<AdminSettlementLedgerScree
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Financial Payouts & Settlement Ledger',
@@ -61,14 +67,20 @@ class _AdminSettlementLedgerScreenState extends State<AdminSettlementLedgerScree
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         itemCount: settlements.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 14);
+        },
         itemBuilder: (context, index) {
           final settlement = settlements[index];
           final status = settlement['status'];
 
           Color statusColor = const Color(0xFF10B981);
-          if (status == 'Pending Payout') statusColor = const Color(0xFFF59E0B);
-          if (status == 'Processing') statusColor = const Color(0xFF2563EB);
+          if (status == 'Pending Payout') {
+            statusColor = const Color(0xFFF59E0B);
+          }
+          if (status == 'Processing') {
+            statusColor = const Color(0xFF2563EB);
+          }
 
           return Container(
             padding: const EdgeInsets.all(18),
