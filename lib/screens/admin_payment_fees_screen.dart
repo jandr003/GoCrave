@@ -60,67 +60,78 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
 
   void _markChanged() {
     if (!_hasUnsavedChanges) {
-      setState(() => _hasUnsavedChanges = true);
+      setState(() {
+        _hasUnsavedChanges = true;
+      });
     }
   }
 
   void _showResetConfirmationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'Reset Payment & Fee Rules?',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
-        ),
-        content: Text(
-          'Are you sure you want to restore all payment gateway toggles, commission rates, and delivery fee thresholds back to platform defaults?',
-          style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            'Reset Payment & Fee Rules?',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: const Color(0xFF0F172A)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _allowCOD = true;
-                _allowGCash = true;
-                _allowMaya = true;
-                _allowBankTransfer = true;
-                _commissionCtrl.text = '15.0';
-                _serviceFeeCtrl.text = '15.00';
-                _baseDeliveryFeeCtrl.text = '49.00';
-                _freeDeliveryMinCtrl.text = '1000.00';
-                _maxCodCtrl.text = '3000.00';
-                _hasUnsavedChanges = false;
-              });
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Payment and fee rules reset to platform defaults.', style: GoogleFonts.poppins()),
-                  backgroundColor: const Color(0xFF475569),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: brandColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: Text(
+            'Are you sure you want to restore all payment gateway toggles, commission rates, and delivery fee thresholds back to platform defaults?',
+            style: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF475569)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: const Color(0xFF64748B))),
             ),
-            child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _allowCOD = true;
+                  _allowGCash = true;
+                  _allowMaya = true;
+                  _allowBankTransfer = true;
+                  _commissionCtrl.text = '15.0';
+                  _serviceFeeCtrl.text = '15.00';
+                  _baseDeliveryFeeCtrl.text = '49.00';
+                  _freeDeliveryMinCtrl.text = '1000.00';
+                  _maxCodCtrl.text = '3000.00';
+                  _hasUnsavedChanges = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Payment and fee rules reset to platform defaults.', style: GoogleFonts.poppins()),
+                    backgroundColor: const Color(0xFF475569),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: brandColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text('Confirm Reset', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
   void _saveChanges() async {
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final updatedData = {
       'allowCOD': _allowCOD,
@@ -220,7 +231,9 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -256,7 +269,9 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Payment & Fees',
@@ -302,13 +317,33 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
               ),
               child: Column(
                 children: [
-                  _buildPaymentSwitchTile('Cash on Delivery (COD)', _allowCOD, (val) => setState(() { _allowCOD = val; _markChanged(); })),
+                  _buildPaymentSwitchTile('Cash on Delivery (COD)', _allowCOD, (val) {
+                    setState(() {
+                      _allowCOD = val;
+                      _markChanged();
+                    });
+                  }),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  _buildPaymentSwitchTile('GCash', _allowGCash, (val) => setState(() { _allowGCash = val; _markChanged(); })),
+                  _buildPaymentSwitchTile('GCash', _allowGCash, (val) {
+                    setState(() {
+                      _allowGCash = val;
+                      _markChanged();
+                    });
+                  }),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  _buildPaymentSwitchTile('Maya', _allowMaya, (val) => setState(() { _allowMaya = val; _markChanged(); })),
+                  _buildPaymentSwitchTile('Maya', _allowMaya, (val) {
+                    setState(() {
+                      _allowMaya = val;
+                      _markChanged();
+                    });
+                  }),
                   const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  _buildPaymentSwitchTile('Bank Transfer', _allowBankTransfer, (val) => setState(() { _allowBankTransfer = val; _markChanged(); })),
+                  _buildPaymentSwitchTile('Bank Transfer', _allowBankTransfer, (val) {
+                    setState(() {
+                      _allowBankTransfer = val;
+                      _markChanged();
+                    });
+                  }),
                 ],
               ),
             ),
@@ -495,7 +530,9 @@ class _AdminPaymentFeesScreenState extends State<AdminPaymentFeesScreen> {
         controller: controller,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF0F172A)),
-        onChanged: (val) => _markChanged(),
+        onChanged: (val) {
+          _markChanged();
+        },
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.poppins(fontSize: 13, color: const Color(0xFF94A3B8)),
