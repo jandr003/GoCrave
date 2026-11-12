@@ -27,7 +27,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -44,8 +48,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           onPressed: () {
              Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
-              (route) => false,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const MainNavWrapper(initialIndex: 0);
+                },
+              ),
+              (route) {
+                return false;
+              },
             );
           },
         ),
@@ -169,7 +179,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 top: 12,
                 right: 12,
                 child: GestureDetector(
-                  onTap: () => FavoriteManager().toggleFavorite(item),
+                  onTap: () {
+                    FavoriteManager().toggleFavorite(item);
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: const BoxDecoration(
@@ -230,9 +242,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MainNavWrapper(initialIndex: 3),
+                            builder: (context) {
+                              return const MainNavWrapper(initialIndex: 3);
+                            },
                           ),
-                          (route) => false,
+                          (route) {
+                            return false;
+                          },
                         );
                       },
                       style: ElevatedButton.styleFrom(
