@@ -92,7 +92,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       IconButton(
                         icon: const Icon(Icons.arrow_back_ios,
                             color: Colors.grey, size: 20),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
@@ -100,16 +102,17 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              setState(() => _isBellPressed = true);
+                              setState(() {
+                                _isBellPressed = true;
+                              });
                               if (mounted) {
                                 await Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        const NotificationHistoryScreen(),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
+                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                      return const NotificationHistoryScreen();
+                                    },
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                       const begin = Offset(0.0, 1.0);
                                       const end = Offset.zero;
                                       const curve = Curves.easeInOut;
@@ -122,13 +125,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                     },
                                   ),
                                 );
-                                setState(() => _isBellPressed = false);
+                                setState(() {
+                                  _isBellPressed = false;
+                                });
                               }
                             },
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (Widget child,
-                                  Animation<double> animation) {
+                              transitionBuilder: (Widget child, Animation<double> animation) {
                                 return ScaleTransition(
                                     scale: animation, child: child);
                               },
@@ -144,7 +148,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           ),
                           const SizedBox(width: 8),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              
+                            },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 0),
@@ -188,13 +194,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       controller: pinController,
                       focusNode: focusNode,
                       defaultPinTheme: defaultPinTheme,
-                      separatorBuilder: (index) => const SizedBox(width: 8),
+                      separatorBuilder: (index) {
+                        return const SizedBox(width: 8);
+                      },
                       hapticFeedbackType: HapticFeedbackType.lightImpact,
                       obscureText: true,
                       validator: (value) {
-                        return value == widget.initialOtp
-                            ? null
-                            : 'Incorrect OTP code. Please try again.';
+                        if (value == widget.initialOtp) {
+                          return null;
+                        }
+                        return 'Incorrect OTP code. Please try again.';
                       },
                       errorTextStyle: GoogleFonts.poppins(
                         fontSize: 14,
@@ -282,11 +291,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => widget.isNewUser
-                          ? ProfileSetupScreen(phoneNumber: widget.phoneNumber)
-                          : const MainNavWrapper(initialIndex: 0),
+                      builder: (context) {
+                        return widget.isNewUser
+                            ? ProfileSetupScreen(phoneNumber: widget.phoneNumber)
+                            : const MainNavWrapper(initialIndex: 0);
+                      },
                     ),
-                    (route) => false,
+                    (route) {
+                      return false;
+                    },
                   );
                 },
               ),
@@ -298,11 +311,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               right: 20,
               child: GestureDetector(
                 onTap: () {
-                  setState(() => _showNotification = false);
+                  setState(() {
+                    _showNotification = false;
+                  });
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NotificationHistoryScreen(),
+                      builder: (context) {
+                        return const NotificationHistoryScreen();
+                      },
                     ),
                   );
                 },
@@ -316,7 +333,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _handleVerification(String pin) async {
-    if (pin != widget.initialOtp) return;
+    if (pin != widget.initialOtp) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
