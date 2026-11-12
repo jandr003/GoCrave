@@ -23,11 +23,15 @@ class NotificationHistoryScreen extends StatelessWidget {
         ),
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              
+            },
             child: Text(
               'Clear All',
               style: GoogleFonts.poppins(color: Colors.deepOrangeAccent),
@@ -120,8 +124,12 @@ class NotificationHistoryScreen extends StatelessWidget {
   String _formatTime(DateTime time) {
     final now = DateTime.now();
     final diff = now.difference(time);
-    if (diff.inMinutes < 1) return 'now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inMinutes < 1) {
+      return 'now';
+    }
+    if (diff.inMinutes < 60) {
+      return '${diff.inMinutes}m ago';
+    }
     return '${time.hour}:${time.minute.toString().padLeft(2, '0')}';
   }
 }
