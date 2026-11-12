@@ -63,7 +63,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,11 +160,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatScreen(
-                name: chat['name'],
-                image: chat['avatar'],
-                role: chat['role'],
-              ),
+              builder: (context) {
+                return ChatScreen(
+                  name: chat['name'],
+                  image: chat['avatar'],
+                  role: chat['role'],
+                );
+              },
             ),
           );
         },
