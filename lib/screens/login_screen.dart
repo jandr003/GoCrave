@@ -32,8 +32,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _emailFocus.addListener(() => setState(() {}));
-    _passwordFocus.addListener(() => setState(() {}));
+    _emailFocus.addListener(() {
+      setState(() {
+        
+      });
+    });
+    _passwordFocus.addListener(() {
+      setState(() {
+        
+      });
+    });
   }
 
   @override
@@ -55,11 +63,15 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => AdminDashboardScreen(
-            adminEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'Admin01',
-          ),
+          builder: (context) {
+            return AdminDashboardScreen(
+              adminEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'Admin01',
+            );
+          },
         ),
-        (route) => false,
+        (route) {
+          return false;
+        },
       );
       return;
     }
@@ -72,11 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => RiderDashboardScreen(
-            riderEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'rider@gocraverider.ph',
-          ),
+          builder: (context) {
+            return RiderDashboardScreen(
+              riderEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'rider@gocraverider.ph',
+            );
+          },
         ),
-        (route) => false,
+        (route) {
+          return false;
+        },
       );
       return;
     }
@@ -91,11 +107,15 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => RestaurantDashboardScreen(
-            merchantEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'resto@gocravestaff.ph',
-          ),
+          builder: (context) {
+            return RestaurantDashboardScreen(
+              merchantEmail: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : 'resto@gocravestaff.ph',
+            );
+          },
         ),
-        (route) => false,
+        (route) {
+          return false;
+        },
       );
       return;
     }
@@ -113,7 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PhoneEntryScreen(isNewUser: false),
+        builder: (context) {
+          return const PhoneEntryScreen(isNewUser: false);
+        },
       ),
     );
   }
@@ -206,7 +228,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscure: _obscurePassword,
                       isPassword: true,
                       focusNode: _passwordFocus,
-                      onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
+                      onToggle: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
                     ),
 
                     Align(
@@ -216,7 +242,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ForgotPasswordScreen(),
+                              builder: (context) {
+                                return const ForgotPasswordScreen();
+                              },
                             ),
                           );
                         },
@@ -239,16 +267,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () async {
                         if (_isAgreed) {
-                          setState(() => _isAgreed = false);
+                          setState(() {
+                            _isAgreed = false;
+                          });
                         } else {
                           final result = await showModalBottomSheet<bool>(
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => const AgreementModal(),
+                            builder: (context) {
+                              return const AgreementModal();
+                            },
                           );
                           if (result == true) {
-                            setState(() => _isAgreed = true);
+                            setState(() {
+                              _isAgreed = true;
+                            });
                           }
                         }
                       },
@@ -357,7 +391,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const SignUpScreen();
+                              },
+                            ),
                           );
                         },
                         child: RichText(
