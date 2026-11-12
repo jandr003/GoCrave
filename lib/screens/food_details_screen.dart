@@ -38,14 +38,20 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     return double.tryParse(widget.foodItem['price']?.replaceAll('₱', '') ?? '0') ?? 0;
   }
 
-  double get _totalPrice => _itemPrice * _quantity;
+  double get _totalPrice {
+    return _itemPrice * _quantity;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final itemTitle = widget.foodItem['title']!;
-    final itemReviews = mockReviews.where((r) => r.foodTitle == itemTitle).toList();
-    final filteredReviews = itemReviews.where((r) => r.stars == _selectedReviewStar).toList();
+    final itemReviews = mockReviews.where((r) {
+      return r.foodTitle == itemTitle;
+    }).toList();
+    final filteredReviews = itemReviews.where((r) {
+      return r.stars == _selectedReviewStar;
+    }).toList();
     final effectiveHeroTag = widget.heroTag ?? 'food-img-${widget.foodItem['title']}';
 
     return Scaffold(
@@ -63,7 +69,9 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                 widget.foodItem['image']!,
                 fit: BoxFit.cover,
                 frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  if (wasSynchronouslyLoaded) return child;
+                  if (wasSynchronouslyLoaded) {
+                    return child;
+                  }
                   return AnimatedOpacity(
                     opacity: frame == null ? 0 : 1,
                     duration: const Duration(milliseconds: 350),
@@ -83,14 +91,18 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
               children: [
                 _buildFloatingButton(
                   icon: Icons.arrow_back_ios_new,
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
                 _buildFloatingButton(
                   icon: _isFavorite ? Icons.favorite : Icons.favorite_border,
                   iconColor: _isFavorite ? Colors.red : Colors.black,
                   onTap: () {
                     FavoriteManager().toggleFavorite(widget.foodItem);
-                    setState(() => _isFavorite = !_isFavorite);
+                    setState(() {
+                      _isFavorite = !_isFavorite;
+                    });
                   },
                 ),
               ],
@@ -131,7 +143,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _buildQtyBtn(Icons.remove, () {
-                              if (_quantity > 1) setState(() => _quantity--);
+                              if (_quantity > 1) {
+                                setState(() {
+                                  _quantity--;
+                                });
+                              }
                             }),
                             Text(
                               _quantity.toString().padLeft(2, '0'),
@@ -142,7 +158,9 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                               ),
                             ),
                             _buildQtyBtn(Icons.add, () {
-                              setState(() => _quantity++);
+                              setState(() {
+                                _quantity++;
+                              });
                             }),
                           ],
                         ),
@@ -195,7 +213,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         ),
                         if ((widget.foodItem['longDescription']?.length ?? 0) > 100)
                           GestureDetector(
-                            onTap: () => setState(() => _isDescriptionExpanded = !_isDescriptionExpanded),
+                            onTap: () {
+                              setState(() {
+                                _isDescriptionExpanded = !_isDescriptionExpanded;
+                              });
+                            },
                             child: Text(
                               _isDescriptionExpanded ? ' Show Less' : ' Read More',
                               style: GoogleFonts.poppins(
@@ -268,7 +290,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                           return Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: InkWell(
-                              onTap: () => setState(() => _selectedReviewStar = star),
+                              onTap: () {
+                                setState(() {
+                                  _selectedReviewStar = star;
+                                });
+                              },
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -306,7 +332,9 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         ),
                       )
                     else
-                      ...filteredReviews.map((review) => _buildReviewItem(review)).toList(),
+                      ...filteredReviews.map((review) {
+                        return _buildReviewItem(review);
+                      }).toList(),
                   ],
                 ),
               ),
@@ -370,7 +398,9 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                     child: SizedBox(
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: () => _handleOrder(context),
+                        onPressed: () {
+                          _handleOrder(context);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: brandColor,
                           shape: RoundedRectangleBorder(
@@ -592,7 +622,9 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFFFF5622), width: 1.5),
                         shape: RoundedRectangleBorder(
@@ -617,7 +649,11 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                         Navigator.pop(context);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const CartScreen();
+                            },
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
