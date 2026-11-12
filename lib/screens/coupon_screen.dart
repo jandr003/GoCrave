@@ -26,7 +26,11 @@ class _CouponScreenState extends State<CouponScreen> {
   }
 
   void _onPromoChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -42,7 +46,9 @@ class _CouponScreenState extends State<CouponScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Apply Coupon',
@@ -58,7 +64,9 @@ class _CouponScreenState extends State<CouponScreen> {
             children: [
               IconButton(
                 icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  
+                },
               ),
               if (CartManager().items.isNotEmpty)
                 Positioned(
@@ -113,7 +121,9 @@ class _CouponScreenState extends State<CouponScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        
+                      },
                       child: Text(
                         'APPLY',
                         style: GoogleFonts.poppins(
@@ -136,7 +146,9 @@ class _CouponScreenState extends State<CouponScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              ...availableCoupons.map((coupon) => _buildCouponCard(context, coupon, brandColor)).toList(),
+              ...availableCoupons.map((coupon) {
+                return _buildCouponCard(context, coupon, brandColor);
+              }).toList(),
               const SizedBox(height: 40),
             ],
           ),
@@ -146,6 +158,8 @@ class _CouponScreenState extends State<CouponScreen> {
   }
 
   Widget _buildCouponCard(BuildContext context, Map<String, dynamic> coupon, Color brandColor) {
+    final bool isActive = coupon['isActive'];
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       height: 136,
