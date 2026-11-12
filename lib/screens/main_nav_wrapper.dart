@@ -29,7 +29,11 @@ class _MainNavWrapperState extends State<MainNavWrapper> {
         onSearchTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const BrowseMenuScreen(showBackButton: true)),
+            MaterialPageRoute(
+              builder: (context) {
+                return const BrowseMenuScreen(showBackButton: true);
+              },
+            ),
           );
         },
       ),
