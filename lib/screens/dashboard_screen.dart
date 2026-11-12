@@ -39,7 +39,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   void _startPromoTimer() {
@@ -244,7 +248,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const CartScreen();
+                            },
+                          ),
                         );
                       },
                       child: Container(
@@ -273,7 +281,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                   constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
                                   child: Text(
-                                    CartManager().items.fold<int>(0, (sum, i) => sum + i.quantity).toString(),
+                                    CartManager().items.fold<int>(0, (sum, i) {
+                                      return sum + i.quantity;
+                                    }).toString(),
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -290,6 +300,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
+                        
                       },
                       child: Container(
                         padding: const EdgeInsets.all(2),
@@ -401,7 +412,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           const SizedBox(height: 20),
                                           ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              
+                                            },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.deepOrangeAccent,
                                               foregroundColor: Colors.white,
@@ -446,7 +459,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             item['image']!,
                                             fit: BoxFit.cover,
                                             frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                              if (wasSynchronouslyLoaded) return child;
+                                              if (wasSynchronouslyLoaded) {
+                                                return child;
+                                              }
                                               return AnimatedOpacity(
                                                 opacity: frame == null ? 0 : 1,
                                                 duration: const Duration(milliseconds: 300),
@@ -454,8 +469,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 child: child,
                                               );
                                             },
-                                            errorBuilder: (context, error, stackTrace) =>
-                                                const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return const Icon(Icons.restaurant, size: 50, color: Colors.grey);
+                                            },
                                           ),
                                         ),
                                       ),
@@ -565,16 +581,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildCategoryItem(String label, String emoji, String imageUrl) {
     return InkWell(
       onTap: () {
-        final filteredItems = allFoodItems
-            .where((item) => item['category'] == label)
-            .toList();
+        final filteredItems = allFoodItems.where((item) {
+          return item['category'] == label;
+        }).toList();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CategoryDetailScreen(
-              categoryName: label,
-              foodItems: filteredItems,
-            ),
+            builder: (context) {
+              return CategoryDetailScreen(
+                categoryName: label,
+                foodItems: filteredItems,
+              );
+            },
           ),
         );
       },
