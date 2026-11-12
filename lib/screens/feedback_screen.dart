@@ -37,7 +37,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Send Feedback',
@@ -78,7 +80,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(5, (index) {
                   return IconButton(
-                    onPressed: () => setState(() => _rating = index + 1),
+                    onPressed: () {
+                      setState(() {
+                        _rating = index + 1;
+                      });
+                    },
                     icon: Icon(
                       index < _rating ? Icons.star_rounded : Icons.star_outline_rounded,
                       color: index < _rating ? Colors.amber : Colors.grey[300],
@@ -102,7 +108,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: _categories.map((cat) => _buildCategoryChip(cat)).toList(),
+              children: _categories.map((cat) {
+                return _buildCategoryChip(cat);
+              }).toList(),
             ),
             
             const SizedBox(height: 32),
@@ -137,7 +145,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             const SizedBox(height: 24),
             
             InkWell(
-              onTap: () {},
+              onTap: () {
+                
+              },
               borderRadius: BorderRadius.circular(16),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -179,44 +189,46 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                      title: Center(
-                        child: Icon(Icons.check_circle, color: brandColor, size: 60),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Thank You!",
-                            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Your feedback helps us serve you better.",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Done",
-                              style: GoogleFonts.poppins(
-                                color: brandColor,
-                                fontWeight: FontWeight.bold,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                        title: Center(
+                          child: Icon(Icons.check_circle, color: brandColor, size: 60),
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Thank You!",
+                              style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Your feedback helps us serve you better.",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          Center(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Done",
+                                style: GoogleFonts.poppins(
+                                  color: brandColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      );
+                    },
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -246,7 +258,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget _buildCategoryChip(String category) {
     bool isSelected = _selectedCategory == category;
     return GestureDetector(
-      onTap: () => setState(() => _selectedCategory = category),
+      onTap: () {
+        setState(() {
+          _selectedCategory = category;
+        });
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
