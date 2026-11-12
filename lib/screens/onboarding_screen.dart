@@ -111,7 +111,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return const LoginScreen();
+          },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             final curvedAnimation = CurvedAnimation(
               parent: animation,
@@ -224,7 +226,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: _onFinish,
+                    onTap: () {
+                      _onFinish();
+                    },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     hoverColor: Colors.transparent,
@@ -309,7 +313,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _onPrimaryButtonPressed,
+                      onPressed: () {
+                        _onPrimaryButtonPressed();
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: brandColor,
                         foregroundColor: Colors.white,
