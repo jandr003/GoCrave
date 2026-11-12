@@ -30,7 +30,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             backgroundColor: Colors.white,
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 18),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
         ),
@@ -61,8 +63,16 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         children: [
           Positioned.fill(
             child: GestureDetector(
-              onPanStart: (_) => setState(() => _isDragging = true),
-              onPanEnd: (_) => setState(() => _isDragging = false),
+              onPanStart: (_) {
+                setState(() {
+                  _isDragging = true;
+                });
+              },
+              onPanEnd: (_) {
+                setState(() {
+                  _isDragging = false;
+                });
+              },
               onPanUpdate: (details) {
                 setState(() {
                   _mapOffset += details.delta;
