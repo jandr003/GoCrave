@@ -29,13 +29,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        
+      });
+    }
   }
 
   String _getFoodImage(String title) {
     final match = allFoodItems.firstWhere(
-      (item) => item['title']?.toLowerCase() == title.toLowerCase(),
-      orElse: () => {},
+      (item) {
+        return item['title']?.toLowerCase() == title.toLowerCase();
+      },
+      orElse: () {
+        return {};
+      },
     );
     return match['image'] ??
         'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500&auto=format&fit=crop';
@@ -43,9 +51,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   List<Order> _filterOrders(List<Order> orders) {
     if (_selectedFilterIndex == 1) {
-      return orders.where((o) => o.status == 'Processing' || o.status == 'On the Way').toList();
+      return orders.where((o) {
+        return o.status == 'Processing' || o.status == 'On the Way';
+      }).toList();
     } else if (_selectedFilterIndex == 2) {
-      return orders.where((o) => o.status == 'Delivered' || o.status == 'Completed').toList();
+      return orders.where((o) {
+        return o.status == 'Delivered' || o.status == 'Completed';
+      }).toList();
     }
     return orders;
   }
@@ -55,12 +67,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final allOrders = OrderManager().orders;
     final filteredOrders = _filterOrders(allOrders);
 
-    final activeCount = allOrders
-        .where((o) => o.status == 'Processing' || o.status == 'On the Way')
-        .length;
-    final completedCount = allOrders
-        .where((o) => o.status == 'Delivered' || o.status == 'Completed')
-        .length;
+    int activeCount = 0;
+    for (var o in allOrders) {
+      if (o.status == 'Processing' || o.status == 'On the Way') {
+        activeCount++;
+      }
+    }
+
+    int completedCount = 0;
+    for (var o in allOrders) {
+      if (o.status == 'Delivered' || o.status == 'Completed') {
+        completedCount++;
+      }
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
@@ -111,7 +130,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NotificationHistoryScreen()),
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const NotificationHistoryScreen();
+                  },
+                ),
               );
             },
           ),
@@ -157,7 +180,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final isSelected = _selectedFilterIndex == index;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _selectedFilterIndex = index),
+        onTap: () {
+          setState(() {
+            _selectedFilterIndex = index;
+          });
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           curve: Curves.easeInOut,
@@ -223,7 +250,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   height: 68,
                   fit: BoxFit.cover,
                   frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                    if (wasSynchronouslyLoaded) return child;
+                    if (wasSynchronouslyLoaded) {
+                      return child;
+                    }
                     return AnimatedOpacity(
                       opacity: frame == null ? 0 : 1,
                       duration: const Duration(milliseconds: 300),
@@ -231,12 +260,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       child: child,
                     );
                   },
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 68,
-                    height: 68,
-                    color: Colors.orange[50],
-                    child: const Icon(Icons.restaurant, color: Color(0xFFFF5622)),
-                  ),
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 68,
+                      height: 68,
+                      color: Colors.orange[50],
+                      child: const Icon(Icons.restaurant, color: Color(0xFFFF5622)),
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 14),
@@ -378,7 +409,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderTrackingScreen(order: order),
+                      builder: (context) {
+                        return OrderTrackingScreen(order: order);
+                      },
                     ),
                   );
                 },
@@ -588,7 +621,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BrowseMenuScreen(showBackButton: true),
+                      builder: (context) {
+                        return const BrowseMenuScreen(showBackButton: true);
+                      },
                     ),
                   );
                 },
