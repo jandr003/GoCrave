@@ -13,24 +13,35 @@ class CartItem {
     return double.tryParse(foodItem['price']?.replaceAll('₱', '') ?? '0') ?? 0;
   }
 
-  double get total => price * quantity;
+  double get total {
+    return price * quantity;
+  }
 }
 
 class CartManager extends ChangeNotifier {
   static final CartManager _instance = CartManager._internal();
-  factory CartManager() => _instance;
+  factory CartManager() {
+    return _instance;
+  }
   CartManager._internal();
 
   final List<CartItem> _items = [];
   String? _appliedCouponCode;
   double _discountPercentage = 0.0;
 
-  List<CartItem> get items => List.unmodifiable(_items);
-  String? get appliedCouponCode => _appliedCouponCode;
+  List<CartItem> get items {
+    return List.unmodifiable(_items);
+  }
+
+  String? get appliedCouponCode {
+    return _appliedCouponCode;
+  }
 
   void addItem(Map<String, String> foodItem, int quantity) {
     final title = foodItem['title'];
-    final index = _items.indexWhere((item) => item.foodItem['title'] == title);
+    final index = _items.indexWhere((item) {
+      return item.foodItem['title'] == title;
+    });
 
     if (index >= 0) {
       _items[index].quantity += quantity;
@@ -41,7 +52,9 @@ class CartManager extends ChangeNotifier {
   }
 
   void updateQuantity(String title, int delta) {
-    final index = _items.indexWhere((item) => item.foodItem['title'] == title);
+    final index = _items.indexWhere((item) {
+      return item.foodItem['title'] == title;
+    });
     if (index >= 0) {
       _items[index].quantity += delta;
       if (_items[index].quantity <= 0) {
@@ -52,7 +65,9 @@ class CartManager extends ChangeNotifier {
   }
 
   void removeItem(String title) {
-    _items.removeWhere((item) => item.foodItem['title'] == title);
+    _items.removeWhere((item) {
+      return item.foodItem['title'] == title;
+    });
     notifyListeners();
   }
 
@@ -76,19 +91,34 @@ class CartManager extends ChangeNotifier {
   }
 
   double get subtotal {
-    return _items.fold(0, (sum, item) => sum + item.total);
+    return _items.fold(0, (sum, item) {
+      return sum + item.total;
+    });
   }
 
   double get discountAmount {
     return subtotal * _discountPercentage;
   }
 
-  double get tax => _items.isEmpty ? 0 : 5.0;
+  double get tax {
+    if (_items.isEmpty) {
+      return 0;
+    }
+    return 5.0;
+  }
 
-  double get deliveryFee => _items.isEmpty ? 0 : 20.0;
+  double get deliveryFee {
+    if (_items.isEmpty) {
+      return 0;
+    }
+    return 20.0;
+  }
 
   double get totalAmount {
     final total = subtotal - discountAmount + deliveryFee + tax;
-    return total > 0 ? total : 0;
+    if (total > 0) {
+      return total;
+    }
+    return 0;
   }
 }
