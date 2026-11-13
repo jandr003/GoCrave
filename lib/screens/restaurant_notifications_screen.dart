@@ -5,7 +5,9 @@ class RestaurantNotificationsScreen extends StatefulWidget {
   const RestaurantNotificationsScreen({super.key});
 
   @override
-  State<RestaurantNotificationsScreen> createState() => _RestaurantNotificationsScreenState();
+  State<RestaurantNotificationsScreen> createState() {
+    return _RestaurantNotificationsScreenState();
+  }
 }
 
 class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsScreen> {
@@ -90,12 +92,16 @@ class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsS
   @override
   Widget build(BuildContext context) {
     final filteredList = _notifications.where((n) {
-      if (_selectedFilterIndex == 0) return true;
+      if (_selectedFilterIndex == 0) {
+        return true;
+      }
       final selectedCategory = _filters[_selectedFilterIndex];
       return n['category'] == selectedCategory;
     }).toList();
 
-    final unreadCount = _notifications.where((n) => n['isUnread'] == true).length;
+    final unreadCount = _notifications.where((n) {
+      return n['isUnread'] == true;
+    }).length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
@@ -105,7 +111,9 @@ class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsS
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Merchant Notifications',
@@ -148,7 +156,11 @@ class _RestaurantNotificationsScreenState extends State<RestaurantNotificationsS
                   return Padding(
                     padding: const EdgeInsets.only(right: 10.0),
                     child: InkWell(
-                      onTap: () => setState(() => _selectedFilterIndex = index),
+                      onTap: () {
+                        setState(() {
+                          _selectedFilterIndex = index;
+                        });
+                      },
                       borderRadius: BorderRadius.circular(16),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 250),

@@ -7,7 +7,9 @@ class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
 
   @override
-  State<RewardsScreen> createState() => _RewardsScreenState();
+  State<RewardsScreen> createState() {
+    return _RewardsScreenState();
+  }
 }
 
 class _RewardsScreenState extends State<RewardsScreen> {
@@ -26,7 +28,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   final List<String> _categories = [
@@ -64,7 +68,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
 
     final filteredPartners = _selectedCategory == 'All'
         ? _partners
-        : _partners.where((p) => p['category'] == _selectedCategory).toList();
+        : _partners.where((p) {
+            return p['category'] == _selectedCategory;
+          }).toList();
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -73,7 +79,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black, size: 24),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Rewards Marketplace',
@@ -280,7 +288,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                         context: context,
                                         backgroundColor: Colors.transparent,
                                         isScrollControlled: true,
-                                        builder: (context) => const DailyRewardModal(),
+                                        builder: (context) {
+                                          return const DailyRewardModal();
+                                        },
                                       );
                                     },
                                     child: Container(
@@ -409,7 +419,11 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           label: Text(cat),
                           selected: isSelected,
                           onSelected: (selected) {
-                            if (selected) setState(() => _selectedCategory = cat);
+                            if (selected) {
+                              setState(() {
+                                _selectedCategory = cat;
+                              });
+                            }
                           },
                           selectedColor: primaryColor,
                           labelStyle: GoogleFonts.poppins(
@@ -631,5 +645,7 @@ class _CardWavyPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

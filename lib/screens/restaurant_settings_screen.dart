@@ -10,7 +10,9 @@ class RestaurantSettingsScreen extends StatefulWidget {
   });
 
   @override
-  State<RestaurantSettingsScreen> createState() => _RestaurantSettingsScreenState();
+  State<RestaurantSettingsScreen> createState() {
+    return _RestaurantSettingsScreenState();
+  }
 }
 
 class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
@@ -33,7 +35,9 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Merchant Kitchen Settings',
@@ -109,7 +113,9 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                 icon: Icons.store_rounded,
                 value: _isAcceptingOrders,
                 onChanged: (val) {
-                  setState(() => _isAcceptingOrders = val);
+                  setState(() {
+                    _isAcceptingOrders = val;
+                  });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(_isAcceptingOrders ? 'Kitchen is now OPEN for orders!' : 'Kitchen is PAUSED.'),
@@ -138,7 +144,11 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                     subtitle: 'Play high-volume ringtone on new customer orders',
                     icon: Icons.notifications_active_rounded,
                     value: _loudChimeAlerts,
-                    onChanged: (val) => setState(() => _loudChimeAlerts = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _loudChimeAlerts = val;
+                      });
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFEEEEEE)),
                   Padding(
@@ -179,7 +189,11 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                           divisions: 8,
                           activeColor: brandColor,
                           inactiveColor: Colors.grey[200],
-                          onChanged: (val) => setState(() => _defaultPrepMins = val),
+                          onChanged: (val) {
+                            setState(() {
+                              _defaultPrepMins = val;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -190,7 +204,11 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                     subtitle: 'Automatically alert nearby riders when food is packed',
                     icon: Icons.two_wheeler_rounded,
                     value: _autoDispatchRider,
-                    onChanged: (val) => setState(() => _autoDispatchRider = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _autoDispatchRider = val;
+                      });
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFEEEEEE)),
                   _buildSwitchTile(
@@ -198,7 +216,11 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                     subtitle: 'Print physical kitchen ticket upon accepting order',
                     icon: Icons.print_rounded,
                     value: _printOrderTicket,
-                    onChanged: (val) => setState(() => _printOrderTicket = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _printOrderTicket = val;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -243,8 +265,14 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const LoginScreen();
+                      },
+                    ),
+                    (route) {
+                      return false;
+                    },
                   );
                 },
                 icon: const Icon(Icons.logout_rounded, size: 18, color: Colors.redAccent),

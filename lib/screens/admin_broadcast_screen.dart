@@ -11,7 +11,9 @@ class AdminBroadcastScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminBroadcastScreen> createState() => _AdminBroadcastScreenState();
+  State<AdminBroadcastScreen> createState() {
+    return _AdminBroadcastScreenState();
+  }
 }
 
 class _AdminBroadcastScreenState extends State<AdminBroadcastScreen> {

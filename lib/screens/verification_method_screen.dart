@@ -29,7 +29,9 @@ class VerificationMethodScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.grey, size: 20),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -67,11 +69,13 @@ class VerificationMethodScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OtpVerificationScreen(
-                        initialOtp: otp,
-                        isNewUser: isNewUser,
-                        phoneNumber: phoneNumber,
-                      ),
+                      builder: (context) {
+                        return OtpVerificationScreen(
+                          initialOtp: otp,
+                          isNewUser: isNewUser,
+                          phoneNumber: phoneNumber,
+                        );
+                      },
                     ),
                   );
                 },
@@ -87,11 +91,13 @@ class VerificationMethodScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OtpVerificationScreen(
-                        initialOtp: otp,
-                        isNewUser: isNewUser,
-                        phoneNumber: phoneNumber,
-                      ),
+                      builder: (context) {
+                        return OtpVerificationScreen(
+                          initialOtp: otp,
+                          isNewUser: isNewUser,
+                          phoneNumber: phoneNumber,
+                        );
+                      },
                     ),
                   );
                 },

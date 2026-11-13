@@ -22,7 +22,9 @@ class RestaurantDashboardScreen extends StatefulWidget {
   const RestaurantDashboardScreen({super.key, this.merchantEmail = 'resto@gocravestaff.ph'});
 
   @override
-  State<RestaurantDashboardScreen> createState() => _RestaurantDashboardScreenState();
+  State<RestaurantDashboardScreen> createState() {
+    return _RestaurantDashboardScreenState();
+  }
 }
 
 class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
@@ -111,12 +113,16 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _acceptIncomingOrder(Map<String, dynamic> order) {
     setState(() {
-      _incomingOrders.removeWhere((o) => o['id'] == order['id']);
+      _incomingOrders.removeWhere((o) {
+        return o['id'] == order['id'];
+      });
       _preparingOrders.add({
         'id': order['id'],
         'customer': order['customer'],
@@ -141,7 +147,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
 
   void _markOrderReady(Map<String, dynamic> order) {
     setState(() {
-      _preparingOrders.removeWhere((o) => o['id'] == order['id']);
+      _preparingOrders.removeWhere((o) {
+        return o['id'] == order['id'];
+      });
       _readyOrders.add({
         'id': order['id'],
         'customer': order['customer'],
@@ -173,7 +181,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
     double totalNum = double.tryParse(order['total'].toString().replaceAll('₱', '')) ?? 300.0;
 
     setState(() {
-      _readyOrders.removeWhere((o) => o['id'] == order['id']);
+      _readyOrders.removeWhere((o) {
+        return o['id'] == order['id'];
+      });
       _todaySales += totalNum;
       _preparedOrdersCount += 1;
     });
@@ -210,7 +220,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           currentAvatar: _storeAvatarUrl,
           avatars: _storeAvatars,
           brandColor: brandColor,
-          onTapUploadBusinessPermit: () => _showRestaurantBusinessIdModal(context),
+          onTapUploadBusinessPermit: () {
+            _showRestaurantBusinessIdModal(context);
+          },
           onSave: (name, phone, address, hours, avatar) {
             setState(() {
               _storeName = name;
@@ -280,8 +292,14 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
   void _onLogOut() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LoginScreen();
+        },
+      ),
+      (route) {
+        return false;
+      },
     );
   }
 
@@ -341,7 +359,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const RestaurantNotificationsScreen(),
+                  builder: (context) {
+                    return const RestaurantNotificationsScreen();
+                  },
                 ),
               );
             },
@@ -353,9 +373,11 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RestaurantSettingsScreen(
-                    merchantEmail: widget.merchantEmail,
-                  ),
+                  builder: (context) {
+                    return RestaurantSettingsScreen(
+                      merchantEmail: widget.merchantEmail,
+                    );
+                  },
                 ),
               );
             },
@@ -376,9 +398,13 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
                 todaySales: _todaySales,
                 preparedOrdersCount: _preparedOrdersCount,
                 brandColor: brandColor,
-                onTapAvatar: () => _showEditStoreProfileModal(context),
+                onTapAvatar: () {
+                  _showEditStoreProfileModal(context);
+                },
                 onAcceptingChanged: (val) {
-                  setState(() => _isAcceptingOrders = val);
+                  setState(() {
+                    _isAcceptingOrders = val;
+                  });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(_isAcceptingOrders ? 'Kitchen is OPEN for incoming customer orders!' : 'Kitchen is now PAUSED.'),
@@ -473,13 +499,21 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
         return RestaurantPreparingTab(
           preparingOrders: _preparingOrders,
           brandColor: brandColor,
-          onMarkReady: (order) => _showFoodPhotoProofModal(context, order, () => _markOrderReady(order)),
+          onMarkReady: (order) {
+            _showFoodPhotoProofModal(context, order, () {
+              _markOrderReady(order);
+            });
+          },
         );
       case 2:
         return RestaurantReadyTab(
           readyOrders: _readyOrders,
           brandColor: brandColor,
-          onHandOverToRider: (order) => _showFoodPhotoProofModal(context, order, () => _handOverToRider(order)),
+          onHandOverToRider: (order) {
+            _showFoodPhotoProofModal(context, order, () {
+              _handOverToRider(order);
+            });
+          },
         );
       case 3:
         return RestaurantMessagesTab(
@@ -495,13 +529,19 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           todaySales: _todaySales,
           preparedOrdersCount: _preparedOrdersCount,
           brandColor: brandColor,
-          onTapEditProfile: () => _showEditStoreProfileModal(context),
-          onTapBusinessPermit: () => _showRestaurantBusinessIdModal(context),
+          onTapEditProfile: () {
+            _showEditStoreProfileModal(context);
+          },
+          onTapBusinessPermit: () {
+            _showRestaurantBusinessIdModal(context);
+          },
           onTapSettings: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RestaurantSettingsScreen(merchantEmail: widget.merchantEmail),
+                builder: (context) {
+                  return RestaurantSettingsScreen(merchantEmail: widget.merchantEmail);
+                },
               ),
             );
           },
@@ -509,7 +549,9 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RestaurantNotificationsScreen(),
+                builder: (context) {
+                  return const RestaurantNotificationsScreen();
+                },
               ),
             );
           },
@@ -523,7 +565,11 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
           brandColor: brandColor,
           onAcceptOrder: _acceptIncomingOrder,
           onDeclineOrder: (order) {
-            setState(() => _incomingOrders.removeWhere((o) => o['id'] == order['id']));
+            setState(() {
+              _incomingOrders.removeWhere((o) {
+                return o['id'] == order['id'];
+              });
+            });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Order ${order['id']} declined.'),

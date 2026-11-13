@@ -19,7 +19,9 @@ class RiderDashboardScreen extends StatefulWidget {
   const RiderDashboardScreen({super.key, this.riderEmail = 'rider@gocrave.app'});
 
   @override
-  State<RiderDashboardScreen> createState() => _RiderDashboardScreenState();
+  State<RiderDashboardScreen> createState() {
+    return _RiderDashboardScreenState();
+  }
 }
 
 class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
@@ -124,7 +126,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _acceptDelivery(Map<String, dynamic> request) {
@@ -132,7 +136,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
       _activeTask = Map<String, dynamic>.from(request);
       _taskStep = 1;
       _selectedTab = 1;
-      _availableRequests.removeWhere((r) => r['id'] == request['id']);
+      _availableRequests.removeWhere((r) {
+        return r['id'] == request['id'];
+      });
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -146,10 +152,14 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   }
 
   void _advanceTaskStep() {
-    if (_activeTask == null) return;
+    if (_activeTask == null) {
+      return;
+    }
 
     if (_taskStep == 1) {
-      setState(() => _taskStep = 2);
+      setState(() {
+        _taskStep = 2;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Arrived at ${_activeTask!['restaurant']}. Waiting for food pickup...'),
@@ -158,7 +168,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
         ),
       );
     } else if (_taskStep == 2) {
-      setState(() => _taskStep = 3);
+      setState(() {
+        _taskStep = 3;
+      });
       final liveOrders = OrderManager().orders;
       if (liveOrders.isNotEmpty) {
         liveOrders.first.status = 'On the Way';
@@ -231,7 +243,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: brandColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -315,8 +329,14 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   void _onLogOut() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LoginScreen();
+        },
+      ),
+      (route) {
+        return false;
+      },
     );
   }
 
@@ -375,7 +395,11 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RiderNotificationsScreen()),
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const RiderNotificationsScreen();
+                  },
+                ),
               );
             },
           ),
@@ -386,20 +410,22 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RiderSettingsScreen(
-                    riderName: _riderName,
-                    riderPhone: _riderPhone,
-                    vehiclePlate: _vehiclePlate,
-                    avatarUrl: _riderAvatarUrl,
-                    onUpdateProfile: (name, phone, vehicle, avatar) {
-                      setState(() {
-                        _riderName = name;
-                        _riderPhone = phone;
-                        _vehiclePlate = vehicle;
-                        _riderAvatarUrl = avatar;
-                      });
-                    },
-                  ),
+                  builder: (context) {
+                    return RiderSettingsScreen(
+                      riderName: _riderName,
+                      riderPhone: _riderPhone,
+                      vehiclePlate: _vehiclePlate,
+                      avatarUrl: _riderAvatarUrl,
+                      onUpdateProfile: (name, phone, vehicle, avatar) {
+                        setState(() {
+                          _riderName = name;
+                          _riderPhone = phone;
+                          _vehiclePlate = vehicle;
+                          _riderAvatarUrl = avatar;
+                        });
+                      },
+                    );
+                  },
                 ),
               );
             },
@@ -421,7 +447,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
                 completedTripsCount: _completedTripsCount,
                 brandColor: brandColor,
                 onOnlineChanged: (val) {
-                  setState(() => _isOnline = val);
+                  setState(() {
+                    _isOnline = val;
+                  });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(_isOnline ? 'You are now ONLINE and available for orders!' : 'You are now OFFLINE.'),
@@ -430,7 +458,9 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
                     ),
                   );
                 },
-                onTapEditProfile: () => _showEditRiderProfileModal(context),
+                onTapEditProfile: () {
+                  _showEditRiderProfileModal(context);
+                },
               ),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -538,8 +568,12 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
           avatarUrl: _riderAvatarUrl,
           completedTripsCount: _completedTripsCount,
           brandColor: brandColor,
-          onTapEditProfile: () => _showEditRiderProfileModal(context),
-          onTapGovernmentId: () => _showRiderGovernmentIdModal(context),
+          onTapEditProfile: () {
+            _showEditRiderProfileModal(context);
+          },
+          onTapGovernmentId: () {
+            _showRiderGovernmentIdModal(context);
+          },
           onLogOut: _onLogOut,
         );
       case 0:

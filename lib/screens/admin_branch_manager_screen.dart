@@ -11,7 +11,9 @@ class AdminBranchManagerScreen extends StatefulWidget {
   });
 
   @override
-  State<AdminBranchManagerScreen> createState() => _AdminBranchManagerScreenState();
+  State<AdminBranchManagerScreen> createState() {
+    return _AdminBranchManagerScreenState();
+  }
 }
 
 class _AdminBranchManagerScreenState extends State<AdminBranchManagerScreen> {

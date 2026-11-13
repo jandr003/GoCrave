@@ -12,7 +12,9 @@ class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() {
+    return _SignUpScreenState();
+  }
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -28,9 +30,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-    _emailFocus.addListener(() => setState(() {}));
-    _passwordFocus.addListener(() => setState(() {}));
-    _confirmPasswordFocus.addListener(() => setState(() {}));
+    _emailFocus.addListener(() {
+      setState(() {});
+    });
+    _passwordFocus.addListener(() {
+      setState(() {});
+    });
+    _confirmPasswordFocus.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -81,7 +89,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscure: _obscurePassword,
                 isPassword: true,
                 focusNode: _passwordFocus,
-                onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
+                onToggle: () {
+                  setState(() {
+                    _obscurePassword = !_obscurePassword;
+                  });
+                },
               ),
               const SizedBox(height: 24),
 
@@ -92,13 +104,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscure: _obscureConfirmPassword,
                 isPassword: true,
                 focusNode: _confirmPasswordFocus,
-                onToggle: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                onToggle: () {
+                  setState(() {
+                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                  });
+                },
               ),
               
               const SizedBox(height: 24),
               
               GestureDetector(
-                onTap: () => setState(() => _isAgreed = !_isAgreed),
+                onTap: () {
+                  setState(() {
+                    _isAgreed = !_isAgreed;
+                  });
+                },
                 child: Row(
                   children: [
                     Container(
@@ -150,7 +170,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PhoneEntryScreen(isNewUser: true),
+                        builder: (context) {
+                          return const PhoneEntryScreen(isNewUser: true);
+                        },
                       ),
                     );
                   },
@@ -201,7 +223,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const LoginScreen();
+                        },
+                      ),
                     );
                   },
                   child: RichText(

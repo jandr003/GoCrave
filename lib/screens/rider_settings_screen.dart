@@ -21,7 +21,9 @@ class RiderSettingsScreen extends StatefulWidget {
   });
 
   @override
-  State<RiderSettingsScreen> createState() => _RiderSettingsScreenState();
+  State<RiderSettingsScreen> createState() {
+    return _RiderSettingsScreenState();
+  }
 }
 
 class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
@@ -132,7 +134,9 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Rider Settings',
@@ -212,7 +216,11 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                     subtitle: 'Automatically accept delivery requests within 2 km',
                     icon: Icons.flash_on_rounded,
                     value: _autoAcceptOrders,
-                    onChanged: (val) => setState(() => _autoAcceptOrders = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _autoAcceptOrders = val;
+                      });
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFEEEEEE)),
                   Padding(
@@ -253,7 +261,11 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                           divisions: 14,
                           activeColor: brandColor,
                           inactiveColor: Colors.grey[200],
-                          onChanged: (val) => setState(() => _deliveryRadiusKm = val),
+                          onChanged: (val) {
+                            setState(() {
+                              _deliveryRadiusKm = val;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -295,7 +307,11 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                     subtitle: 'Play loud chime on incoming order requests',
                     icon: Icons.notifications_active_rounded,
                     value: _loudChimeAlerts,
-                    onChanged: (val) => setState(() => _loudChimeAlerts = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _loudChimeAlerts = val;
+                      });
+                    },
                   ),
                   const Divider(height: 1, color: Color(0xFFEEEEEE)),
                   _buildSwitchTile(
@@ -303,7 +319,11 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                     subtitle: 'Turn-by-turn voice directions while driving',
                     icon: Icons.record_voice_over_rounded,
                     value: _voiceGuidance,
-                    onChanged: (val) => setState(() => _voiceGuidance = val),
+                    onChanged: (val) {
+                      setState(() {
+                        _voiceGuidance = val;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -377,8 +397,14 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const LoginScreen();
+                      },
+                    ),
+                    (route) {
+                      return false;
+                    },
                   );
                 },
                 icon: const Icon(Icons.logout_rounded, size: 18, color: Colors.redAccent),
@@ -506,7 +532,9 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                 title: Text('Google Maps', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                 trailing: _preferredNavApp == 'Google Maps' ? Icon(Icons.check, color: brandColor) : null,
                 onTap: () {
-                  setState(() => _preferredNavApp = 'Google Maps');
+                  setState(() {
+                    _preferredNavApp = 'Google Maps';
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -515,7 +543,9 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                 title: Text('Waze Navigation', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                 trailing: _preferredNavApp == 'Waze Navigation' ? Icon(Icons.check, color: brandColor) : null,
                 onTap: () {
-                  setState(() => _preferredNavApp = 'Waze Navigation');
+                  setState(() {
+                    _preferredNavApp = 'Waze Navigation';
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -543,7 +573,9 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                 title: Text('English (Philippines)', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                 trailing: _appLanguage == 'English (Philippines)' ? Icon(Icons.check, color: brandColor) : null,
                 onTap: () {
-                  setState(() => _appLanguage = 'English (Philippines)');
+                  setState(() {
+                    _appLanguage = 'English (Philippines)';
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -551,7 +583,9 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
                 title: Text('Filipino / Tagalog', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
                 trailing: _appLanguage == 'Filipino / Tagalog' ? Icon(Icons.check, color: brandColor) : null,
                 onTap: () {
-                  setState(() => _appLanguage = 'Filipino / Tagalog');
+                  setState(() {
+                    _appLanguage = 'Filipino / Tagalog';
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -581,14 +615,18 @@ class _RiderSettingsScreenState extends State<RiderSettingsScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text('Cancel', style: GoogleFonts.poppins(color: Colors.grey)),
             ),
             ElevatedButton(
               onPressed: () {
                 final double? val = double.tryParse(ctrl.text);
                 if (val != null) {
-                  setState(() => _maxCodLimit = val);
+                  setState(() {
+                    _maxCodLimit = val;
+                  });
                 }
                 Navigator.pop(context);
               },

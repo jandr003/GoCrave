@@ -18,7 +18,9 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() {
+    return _ProfileScreenState();
+  }
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -37,7 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _updateState() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _showAboutGoCraveModal(BuildContext context) {
@@ -114,7 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => const AgreementModal(),
+                            builder: (context) {
+                              return const AgreementModal();
+                            },
                           );
                         },
                       ),
@@ -275,7 +281,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ProfileSetupScreen(isEditing: true),
+                            builder: (context) {
+                              return const ProfileSetupScreen(isEditing: true);
+                            },
                           ),
                         );
                       },
@@ -298,7 +306,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ProfileSetupScreen(isEditing: true),
+                        builder: (context) {
+                          return const ProfileSetupScreen(isEditing: true);
+                        },
                       ),
                     );
                   },
@@ -333,21 +343,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildActionCard(context, 'Favorite', Icons.favorite_border_rounded, Colors.blueAccent, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const FavoritesScreen();
+                          },
+                        ),
                       );
                     }),
                     const SizedBox(width: 16),
                     _buildActionCard(context, 'Wallet', Icons.account_balance_wallet, Colors.orangeAccent, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const WalletScreen()),
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const WalletScreen();
+                          },
+                        ),
                       );
                     }),
                     const SizedBox(width: 16),
                     _buildActionCard(context, 'Coins', Icons.monetization_on, Colors.amber, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const RewardsScreen()),
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const RewardsScreen();
+                          },
+                        ),
                       );
                     }),
                   ],
@@ -360,7 +382,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const CouponScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const CouponScreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -370,7 +396,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const RewardsScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const RewardsScreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -380,7 +410,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FeedbackScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const FeedbackScreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -390,7 +424,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AppPreferencesScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const AppPreferencesScreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -400,7 +438,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SupportScreen()),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const SupportScreen();
+                        },
+                      ),
                     );
                   },
                 ),
@@ -409,7 +451,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: Icons.info_outline,
                   title: 'About GoCrave',
                   subtitle: 'Order your favorites anytime and enjoy fast, easy delivery.',
-                  onTap: () => _showAboutGoCraveModal(context),
+                  onTap: () {
+                    _showAboutGoCraveModal(context);
+                  },
                 ),
                 const SizedBox(height: 24),
                 SizedBox(
@@ -422,8 +466,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if (context.mounted) {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
-                          (route) => false,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const LoginScreen();
+                            },
+                          ),
+                          (route) {
+                            return false;
+                          },
                         );
                       }
                     },

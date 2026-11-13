@@ -11,7 +11,9 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() {
+    return _SplashScreenState();
+  }
 }
 
 class _SplashScreenState extends State<SplashScreen>
@@ -108,7 +110,9 @@ class _SplashScreenState extends State<SplashScreen>
     final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
     final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (isFirstTime) {
       _navigate(const OnboardingScreen());
@@ -123,7 +127,9 @@ class _SplashScreenState extends State<SplashScreen>
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, anim, secondaryAnim) => screen,
+        pageBuilder: (context, anim, secondaryAnim) {
+          return screen;
+        },
         transitionsBuilder: (context, anim, secondaryAnim, child) {
           return FadeTransition(opacity: anim, child: child);
         },
@@ -151,7 +157,6 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // orange circle expansion
           RepaintBoundary(
             child: AnimatedBuilder(
               animation: _circleReveal,
@@ -167,8 +172,6 @@ class _SplashScreenState extends State<SplashScreen>
               },
             ),
           ),
-
-          // center part
           Center(
             child: AnimatedBuilder(
               animation: _controller,
@@ -187,8 +190,6 @@ class _SplashScreenState extends State<SplashScreen>
                           child: _staticImages[0],
                         ),
                       ),
-
-                    // perfectly centered horizontal lockup
                     if (isOrangeBg)
                       Opacity(
                         opacity: _finalLogoFade.value,
@@ -230,7 +231,9 @@ class CircleRevealPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (progress <= 0) return;
+    if (progress <= 0) {
+      return;
+    }
     final center = Offset(size.width / 2, size.height / 2);
     final radius = maxRadius * progress;
     final paint = Paint()
@@ -240,6 +243,7 @@ class CircleRevealPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CircleRevealPainter oldDelegate) =>
-      oldDelegate.progress != progress;
+  bool shouldRepaint(CircleRevealPainter oldDelegate) {
+    return oldDelegate.progress != progress;
+  }
 }

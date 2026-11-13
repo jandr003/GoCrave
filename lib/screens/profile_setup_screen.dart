@@ -14,7 +14,9 @@ class ProfileSetupScreen extends StatefulWidget {
   });
 
   @override
-  State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
+  State<ProfileSetupScreen> createState() {
+    return _ProfileSetupScreenState();
+  }
 }
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
@@ -101,7 +103,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         leading: widget.isEditing
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               )
             : null,
         title: Text(
@@ -226,7 +230,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               'MM/DD/YYYY',
               _dobController,
               readOnly: true,
-              onTap: () => _selectDate(context),
+              onTap: () {
+                _selectDate(context);
+              },
               suffixIcon: Icons.calendar_today,
             ),
             const SizedBox(height: 20),
@@ -286,9 +292,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MainNavWrapper(initialIndex: 0),
+                        builder: (context) {
+                          return const MainNavWrapper(initialIndex: 0);
+                        },
                       ),
-                      (route) => false,
+                      (route) {
+                        return false;
+                      },
                     );
                   }
                 },

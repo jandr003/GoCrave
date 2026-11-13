@@ -5,7 +5,9 @@ class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ResetPasswordScreen> createState() {
+    return _ResetPasswordScreenState();
+  }
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
@@ -24,7 +26,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void _onPasswordChanged() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -36,47 +40,94 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.dispose();
   }
 
-  String get _newPass => _newPassController.text;
-  String get _confirmPass => _confirmPassController.text;
+  String get _newPass {
+    return _newPassController.text;
+  }
 
-  bool get _hasMinLength => _newPass.length >= 8;
-  bool get _hasUppercase => RegExp(r'[A-Z]').hasMatch(_newPass);
-  bool get _hasLowercase => RegExp(r'[a-z]').hasMatch(_newPass);
-  bool get _hasDigit => RegExp(r'[0-9]').hasMatch(_newPass);
-  bool get _hasSpecialChar => RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(_newPass);
-  bool get _passwordsMatch => _newPass.isNotEmpty && _newPass == _confirmPass;
+  String get _confirmPass {
+    return _confirmPassController.text;
+  }
 
-  bool get _isAllRequirementsMet =>
-      _hasMinLength &&
-      _hasUppercase &&
-      _hasLowercase &&
-      _hasDigit &&
-      _hasSpecialChar &&
-      _passwordsMatch;
+  bool get _hasMinLength {
+    return _newPass.length >= 8;
+  }
+
+  bool get _hasUppercase {
+    return RegExp(r'[A-Z]').hasMatch(_newPass);
+  }
+
+  bool get _hasLowercase {
+    return RegExp(r'[a-z]').hasMatch(_newPass);
+  }
+
+  bool get _hasDigit {
+    return RegExp(r'[0-9]').hasMatch(_newPass);
+  }
+
+  bool get _hasSpecialChar {
+    return RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(_newPass);
+  }
+
+  bool get _passwordsMatch {
+    return _newPass.isNotEmpty && _newPass == _confirmPass;
+  }
+
+  bool get _isAllRequirementsMet {
+    return _hasMinLength &&
+        _hasUppercase &&
+        _hasLowercase &&
+        _hasDigit &&
+        _hasSpecialChar &&
+        _passwordsMatch;
+  }
 
   int get _metCount {
     int count = 0;
-    if (_hasMinLength) count++;
-    if (_hasUppercase) count++;
-    if (_hasLowercase) count++;
-    if (_hasDigit) count++;
-    if (_hasSpecialChar) count++;
+    if (_hasMinLength) {
+      count++;
+    }
+    if (_hasUppercase) {
+      count++;
+    }
+    if (_hasLowercase) {
+      count++;
+    }
+    if (_hasDigit) {
+      count++;
+    }
+    if (_hasSpecialChar) {
+      count++;
+    }
     return count;
   }
 
-  double get _strengthProgress => _metCount / 5.0;
+  double get _strengthProgress {
+    return _metCount / 5.0;
+  }
 
   Color get _strengthColor {
-    if (_newPass.isEmpty) return Colors.grey[300]!;
-    if (_metCount <= 2) return Colors.redAccent;
-    if (_metCount <= 4) return Colors.orangeAccent;
+    if (_newPass.isEmpty) {
+      return Colors.grey[300]!;
+    }
+    if (_metCount <= 2) {
+      return Colors.redAccent;
+    }
+    if (_metCount <= 4) {
+      return Colors.orangeAccent;
+    }
     return Colors.green;
   }
 
   String get _strengthText {
-    if (_newPass.isEmpty) return 'Enter Password';
-    if (_metCount <= 2) return 'Weak';
-    if (_metCount <= 4) return 'Medium';
+    if (_newPass.isEmpty) {
+      return 'Enter Password';
+    }
+    if (_metCount <= 2) {
+      return 'Weak';
+    }
+    if (_metCount <= 4) {
+      return 'Medium';
+    }
     return 'Strong';
   }
 
@@ -91,7 +142,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Column(
@@ -152,7 +205,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       hint: 'Enter new password',
                       controller: _newPassController,
                       obscure: _obscureNew,
-                      onToggle: () => setState(() => _obscureNew = !_obscureNew),
+                      onToggle: () {
+                        setState(() {
+                          _obscureNew = !_obscureNew;
+                        });
+                      },
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -168,7 +225,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       hint: 'Confirm new password',
                       controller: _confirmPassController,
                       obscure: _obscureConfirm,
-                      onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                      onToggle: () {
+                        setState(() {
+                          _obscureConfirm = !_obscureConfirm;
+                        });
+                      },
                     ),
                     const SizedBox(height: 24),
 
@@ -389,51 +450,53 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Success!',
-              style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Your password has been reset successfully.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: brandColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                child: const Text('Back to Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                child: const Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
               ),
-            ),
-          ],
-        ),
-      ),
+              const SizedBox(height: 24),
+              Text(
+                'Success!',
+                style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Your password has been reset successfully.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: brandColor,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  child: const Text('Back to Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
