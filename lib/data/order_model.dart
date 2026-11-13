@@ -83,12 +83,16 @@ class OrderModel {
       'storeLatLng': [storeLatLng.latitude, storeLatLng.longitude],
       'riderLatLng': [riderLatLng.latitude, riderLatLng.longitude],
       'customerLatLng': [customerLatLng.latitude, customerLatLng.longitude],
-      'routePoints': routePoints.map((p) => [p.latitude, p.longitude]).toList(),
+      'routePoints': routePoints.map((p) {
+        return [p.latitude, p.longitude];
+      }).toList(),
     };
   }
 
   static LatLng _parseLatLng(dynamic value, LatLng fallback) {
-    if (value is LatLng) return value;
+    if (value is LatLng) {
+      return value;
+    }
     if (value is List && value.length >= 2) {
       final double lat = double.tryParse(value[0].toString()) ?? fallback.latitude;
       final double lng = double.tryParse(value[1].toString()) ?? fallback.longitude;
@@ -98,7 +102,9 @@ class OrderModel {
   }
 
   static List<LatLng> _parseLatLngList(dynamic value) {
-    if (value is List<LatLng>) return value;
+    if (value is List<LatLng>) {
+      return value;
+    }
     if (value is List) {
       final List<LatLng> result = [];
       for (var item in value) {
@@ -110,7 +116,9 @@ class OrderModel {
           result.add(LatLng(lat, lng));
         }
       }
-      if (result.isNotEmpty) return result;
+      if (result.isNotEmpty) {
+        return result;
+      }
     }
     return const [
       LatLng(14.8527, 120.8160),
