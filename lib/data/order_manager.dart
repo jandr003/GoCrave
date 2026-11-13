@@ -40,12 +40,16 @@ class Order {
 
 class OrderManager extends ChangeNotifier {
   static final OrderManager _instance = OrderManager._internal();
-  factory OrderManager() => _instance;
+  factory OrderManager() {
+    return _instance;
+  }
   OrderManager._internal();
 
   final List<Order> _orders = [];
 
-  List<Order> get orders => List.unmodifiable(_orders);
+  List<Order> get orders {
+    return List.unmodifiable(_orders);
+  }
 
   Order placeOrder(Map<String, String> foodItem) {
     final random = Random();
