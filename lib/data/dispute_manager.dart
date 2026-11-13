@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class DisputeManager extends ChangeNotifier {
   static final DisputeManager _instance = DisputeManager._internal();
-  factory DisputeManager() => _instance;
+  factory DisputeManager() {
+    return _instance;
+  }
   DisputeManager._internal();
 
   final List<Map<String, dynamic>> _disputes = [
@@ -38,10 +40,14 @@ class DisputeManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get disputes => List.unmodifiable(_disputes);
+  List<Map<String, dynamic>> get disputes {
+    return List.unmodifiable(_disputes);
+  }
 
   void resolveDispute(String id) {
-    final index = _disputes.indexWhere((d) => d['id'] == id);
+    final index = _disputes.indexWhere((d) {
+      return d['id'] == id;
+    });
     if (index != -1) {
       _disputes[index]['status'] = 'Resolved';
       notifyListeners();
@@ -49,7 +55,9 @@ class DisputeManager extends ChangeNotifier {
   }
 
   void issueRefund(String id) {
-    final index = _disputes.indexWhere((d) => d['id'] == id);
+    final index = _disputes.indexWhere((d) {
+      return d['id'] == id;
+    });
     if (index != -1) {
       _disputes[index]['status'] = 'Refunded';
       notifyListeners();
