@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class FraudManager extends ChangeNotifier {
   static final FraudManager _instance = FraudManager._internal();
-  factory FraudManager() => _instance;
+  factory FraudManager() {
+    return _instance;
+  }
   FraudManager._internal();
 
   final List<Map<String, dynamic>> _flags = [
@@ -24,10 +26,14 @@ class FraudManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get flags => List.unmodifiable(_flags);
+  List<Map<String, dynamic>> get flags {
+    return List.unmodifiable(_flags);
+  }
 
   void resolveFlag(String id) {
-    final index = _flags.indexWhere((f) => f['id'] == id);
+    final index = _flags.indexWhere((f) {
+      return f['id'] == id;
+    });
     if (index != -1) {
       _flags[index]['status'] = 'Cleared & Resolved';
       notifyListeners();
@@ -35,7 +41,9 @@ class FraudManager extends ChangeNotifier {
   }
 
   void blockAccount(String id) {
-    final index = _flags.indexWhere((f) => f['id'] == id);
+    final index = _flags.indexWhere((f) {
+      return f['id'] == id;
+    });
     if (index != -1) {
       _flags[index]['status'] = 'Blocked & Banned';
       notifyListeners();
