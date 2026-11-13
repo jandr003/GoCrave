@@ -25,7 +25,9 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.grey, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           Padding(
@@ -137,10 +139,12 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => VerificationMethodScreen(
-                        isNewUser: widget.isNewUser,
-                        phoneNumber: _fullPhoneNumber,
-                      ),
+                      builder: (context) {
+                        return VerificationMethodScreen(
+                          isNewUser: widget.isNewUser,
+                          phoneNumber: _fullPhoneNumber,
+                        );
+                      },
                     ),
                   );
                 },
