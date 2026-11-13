@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class InventoryManager extends ChangeNotifier {
   static final InventoryManager _instance = InventoryManager._internal();
-  factory InventoryManager() => _instance;
+  factory InventoryManager() {
+    return _instance;
+  }
   InventoryManager._internal();
 
   final List<Map<String, dynamic>> _inventoryItems = [
@@ -36,10 +38,14 @@ class InventoryManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get inventoryItems => List.unmodifiable(_inventoryItems);
+  List<Map<String, dynamic>> get inventoryItems {
+    return List.unmodifiable(_inventoryItems);
+  }
 
   void toggleStock(String id) {
-    final index = _inventoryItems.indexWhere((i) => i['id'] == id);
+    final index = _inventoryItems.indexWhere((i) {
+      return i['id'] == id;
+    });
     if (index != -1) {
       _inventoryItems[index]['inStock'] = !_inventoryItems[index]['inStock'];
       notifyListeners();
