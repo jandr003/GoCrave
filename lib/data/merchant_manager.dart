@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class MerchantManager extends ChangeNotifier {
   static final MerchantManager _instance = MerchantManager._internal();
-  factory MerchantManager() => _instance;
+  factory MerchantManager() {
+    return _instance;
+  }
   MerchantManager._internal();
 
   final List<Map<String, dynamic>> _merchants = [
@@ -47,16 +49,26 @@ class MerchantManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get merchants => List.unmodifiable(_merchants);
+  List<Map<String, dynamic>> get merchants {
+    return List.unmodifiable(_merchants);
+  }
 
-  List<Map<String, dynamic>> get pendingMerchants =>
-      _merchants.where((m) => m['status'] == 'Pending').toList();
+  List<Map<String, dynamic>> get pendingMerchants {
+    return _merchants.where((m) {
+      return m['status'] == 'Pending';
+    }).toList();
+  }
 
-  List<Map<String, dynamic>> get approvedMerchants =>
-      _merchants.where((m) => m['status'] == 'Approved').toList();
+  List<Map<String, dynamic>> get approvedMerchants {
+    return _merchants.where((m) {
+      return m['status'] == 'Approved';
+    }).toList();
+  }
 
   void approveMerchant(String id, double commissionRate) {
-    final index = _merchants.indexWhere((m) => m['id'] == id);
+    final index = _merchants.indexWhere((m) {
+      return m['id'] == id;
+    });
     if (index != -1) {
       _merchants[index]['status'] = 'Approved';
       _merchants[index]['commission'] = commissionRate;
@@ -65,7 +77,9 @@ class MerchantManager extends ChangeNotifier {
   }
 
   void rejectMerchant(String id) {
-    final index = _merchants.indexWhere((m) => m['id'] == id);
+    final index = _merchants.indexWhere((m) {
+      return m['id'] == id;
+    });
     if (index != -1) {
       _merchants[index]['status'] = 'Rejected';
       notifyListeners();
