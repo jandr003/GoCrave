@@ -3,19 +3,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CoinManager extends ChangeNotifier {
   static final CoinManager _instance = CoinManager._internal();
-  factory CoinManager() => _instance;
+  factory CoinManager() {
+    return _instance;
+  }
   CoinManager._internal();
 
   int _totalCoins = 0;
   int _currentStreak = 0;
   DateTime? _lastCheckIn;
 
-  int get totalCoins => _totalCoins;
-  int get currentStreak => _currentStreak;
-  DateTime? get lastCheckIn => _lastCheckIn;
+  int get totalCoins {
+    return _totalCoins;
+  }
+
+  int get currentStreak {
+    return _currentStreak;
+  }
+
+  DateTime? get lastCheckIn {
+    return _lastCheckIn;
+  }
 
   bool get canClaimToday {
-    if (_lastCheckIn == null) return true;
+    if (_lastCheckIn == null) {
+      return true;
+    }
     final now = DateTime.now();
     return now.day != _lastCheckIn!.day || now.month != _lastCheckIn!.month || now.year != _lastCheckIn!.year;
   }
@@ -41,7 +53,9 @@ class CoinManager extends ChangeNotifier {
   }
 
   Future<int> claimDailyReward() async {
-    if (!canClaimToday) return 0;
+    if (!canClaimToday) {
+      return 0;
+    }
 
     final prefs = await SharedPreferences.getInstance();
     
