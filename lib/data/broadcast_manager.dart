@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class BroadcastManager extends ChangeNotifier {
   static final BroadcastManager _instance = BroadcastManager._internal();
-  factory BroadcastManager() => _instance;
+  factory BroadcastManager() {
+    return _instance;
+  }
   BroadcastManager._internal();
 
   final List<Map<String, dynamic>> _broadcasts = [
@@ -24,7 +26,9 @@ class BroadcastManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get broadcasts => List.unmodifiable(_broadcasts);
+  List<Map<String, dynamic>> get broadcasts {
+    return List.unmodifiable(_broadcasts);
+  }
 
   void sendBroadcast(String target, String title, String message) {
     _broadcasts.insert(0, {
@@ -39,7 +43,9 @@ class BroadcastManager extends ChangeNotifier {
   }
 
   void deleteBroadcast(String id) {
-    _broadcasts.removeWhere((b) => b['id'] == id);
+    _broadcasts.removeWhere((b) {
+      return b['id'] == id;
+    });
     notifyListeners();
   }
 }
