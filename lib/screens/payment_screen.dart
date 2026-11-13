@@ -52,7 +52,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Payment',
@@ -87,7 +89,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  ..._methods.map((method) => _buildMethodItem(method)).toList(),
+                  ..._methods.map((method) {
+                    return _buildMethodItem(method);
+                  }).toList(),
                 ],
               ),
             ),
@@ -194,7 +198,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final isSelected = _selectedMethod == method['name'];
 
     return InkWell(
-      onTap: () => setState(() => _selectedMethod = method['name']),
+      onTap: () {
+        setState(() {
+          _selectedMethod = method['name'];
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(
@@ -342,7 +350,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   context: context,
                   backgroundColor: Colors.transparent,
                   isDismissible: false,
-                  builder: (context) => OrderSuccessSheet(order: lastOrder),
+                  builder: (context) {
+                    return OrderSuccessSheet(order: lastOrder);
+                  },
                 );
               },
             ),
@@ -352,4 +362,3 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 }
-
