@@ -12,7 +12,9 @@ class MerchantChatDetailModal extends StatefulWidget {
   });
 
   @override
-  State<MerchantChatDetailModal> createState() => _MerchantChatDetailModalState();
+  State<MerchantChatDetailModal> createState() {
+    return _MerchantChatDetailModalState();
+  }
 }
 
 class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
@@ -48,7 +50,9 @@ class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
   }
 
   void _sendMessage() {
-    if (_msgCtrl.text.trim().isEmpty) return;
+    if (_msgCtrl.text.trim().isEmpty) {
+      return;
+    }
 
     setState(() {
       _messages.add({
@@ -92,7 +96,6 @@ class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
               ),
             ),
             const SizedBox(height: 12),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: Row(
@@ -140,14 +143,14 @@ class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.close_rounded, color: Colors.grey),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
             ),
-
             const Divider(height: 1, color: Color(0xFFEEEEEE)),
-
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(20),
@@ -197,7 +200,6 @@ class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
                 },
               ),
             ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
               decoration: const BoxDecoration(
@@ -222,13 +224,17 @@ class _MerchantChatDetailModalState extends State<MerchantChatDetailModal> {
                           hintStyle: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[400]),
                           border: InputBorder.none,
                         ),
-                        onSubmitted: (_) => _sendMessage(),
+                        onSubmitted: (_) {
+                          _sendMessage();
+                        },
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   InkWell(
-                    onTap: _sendMessage,
+                    onTap: () {
+                      _sendMessage();
+                    },
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       padding: const EdgeInsets.all(12),

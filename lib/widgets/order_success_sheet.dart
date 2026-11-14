@@ -65,8 +65,14 @@ class OrderSuccessSheet extends StatelessWidget {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 0)),
-                  (route) => false,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MainNavWrapper(initialIndex: 0);
+                    },
+                  ),
+                  (route) {
+                    return false;
+                  },
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -96,15 +102,25 @@ class OrderSuccessSheet extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderTrackingScreen(order: order!),
+                      builder: (context) {
+                        return OrderTrackingScreen(order: order!);
+                      },
                     ),
-                    (route) => false,
+                    (route) {
+                      return false;
+                    },
                   );
                 } else {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainNavWrapper(initialIndex: 2)),
-                    (route) => false,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const MainNavWrapper(initialIndex: 2);
+                      },
+                    ),
+                    (route) {
+                      return false;
+                    },
                   );
                 }
               },

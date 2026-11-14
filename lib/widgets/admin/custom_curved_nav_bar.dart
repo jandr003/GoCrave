@@ -28,7 +28,9 @@ class CustomCurvedNavBar extends StatefulWidget {
   });
 
   @override
-  State<CustomCurvedNavBar> createState() => _CustomCurvedNavBarState();
+  State<CustomCurvedNavBar> createState() {
+    return _CustomCurvedNavBarState();
+  }
 }
 
 class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
@@ -53,7 +55,6 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
               ),
             ),
           ),
-
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOutCubic,
@@ -80,7 +81,6 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
               ),
             ),
           ),
-
           Positioned.fill(
             top: 8,
             child: Row(
@@ -90,7 +90,9 @@ class _CustomCurvedNavBarState extends State<CustomCurvedNavBar> {
 
                 return Expanded(
                   child: InkWell(
-                    onTap: () => widget.onTap(index),
+                    onTap: () {
+                      widget.onTap(index);
+                    },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     child: Column(

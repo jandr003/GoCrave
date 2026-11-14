@@ -30,7 +30,9 @@ class RiderHistoryTab extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RiderOrderDetailsScreen(orderItem: item),
+                    builder: (context) {
+                      return RiderOrderDetailsScreen(orderItem: item);
+                    },
                   ),
                 );
               },

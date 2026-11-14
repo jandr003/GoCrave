@@ -37,7 +37,9 @@ class RestaurantHeaderCard extends StatelessWidget {
 
     String formattedSales = todaySales.toInt().toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
+      (Match m) {
+        return '${m[1]},';
+      },
     );
 
     return Container(
@@ -146,7 +148,9 @@ class RestaurantHeaderCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               InkWell(
-                onTap: () => onAcceptingChanged(!isAcceptingOrders),
+                onTap: () {
+                  onAcceptingChanged(!isAcceptingOrders);
+                },
                 borderRadius: BorderRadius.circular(20),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
@@ -189,7 +193,6 @@ class RestaurantHeaderCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-
           Row(
             children: [
               _buildStatTile(

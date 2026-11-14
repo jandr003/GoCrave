@@ -14,7 +14,9 @@ class FoodPhotoProofModal extends StatefulWidget {
   });
 
   @override
-  State<FoodPhotoProofModal> createState() => _FoodPhotoProofModalState();
+  State<FoodPhotoProofModal> createState() {
+    return _FoodPhotoProofModalState();
+  }
 }
 
 class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
@@ -23,7 +25,9 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
   bool _isQualityConfirmed = true;
 
   void _simulateCapturePhoto() {
-    setState(() => _isUploadingPhoto = true);
+    setState(() {
+      _isUploadingPhoto = true;
+    });
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -105,9 +109,7 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
               'Capture and send food photo proof to customer before dispatching to rider',
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
             ),
-
             const SizedBox(height: 16),
-
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -138,15 +140,12 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             Text(
               'Prepared Food Dish Photo',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 8),
-
             InkWell(
               onTap: _simulateCapturePhoto,
               borderRadius: BorderRadius.circular(18),
@@ -165,9 +164,9 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
                     children: [
                       Image.network(_foodPhoto, fit: BoxFit.cover),
                       Container(color: Colors.black.withOpacity(0.25)),
-                      if (_isUploadingPhoto)
-                        const Center(child: CircularProgressIndicator(color: Colors.white))
-                      else
+                      if (_isUploadingPhoto) {
+                        const Center(child: CircularProgressIndicator(color: Colors.white));
+                      } else {
                         Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -187,24 +186,31 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
                               ),
                             ],
                           ),
-                        ),
+                        );
+                      },
                     ],
                   ),
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
-
             GestureDetector(
-              onTap: () => setState(() => _isQualityConfirmed = !_isQualityConfirmed),
+              onTap: () {
+                setState(() {
+                  _isQualityConfirmed = !_isQualityConfirmed;
+                });
+              },
               child: Row(
                 children: [
                   Checkbox(
                     value: _isQualityConfirmed,
                     activeColor: widget.brandColor,
                     onChanged: (val) {
-                      if (val != null) setState(() => _isQualityConfirmed = val);
+                      if (val != null) {
+                        setState(() {
+                          _isQualityConfirmed = val;
+                        });
+                      }
                     },
                   ),
                   Expanded(
@@ -216,9 +222,7 @@ class _FoodPhotoProofModalState extends State<FoodPhotoProofModal> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             SizedBox(
               width: double.infinity,
               height: 52,

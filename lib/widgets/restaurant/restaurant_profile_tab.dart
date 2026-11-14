@@ -37,7 +37,9 @@ class RestaurantProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedSales = todaySales.toInt().toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
+      (Match m) {
+        return '${m[1]},';
+      },
     );
 
     return Column(
@@ -129,9 +131,7 @@ class RestaurantProfileTab extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 18),
-
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: BoxDecoration(
@@ -150,9 +150,7 @@ class RestaurantProfileTab extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 18),
-
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -173,15 +171,12 @@ class RestaurantProfileTab extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 20),
-
         Text(
           'Store Verifications & Settings',
           style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 12),
-
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -247,9 +242,7 @@ class RestaurantProfileTab extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 24),
-
         SizedBox(
           width: double.infinity,
           height: 52,
@@ -319,8 +312,9 @@ class RestaurantProfileTab extends StatelessWidget {
                 ],
               ),
             ),
-            if (onTap != null)
-              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+            if (onTap != null) {
+              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey);
+            },
           ],
         ),
       ),

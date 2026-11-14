@@ -22,7 +22,9 @@ class RiderEditProfileModal extends StatefulWidget {
   });
 
   @override
-  State<RiderEditProfileModal> createState() => _RiderEditProfileModalState();
+  State<RiderEditProfileModal> createState() {
+    return _RiderEditProfileModalState();
+  }
 }
 
 class _RiderEditProfileModalState extends State<RiderEditProfileModal> {
@@ -82,7 +84,6 @@ class _RiderEditProfileModalState extends State<RiderEditProfileModal> {
               ),
             ),
             const SizedBox(height: 16),
-
             Center(
               child: Stack(
                 children: [
@@ -139,14 +140,12 @@ class _RiderEditProfileModalState extends State<RiderEditProfileModal> {
                 },
               ),
             ),
-
             const SizedBox(height: 20),
             _buildModalTextField('Rider Name', _nameCtrl, Icons.person_outline),
             const SizedBox(height: 14),
             _buildModalTextField('Phone Number', _phoneCtrl, Icons.phone_outlined, keyboardType: TextInputType.phone),
             const SizedBox(height: 14),
             _buildModalTextField('Vehicle & Plate Number', _vehicleCtrl, Icons.two_wheeler_rounded),
-
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,

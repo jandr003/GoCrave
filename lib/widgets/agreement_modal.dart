@@ -59,7 +59,6 @@ class _AgreementModalState extends State<AgreementModal> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Row(
@@ -75,15 +74,15 @@ class _AgreementModalState extends State<AgreementModal> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   icon: const Icon(Icons.close, color: Colors.grey),
                 ),
               ],
             ),
           ),
-          
           const Divider(height: 1),
-          
           Expanded(
             child: ListView(
               controller: _scrollController,
@@ -103,9 +102,8 @@ class _AgreementModalState extends State<AgreementModal> {
                   'GoCrave is a platform connecting users with restaurants and independent couriers. While we ensure high standards, the restaurants are responsible for food quality, and couriers are responsible for safe transit.'),
                 _buildSection('7. Governing Law', 
                   'These terms are governed by the laws of the Republic of the Philippines. Any disputes arising from these terms will be settled in the appropriate courts of competent jurisdiction.'),
-                
                 const SizedBox(height: 20),
-                if (!_hasReachedBottom)
+                if (!_hasReachedBottom) {
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,13 +121,12 @@ class _AgreementModalState extends State<AgreementModal> {
                       ],
                     ),
                   ),
+                },
                 const SizedBox(height: 20),
               ],
             ),
           ),
-          
           const Divider(height: 1),
-          
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
             child: SizedBox(
@@ -137,7 +134,9 @@ class _AgreementModalState extends State<AgreementModal> {
               height: 56,
               child: ElevatedButton(
                 onPressed: _hasReachedBottom 
-                  ? () => Navigator.pop(context, true) 
+                  ? () {
+                      return Navigator.pop(context, true);
+                    } 
                   : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: brandColor,

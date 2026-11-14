@@ -76,12 +76,9 @@ class RestaurantPreparingTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 12),
-
                 Text('Customer: ${order['customer']}', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black)),
                 Text(order['time'] ?? 'Started 8 mins ago', style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500])),
-
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.all(12),
@@ -99,14 +96,14 @@ class RestaurantPreparingTab extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton.icon(
-                    onPressed: () => onMarkReady(order),
+                    onPressed: () {
+                      onMarkReady(order);
+                    },
                     icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
                     label: Text('Mark Ready for Pickup', style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
                     style: ElevatedButton.styleFrom(

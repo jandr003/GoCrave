@@ -41,15 +41,16 @@ class BrandedCard extends StatelessWidget {
             Positioned.fill(
               child: CustomPaint(
                 painter: _WavyPatternPainter(
-                  color: Colors.white.withOpacity(0.15), // Increased from 0.08 for better visibility
+                  color: Colors.white.withOpacity(0.15),
                 ),
               ),
             ),
-            if (child != null)
+            if (child != null) {
               Padding(
                 padding: padding,
                 child: child!,
               ),
+            },
           ],
         ),
       ),
@@ -122,5 +123,7 @@ class _WavyPatternPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

@@ -11,7 +11,9 @@ class RestaurantMessagesTab extends StatefulWidget {
   });
 
   @override
-  State<RestaurantMessagesTab> createState() => _RestaurantMessagesTabState();
+  State<RestaurantMessagesTab> createState() {
+    return _RestaurantMessagesTabState();
+  }
 }
 
 class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
@@ -65,11 +67,13 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChatScreen(
-          name: thread['name'],
-          image: thread['avatar'],
-          role: '${thread['role']} (${thread['orderId']})',
-        ),
+        builder: (context) {
+          return ChatScreen(
+            name: thread['name'],
+            image: thread['avatar'],
+            role: '${thread['role']} (${thread['orderId']})',
+          );
+        },
       ),
     );
   }
@@ -77,9 +81,15 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
   @override
   Widget build(BuildContext context) {
     final filteredThreads = _chatThreads.where((thread) {
-      if (_selectedFilterIndex == 0) return true;
-      if (_selectedFilterIndex == 1) return thread['role'] == 'Customer';
-      if (_selectedFilterIndex == 2) return thread['role'] == 'Rider';
+      if (_selectedFilterIndex == 0) {
+        return true;
+      }
+      if (_selectedFilterIndex == 1) {
+        return thread['role'] == 'Customer';
+      }
+      if (_selectedFilterIndex == 2) {
+        return thread['role'] == 'Rider';
+      }
       return true;
     }).toList();
 
@@ -91,7 +101,6 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
           style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 12),
-
         SizedBox(
           height: 38,
           child: ListView.builder(
@@ -102,7 +111,11 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
               return Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: InkWell(
-                  onTap: () => setState(() => _selectedFilterIndex = index),
+                  onTap: () {
+                    setState(() {
+                      _selectedFilterIndex = index;
+                    });
+                  },
                   borderRadius: BorderRadius.circular(16),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
@@ -128,9 +141,7 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
             },
           ),
         ),
-
         const SizedBox(height: 16),
-
         ...filteredThreads.map((thread) {
           final bool isUnread = thread['isUnread'] == true;
           final bool isRider = thread['role'] == 'Rider';
@@ -139,7 +150,9 @@ class _RestaurantMessagesTabState extends State<RestaurantMessagesTab> {
             margin: const EdgeInsets.only(bottom: 12),
             child: InkWell(
               onTap: () {
-                setState(() => thread['isUnread'] = false);
+                setState(() {
+                  thread['isUnread'] = false;
+                });
                 _openChatModal(thread);
               },
               borderRadius: BorderRadius.circular(20),

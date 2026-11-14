@@ -16,7 +16,9 @@ class RestaurantBusinessIdModal extends StatefulWidget {
   });
 
   @override
-  State<RestaurantBusinessIdModal> createState() => _RestaurantBusinessIdModalState();
+  State<RestaurantBusinessIdModal> createState() {
+    return _RestaurantBusinessIdModalState();
+  }
 }
 
 class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
@@ -50,7 +52,9 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
   }
 
   void _simulateUploadPermit() {
-    setState(() => _isUploadingPermit = true);
+    setState(() {
+      _isUploadingPermit = true;
+    });
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -69,7 +73,9 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
   }
 
   void _simulateUploadOwnerId() {
-    setState(() => _isUploadingOwnerId = true);
+    setState(() {
+      _isUploadingOwnerId = true;
+    });
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -159,7 +165,6 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
             ),
             const SizedBox(height: 20),
-
             Text(
               'Select Document Type',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -180,7 +185,9 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                   style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black),
                   onChanged: (val) {
                     if (val != null) {
-                      setState(() => _selectedPermitType = val);
+                      setState(() {
+                        _selectedPermitType = val;
+                      });
                     }
                   },
                   items: _permitTypes.map((type) {
@@ -192,9 +199,7 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
-
             Text(
               'Permit / Registration Number',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -228,15 +233,12 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             Text(
               'Document Photos (DTI Permit & Owner ID)',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 10),
-
             Row(
               children: [
                 Expanded(
@@ -263,9 +265,9 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                                     children: [
                                       Image.network(_dtiPermitPhoto!, fit: BoxFit.cover),
                                       Container(color: Colors.black.withOpacity(0.25)),
-                                      if (_isUploadingPermit)
-                                        const Center(child: CircularProgressIndicator(color: Colors.white))
-                                      else
+                                      if (_isUploadingPermit) {
+                                        const Center(child: CircularProgressIndicator(color: Colors.white));
+                                      } else {
                                         Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -278,7 +280,8 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        );
+                                      },
                                     ],
                                   )
                                 : Center(
@@ -311,9 +314,7 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 14),
-
                 Expanded(
                   child: Column(
                     children: [
@@ -338,9 +339,9 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                                     children: [
                                       Image.network(_ownerIdPhoto!, fit: BoxFit.cover),
                                       Container(color: Colors.black.withOpacity(0.25)),
-                                      if (_isUploadingOwnerId)
-                                        const Center(child: CircularProgressIndicator(color: Colors.white))
-                                      else
+                                      if (_isUploadingOwnerId) {
+                                        const Center(child: CircularProgressIndicator(color: Colors.white));
+                                      } else {
                                         Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -353,7 +354,8 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        );
+                                      },
                                     ],
                                   )
                                 : Center(
@@ -388,15 +390,15 @@ class _RestaurantBusinessIdModalState extends State<RestaurantBusinessIdModal> {
                 ),
               ],
             ),
-
             const SizedBox(height: 24),
-
             SizedBox(
               width: double.infinity,
               height: 52,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  setState(() => _isVerified = true);
+                  setState(() {
+                    _isVerified = true;
+                  });
                   widget.onSave(_selectedPermitType, _permitNumberCtrl.text, _dtiPermitPhoto ?? '', _ownerIdPhoto ?? '');
                   Navigator.pop(context);
                 },

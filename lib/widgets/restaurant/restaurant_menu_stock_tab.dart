@@ -91,7 +91,9 @@ class RestaurantMenuStockTab extends StatelessWidget {
                 Switch(
                   value: inStock,
                   activeColor: brandColor,
-                  onChanged: (val) => onToggleStock(title, val),
+                  onChanged: (val) {
+                    onToggleStock(title, val);
+                  },
                 ),
               ],
             ),

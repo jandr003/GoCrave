@@ -91,7 +91,9 @@ class RiderHeaderCard extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => onOnlineChanged(!isOnline),
+                onTap: () {
+                  onOnlineChanged(!isOnline);
+                },
                 borderRadius: BorderRadius.circular(20),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
@@ -134,7 +136,6 @@ class RiderHeaderCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 18),
-
           Row(
             children: [
               _buildStatTile(

@@ -80,7 +80,6 @@ class RiderAvailableOrdersTab extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 14),
-
         ...availableRequests.map((req) {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),
@@ -131,9 +130,7 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 14),
-
                 Row(
                   children: [
                     Container(
@@ -171,9 +168,7 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 10),
-
                 Row(
                   children: [
                     Container(
@@ -202,9 +197,7 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 12),
-
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -225,14 +218,14 @@ class RiderAvailableOrdersTab extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton.icon(
-                    onPressed: () => onAcceptDelivery(req),
+                    onPressed: () {
+                      onAcceptDelivery(req);
+                    },
                     icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
                     label: Text(
                       'Accept Delivery',

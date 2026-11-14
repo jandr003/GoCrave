@@ -110,7 +110,9 @@ class RestaurantIncomingTab extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () => onDeclineOrder(order),
+                        onPressed: () {
+                          onDeclineOrder(order);
+                        },
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Colors.redAccent),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -122,7 +124,9 @@ class RestaurantIncomingTab extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: ElevatedButton.icon(
-                        onPressed: () => onAcceptOrder(order),
+                        onPressed: () {
+                          onAcceptOrder(order);
+                        },
                         icon: const Icon(Icons.soup_kitchen_rounded, size: 18, color: Colors.white),
                         label: Text('Accept & Start Prep', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
                         style: ElevatedButton.styleFrom(

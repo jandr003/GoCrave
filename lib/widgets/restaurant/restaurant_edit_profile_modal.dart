@@ -26,7 +26,9 @@ class RestaurantEditProfileModal extends StatefulWidget {
   });
 
   @override
-  State<RestaurantEditProfileModal> createState() => _RestaurantEditProfileModalState();
+  State<RestaurantEditProfileModal> createState() {
+    return _RestaurantEditProfileModalState();
+  }
 }
 
 class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal> {
@@ -89,7 +91,6 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
               ),
             ),
             const SizedBox(height: 16),
-
             Center(
               child: Stack(
                 children: [
@@ -152,7 +153,6 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
                 },
               ),
             ),
-
             const SizedBox(height: 20),
             _buildModalTextField('Restaurant Store Name', _nameCtrl, Icons.store_rounded),
             const SizedBox(height: 14),
@@ -161,9 +161,7 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
             _buildModalTextField('Branch Address', _addressCtrl, Icons.location_on_outlined),
             const SizedBox(height: 14),
             _buildModalTextField('Operating Hours', _hoursCtrl, Icons.access_time_rounded),
-
             const SizedBox(height: 16),
-
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -190,7 +188,7 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
                       ],
                     ),
                   ),
-                  if (widget.onTapUploadBusinessPermit != null)
+                  if (widget.onTapUploadBusinessPermit != null) {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -201,10 +199,10 @@ class _RestaurantEditProfileModalState extends State<RestaurantEditProfileModal>
                         style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: widget.brandColor),
                       ),
                     ),
+                  },
                 ],
               ),
             ),
-
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,

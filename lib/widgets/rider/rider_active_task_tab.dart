@@ -115,7 +115,6 @@ class RiderActiveTaskTab extends StatelessWidget {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
@@ -149,9 +148,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 16),
-
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -191,7 +188,6 @@ class RiderActiveTaskTab extends StatelessWidget {
                                   ),
                                 ],
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(left: 11.0, top: 2, bottom: 2),
                                 child: Container(
@@ -200,7 +196,6 @@ class RiderActiveTaskTab extends StatelessWidget {
                                   color: Colors.grey[300],
                                 ),
                               ),
-
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -235,9 +230,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                             ],
                           ),
                         ),
-
                         const SizedBox(width: 10),
-
                         Expanded(
                           flex: 2,
                           child: Container(
@@ -292,9 +285,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 14),
-
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -317,9 +308,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 12),
-
                     Row(
                       children: [
                         Row(
@@ -345,9 +334,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 18),
-
                     SizedBox(
                       width: double.infinity,
                       height: 52,
@@ -395,5 +382,7 @@ class _MapRoutePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

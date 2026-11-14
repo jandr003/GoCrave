@@ -67,9 +67,7 @@ class RestaurantReadyTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 12),
-
                 Text('Customer: ${order['customer']}', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black)),
                 const SizedBox(height: 2),
                 Row(
@@ -84,14 +82,14 @@ class RestaurantReadyTab extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 16),
-
                 SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton.icon(
-                    onPressed: () => onHandOverToRider(order),
+                    onPressed: () {
+                      onHandOverToRider(order);
+                    },
                     icon: const Icon(Icons.check_circle_rounded, size: 18, color: Colors.white),
                     label: Text('Hand Over to Rider (Start Delivery)', style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
                     style: ElevatedButton.styleFrom(

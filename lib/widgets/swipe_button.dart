@@ -14,7 +14,9 @@ class SwipeButton extends StatefulWidget {
   });
 
   @override
-  State<SwipeButton> createState() => _SwipeButtonState();
+  State<SwipeButton> createState() {
+    return _SwipeButtonState();
+  }
 }
 
 class _SwipeButtonState extends State<SwipeButton> with SingleTickerProviderStateMixin {
@@ -82,20 +84,27 @@ class _SwipeButtonState extends State<SwipeButton> with SingleTickerProviderStat
                   ),
                 ),
               ),
-
               Positioned(
                 left: 4 + _position,
                 child: GestureDetector(
                   onHorizontalDragUpdate: (details) {
-                    if (_isCompleted) return;
+                    if (_isCompleted) {
+                      return;
+                    }
                     setState(() {
                       _position += details.delta.dx;
-                      if (_position < 0) _position = 0;
-                      if (_position > maxPosition) _position = maxPosition;
+                      if (_position < 0) {
+                        _position = 0;
+                      }
+                      if (_position > maxPosition) {
+                        _position = maxPosition;
+                      }
                     });
                   },
                   onHorizontalDragEnd: (details) {
-                    if (_isCompleted) return;
+                    if (_isCompleted) {
+                      return;
+                    }
                     if (_position >= maxPosition * 0.9) {
                       setState(() {
                         _position = maxPosition;

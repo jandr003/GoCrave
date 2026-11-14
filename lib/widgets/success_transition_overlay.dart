@@ -18,7 +18,9 @@ class SuccessTransitionOverlay extends StatefulWidget {
   });
 
   @override
-  State<SuccessTransitionOverlay> createState() => _SuccessTransitionOverlayState();
+  State<SuccessTransitionOverlay> createState() {
+    return _SuccessTransitionOverlayState();
+  }
 }
 
 class _SuccessTransitionOverlayState extends State<SuccessTransitionOverlay>

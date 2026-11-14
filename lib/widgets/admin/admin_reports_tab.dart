@@ -17,7 +17,9 @@ class AdminReportsTab extends StatefulWidget {
   });
 
   @override
-  State<AdminReportsTab> createState() => _AdminReportsTabState();
+  State<AdminReportsTab> createState() {
+    return _AdminReportsTabState();
+  }
 }
 
 class _AdminReportsTabState extends State<AdminReportsTab> {
@@ -103,7 +105,9 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
     final activeData = _chartDataSets[_selectedTab] ?? _chartDataSets[0]!;
     final Color chartColor = widget.brandColor;
     final statusCounts = _calculateStatusCounts();
-    final int totalStatusOrders = statusCounts.values.fold(0, (sum, count) => sum + count);
+    final int totalStatusOrders = statusCounts.values.fold(0, (sum, count) {
+      return sum + count;
+    });
     final int effectiveTotalOrders = totalStatusOrders > 0 ? totalStatusOrders : _calculateTotalOrders();
     final double totalRevenueVal = _calculateTotalRevenue();
 
@@ -117,7 +121,11 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               child: Padding(
                 padding: EdgeInsets.only(right: idx == 0 ? 8.0 : 0.0),
                 child: InkWell(
-                  onTap: () => setState(() => _viewMode = idx),
+                  onTap: () {
+                    setState(() {
+                      _viewMode = idx;
+                    });
+                  },
                   borderRadius: BorderRadius.circular(14),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -145,51 +153,49 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
             );
           }),
         ),
-
         const SizedBox(height: 18),
-
         if (_viewMode == 0) ...[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Orders Overview',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF0F172A),
-              ),
-            ),
-            Row(
-              children: [
-                _buildDateDropdownPill(),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: Icon(Icons.download_rounded, color: widget.brandColor, size: 22),
-                  tooltip: 'Export Monthly PDF Report',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 300),
-                        pageBuilder: (context, animation, secondaryAnimation) => AdminExportPdfScreen(brandColor: widget.brandColor),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Orders Overview',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0F172A),
                 ),
-              ],
-            ),
-          ],
-        ),
-
+              ),
+              Row(
+                children: [
+                  _buildDateDropdownPill(),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: Icon(Icons.download_rounded, color: widget.brandColor, size: 22),
+                    tooltip: 'Export Monthly PDF Report',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return AdminExportPdfScreen(brandColor: widget.brandColor);
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -201,7 +207,11 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                 final isSelected = _selectedTab == idx;
                 return Expanded(
                   child: InkWell(
-                    onTap: () => setState(() => _selectedTab = idx),
+                    onTap: () {
+                      setState(() {
+                        _selectedTab = idx;
+                      });
+                    },
                     borderRadius: BorderRadius.circular(12),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -229,9 +239,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               }),
             ),
           ),
-
           const SizedBox(height: 16),
-
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
@@ -255,9 +263,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               ),
             ),
           ),
-
           const SizedBox(height: 20),
-
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
@@ -333,9 +339,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               _buildDateDropdownPill(),
             ],
           ),
-
           const SizedBox(height: 14),
-
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -347,7 +351,11 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
                 final isSelected = _periodIndex == idx;
                 return Expanded(
                   child: InkWell(
-                    onTap: () => setState(() => _periodIndex = idx),
+                    onTap: () {
+                      setState(() {
+                        _periodIndex = idx;
+                      });
+                    },
                     borderRadius: BorderRadius.circular(14),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -375,9 +383,7 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
               }),
             ),
           ),
-
           const SizedBox(height: 18),
-
           Builder(
             builder: (context) {
               int displayOrders = effectiveTotalOrders;
@@ -468,7 +474,9 @@ class _AdminReportsTabState extends State<AdminReportsTab> {
           style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600, color: const Color(0xFF334155)),
           onChanged: (String? newValue) {
             if (newValue != null) {
-              setState(() => _selectedDate = newValue);
+              setState(() {
+                _selectedDate = newValue;
+              });
             }
           },
           items: _availableDates.map<DropdownMenuItem<String>>((String value) {
@@ -646,7 +654,9 @@ class _CurvedChartPainter extends CustomPainter {
       textPainter.paint(canvas, Offset(xPos - textPainter.width / 2, size.height - textPainter.height + 4));
     }
 
-    if (dataPoints.isEmpty) return;
+    if (dataPoints.isEmpty) {
+      return;
+    }
 
     final List<Offset> points = [];
     final double stepX = chartWidth / (dataPoints.length - 1);

@@ -18,7 +18,9 @@ class AdminHeaderCard extends StatefulWidget {
   });
 
   @override
-  State<AdminHeaderCard> createState() => _AdminHeaderCardState();
+  State<AdminHeaderCard> createState() {
+    return _AdminHeaderCardState();
+  }
 }
 
 class _AdminHeaderCardState extends State<AdminHeaderCard> {
@@ -167,7 +169,6 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
             ],
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -180,9 +181,7 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
             ],
           ),
         ),
-
         const SizedBox(height: 24),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Text(
@@ -191,7 +190,6 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
           ),
         ),
         const SizedBox(height: 10),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -228,11 +226,7 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
             ],
           ),
         ),
-
-
-
         const SizedBox(height: 24),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Row(
@@ -260,7 +254,6 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
           ),
         ),
         const SizedBox(height: 10),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
@@ -293,9 +286,7 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
             ),
           ),
         ),
-
         const SizedBox(height: 24),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Text(
@@ -304,7 +295,6 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
           ),
         ),
         const SizedBox(height: 10),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
@@ -323,12 +313,14 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                   subtitle: 'Order #GC-0000128 placed by Juan Dela Cruz',
                   time: '2 mins ago',
                   icon: Icons.assignment_turned_in_rounded,
-                  onTap: () => _showQuickDetailsModal(
-                    'New Customer Order Received',
-                    'Order #GC-0000128 placed for McDonald\'s',
-                    'Latest Update',
-                    'Customer Juan Dela Cruz placed order #GC-0000128 for ₱249. Awaiting merchant confirmation.',
-                  ),
+                  onTap: () {
+                    _showQuickDetailsModal(
+                      'New Customer Order Received',
+                      'Order #GC-0000128 placed for McDonald\'s',
+                      'Latest Update',
+                      'Customer Juan Dela Cruz placed order #GC-0000128 for ₱249. Awaiting merchant confirmation.',
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildLatestUpdateTile(
@@ -336,12 +328,14 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                   subtitle: 'Miguel Reyes accepted assignment for #GC-0000128',
                   time: '5 mins ago',
                   icon: Icons.two_wheeler_rounded,
-                  onTap: () => _showQuickDetailsModal(
-                    'Rider Assignment Confirmed',
-                    'Miguel Reyes assigned to #GC-0000128',
-                    'Latest Update',
-                    'Rider Miguel Reyes (#R001) accepted delivery assignment for McDonald\'s order #GC-0000128.',
-                  ),
+                  onTap: () {
+                    _showQuickDetailsModal(
+                      'Rider Assignment Confirmed',
+                      'Miguel Reyes assigned to #GC-0000128',
+                      'Latest Update',
+                      'Rider Miguel Reyes (#R001) accepted delivery assignment for McDonald\'s order #GC-0000128.',
+                    );
+                  },
                 ),
                 const Divider(height: 1, color: Color(0xFFF1F5F9)),
                 _buildLatestUpdateTile(
@@ -349,18 +343,19 @@ class _AdminHeaderCardState extends State<AdminHeaderCard> {
                   subtitle: 'GCash reference code #GC-8842 verified',
                   time: '12 mins ago',
                   icon: Icons.check_circle_rounded,
-                  onTap: () => _showQuickDetailsModal(
-                    'Payment Verification Updated',
-                    'GCash payment of ₱320 verified',
-                    'Latest Update',
-                    'GCash transaction reference code #GC-8842 was verified by Admin. Order status set to Paid.',
-                  ),
+                  onTap: () {
+                    _showQuickDetailsModal(
+                      'Payment Verification Updated',
+                      'GCash payment of ₱320 verified',
+                      'Latest Update',
+                      'GCash transaction reference code #GC-8842 was verified by Admin. Order status set to Paid.',
+                    );
+                  },
                 ),
               ],
             ),
           ),
         ),
-
         const SizedBox(height: 20),
       ],
     );
@@ -562,7 +557,9 @@ class _WeeklyTransactionsPainter extends CustomPainter {
       textPainter.paint(canvas, Offset(xPos - textPainter.width / 2, size.height - textPainter.height + 4));
     }
 
-    if (dataPoints.isEmpty) return;
+    if (dataPoints.isEmpty) {
+      return;
+    }
 
     final List<Offset> points = [];
     final double stepX = chartWidth / (dataPoints.length - 1);

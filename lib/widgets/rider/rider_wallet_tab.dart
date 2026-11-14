@@ -136,15 +136,12 @@ class RiderWalletTab extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 24),
-
         Text(
           'Recent Cash-Out Activity',
           style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
         ),
         const SizedBox(height: 12),
-
         ...recentWithdrawals.map((w) {
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
@@ -153,7 +150,9 @@ class RiderWalletTab extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RiderWithdrawalDetailsScreen(withdrawalItem: w),
+                    builder: (context) {
+                      return RiderWithdrawalDetailsScreen(withdrawalItem: w);
+                    },
                   ),
                 );
               },

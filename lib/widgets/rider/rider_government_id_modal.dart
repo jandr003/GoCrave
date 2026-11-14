@@ -16,7 +16,9 @@ class RiderGovernmentIdModal extends StatefulWidget {
   });
 
   @override
-  State<RiderGovernmentIdModal> createState() => _RiderGovernmentIdModalState();
+  State<RiderGovernmentIdModal> createState() {
+    return _RiderGovernmentIdModalState();
+  }
 }
 
 class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
@@ -51,7 +53,9 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
   }
 
   void _simulateUploadFront() {
-    setState(() => _isUploadingFront = true);
+    setState(() {
+      _isUploadingFront = true;
+    });
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -70,7 +74,9 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
   }
 
   void _simulateUploadBack() {
-    setState(() => _isUploadingBack = true);
+    setState(() {
+      _isUploadingBack = true;
+    });
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -158,7 +164,6 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
             ),
             const SizedBox(height: 20),
-
             Text(
               'Select Government ID Type',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -179,7 +184,9 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                   style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black),
                   onChanged: (val) {
                     if (val != null) {
-                      setState(() => _selectedIdType = val);
+                      setState(() {
+                        _selectedIdType = val;
+                      });
                     }
                   },
                   items: _idTypes.map((type) {
@@ -191,9 +198,7 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
-
             Text(
               'Government ID Number',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -227,15 +232,12 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             Text(
               'ID Document Photos (Front & Back)',
               style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 10),
-
             Row(
               children: [
                 Expanded(
@@ -262,9 +264,9 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                                     children: [
                                       Image.network(_frontIdPhoto!, fit: BoxFit.cover),
                                       Container(color: Colors.black.withOpacity(0.25)),
-                                      if (_isUploadingFront)
-                                        const Center(child: CircularProgressIndicator(color: Colors.white))
-                                      else
+                                      if (_isUploadingFront) {
+                                        const Center(child: CircularProgressIndicator(color: Colors.white));
+                                      } else {
                                         Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -277,7 +279,8 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        );
+                                      },
                                     ],
                                   )
                                 : Center(
@@ -310,9 +313,7 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 14),
-
                 Expanded(
                   child: Column(
                     children: [
@@ -337,9 +338,9 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                                     children: [
                                       Image.network(_backIdPhoto!, fit: BoxFit.cover),
                                       Container(color: Colors.black.withOpacity(0.25)),
-                                      if (_isUploadingBack)
-                                        const Center(child: CircularProgressIndicator(color: Colors.white))
-                                      else
+                                      if (_isUploadingBack) {
+                                        const Center(child: CircularProgressIndicator(color: Colors.white));
+                                      } else {
                                         Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -352,7 +353,8 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        );
+                                      },
                                     ],
                                   )
                                 : Center(
@@ -387,15 +389,15 @@ class _RiderGovernmentIdModalState extends State<RiderGovernmentIdModal> {
                 ),
               ],
             ),
-
             const SizedBox(height: 24),
-
             SizedBox(
               width: double.infinity,
               height: 52,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  setState(() => _isVerified = true);
+                  setState(() {
+                    _isVerified = true;
+                  });
                   widget.onSave(_selectedIdType, _idNumberCtrl.text, _frontIdPhoto ?? '', _backIdPhoto ?? '');
                   Navigator.pop(context);
                 },

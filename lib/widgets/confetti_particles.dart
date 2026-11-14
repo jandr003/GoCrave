@@ -25,8 +25,8 @@ class Particle {
   void update() {
     x += vx;
     y += vy;
-    vy += 0.0001; // gravity
-    vx *= 0.98;   // slow down
+    vy += 0.0001;
+    vx *= 0.98;
     vy *= 0.98;
     life -= 0.005;
     opacity = life.clamp(0.0, 1.0);
@@ -41,7 +41,9 @@ class ConfettiPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (var particle in particles) {
-      if (particle.life <= 0) continue;
+      if (particle.life <= 0) {
+        continue;
+      }
       
       final paint = Paint()..color = particle.color.withOpacity(particle.opacity);
       
@@ -54,7 +56,7 @@ class ConfettiPainter extends CustomPainter {
       } else {
         canvas.save();
         canvas.translate(particle.x * size.width, particle.y * size.height);
-        canvas.rotate(particle.life * 5); // spin as it falls
+        canvas.rotate(particle.life * 5);
         canvas.drawRect(
           Rect.fromCenter(center: Offset.zero, width: particle.size * 0.5, height: particle.size),
           paint,
@@ -65,5 +67,7 @@ class ConfettiPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
 }

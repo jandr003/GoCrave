@@ -51,7 +51,9 @@ class AdminRidersTab extends StatefulWidget {
   });
 
   @override
-  State<AdminRidersTab> createState() => _AdminRidersTabState();
+  State<AdminRidersTab> createState() {
+    return _AdminRidersTabState();
+  }
 }
 
 class _AdminRidersTabState extends State<AdminRidersTab> {
@@ -148,9 +150,21 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
     super.dispose();
   }
 
-  int get _totalCount => _riders.length + 19;
-  int get _availableCount => _riders.where((r) => r.status == 'Available').length + 6;
-  int get _onDeliveryCount => _riders.where((r) => r.status == 'On Delivery').length + 11;
+  int get _totalCount {
+    return _riders.length + 19;
+  }
+
+  int get _availableCount {
+    return _riders.where((r) {
+      return r.status == 'Available';
+    }).length + 6;
+  }
+
+  int get _onDeliveryCount {
+    return _riders.where((r) {
+      return r.status == 'On Delivery';
+    }).length + 11;
+  }
 
   List<RiderModel> get _filteredRiders {
     return _riders.where((rider) {
@@ -158,9 +172,13 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
                             rider.id.toLowerCase().contains(_searchQuery) ||
                             rider.plate.toLowerCase().contains(_searchQuery);
 
-      if (!matchesSearch) return false;
+      if (!matchesSearch) {
+        return false;
+      }
 
-      if (_selectedFilterIndex == 0) return true;
+      if (_selectedFilterIndex == 0) {
+        return true;
+      }
       final selectedChip = _filterChips[_selectedFilterIndex];
       return rider.status == selectedChip;
     }).toList();
@@ -171,19 +189,21 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => AdminLiveTrackingScreen(
-          rider: {
-            'id': '#${rider.id}',
-            'name': rider.name,
-            'plate': rider.plate,
-            'rating': rider.rating,
-            'status': rider.status,
-            'deliveries': rider.totalDeliveries,
-            'phone': rider.phone,
-            'avatar': rider.avatarUrl,
-          },
-          brandColor: widget.brandColor,
-        ),
+        builder: (_) {
+          return AdminLiveTrackingScreen(
+            rider: {
+              'id': '#${rider.id}',
+              'name': rider.name,
+              'plate': rider.plate,
+              'rating': rider.rating,
+              'status': rider.status,
+              'deliveries': rider.totalDeliveries,
+              'phone': rider.phone,
+              'avatar': rider.avatarUrl,
+            },
+            brandColor: widget.brandColor,
+          );
+        },
       ),
     );
   }
@@ -214,13 +234,15 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
                 final newRider = await Navigator.push<RiderModel>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AdminAddRiderScreen(
-                      onRiderAdded: (rider) {
-                        setState(() {
-                          _riders.insert(0, rider);
-                        });
-                      },
-                    ),
+                    builder: (context) {
+                      return AdminAddRiderScreen(
+                        onRiderAdded: (rider) {
+                          setState(() {
+                            _riders.insert(0, rider);
+                          });
+                        },
+                      );
+                    },
                   ),
                 );
                 if (newRider != null && mounted) {
@@ -239,7 +261,6 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
           ],
         ),
         const SizedBox(height: 16),
-
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
@@ -265,9 +286,7 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
-
         Row(
           children: [
             _buildKpiCard('Total Riders', '24', widget.brandColor),
@@ -277,9 +296,7 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
             _buildKpiCard('On Delivery', '12', const Color(0xFF10B981)),
           ],
         ),
-
         const SizedBox(height: 18),
-
         SizedBox(
           height: 38,
           child: ListView.builder(
@@ -291,7 +308,11 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
               return Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: InkWell(
-                  onTap: () => setState(() => _selectedFilterIndex = idx),
+                  onTap: () {
+                    setState(() {
+                      _selectedFilterIndex = idx;
+                    });
+                  },
                   borderRadius: BorderRadius.circular(16),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -320,9 +341,7 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
             },
           ),
         ),
-
         const SizedBox(height: 20),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -341,12 +360,13 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
           ],
         ),
         const SizedBox(height: 10),
-
         ..._filteredRiders.map((rider) {
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
             child: InkWell(
-              onTap: () => _openLiveTracking(rider),
+              onTap: () {
+                _openLiveTracking(rider);
+              },
               borderRadius: BorderRadius.circular(20),
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -403,7 +423,6 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
                         ],
                       ),
                     ),
-
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -414,11 +433,13 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                  name: rider.name,
-                                  image: rider.avatarUrl,
-                                  role: 'Rider #${rider.id}',
-                                ),
+                                builder: (context) {
+                                  return ChatScreen(
+                                    name: rider.name,
+                                    image: rider.avatarUrl,
+                                    role: 'Rider #${rider.id}',
+                                  );
+                                },
                               ),
                             );
                           },
@@ -444,9 +465,6 @@ class _AdminRidersTabState extends State<AdminRidersTab> {
             ),
           );
         }).toList(),
-
-
-
         const SizedBox(height: 20),
       ],
     );

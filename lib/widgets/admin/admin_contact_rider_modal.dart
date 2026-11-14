@@ -37,7 +37,6 @@ class AdminContactRiderModal extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -45,12 +44,15 @@ class AdminContactRiderModal extends StatelessWidget {
                 'Contact Assigned Rider',
                 style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
               ),
-              IconButton(icon: const Icon(Icons.close_rounded, color: Colors.grey), onPressed: () => Navigator.pop(context)),
+              IconButton(
+                icon: const Icon(Icons.close_rounded, color: Colors.grey),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
-
           const SizedBox(height: 12),
-
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -93,15 +95,12 @@ class AdminContactRiderModal extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 20),
-
           Text(
             'Choose Contact Action',
             style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
           ),
           const SizedBox(height: 10),
-
           _buildActionTile(
             context,
             icon: Icons.phone_in_talk_rounded,
@@ -118,9 +117,7 @@ class AdminContactRiderModal extends StatelessWidget {
               );
             },
           ),
-
           const SizedBox(height: 10),
-
           _buildActionTile(
             context,
             icon: Icons.chat_bubble_rounded,
@@ -131,18 +128,18 @@ class AdminContactRiderModal extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    name: riderName,
-                    image: riderAvatar,
-                    role: 'Rider ($orderId)',
-                  ),
+                  builder: (context) {
+                    return ChatScreen(
+                      name: riderName,
+                      image: riderAvatar,
+                      role: 'Rider ($orderId)',
+                    );
+                  },
                 ),
               );
             },
           ),
-
           const SizedBox(height: 10),
-
           _buildActionTile(
             context,
             icon: Icons.sms_rounded,
@@ -159,7 +156,6 @@ class AdminContactRiderModal extends StatelessWidget {
               );
             },
           ),
-
           const SizedBox(height: 16),
         ],
       ),

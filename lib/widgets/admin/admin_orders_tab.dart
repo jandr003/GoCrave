@@ -19,7 +19,9 @@ class AdminOrdersTab extends StatefulWidget {
   });
 
   @override
-  State<AdminOrdersTab> createState() => _AdminOrdersTabState();
+  State<AdminOrdersTab> createState() {
+    return _AdminOrdersTabState();
+  }
 }
 
 class _AdminOrdersTabState extends State<AdminOrdersTab> {
@@ -34,7 +36,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   @override
   void initState() {
     super.initState();
-    _ordersList = widget.initialOrders ?? const [
+    _ordersList = widget.initialOrders ?? [
       OrderModel(
         id: '#GC-0000128',
         storeName: 'McDonald\'s',
@@ -184,17 +186,29 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   Color _getStatusBg(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return const Color(0xFFEF4444);
+        {
+          return const Color(0xFFEF4444);
+        }
       case 'assigned':
-        return widget.brandColor;
+        {
+          return widget.brandColor;
+        }
       case 'in progress':
-        return const Color(0xFF2563EB);
+        {
+          return const Color(0xFF2563EB);
+        }
       case 'completed':
-        return const Color(0xFF10B981);
+        {
+          return const Color(0xFF10B981);
+        }
       case 'cancelled':
-        return const Color(0xFF64748B);
+        {
+          return const Color(0xFF64748B);
+        }
       default:
-        return Colors.grey[700]!;
+        {
+          return Colors.grey[700]!;
+        }
     }
   }
 
@@ -205,15 +219,25 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
   IconData _getStatusIcon(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return Icons.access_time_filled_rounded;
+        {
+          return Icons.access_time_filled_rounded;
+        }
       case 'in progress':
-        return Icons.two_wheeler_rounded;
+        {
+          return Icons.two_wheeler_rounded;
+        }
       case 'completed':
-        return Icons.check_circle_rounded;
+        {
+          return Icons.check_circle_rounded;
+        }
       case 'cancelled':
-        return Icons.cancel_rounded;
+        {
+          return Icons.cancel_rounded;
+        }
       default:
-        return Icons.assignment_rounded;
+        {
+          return Icons.assignment_rounded;
+        }
     }
   }
 
@@ -223,9 +247,13 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                             o.customerName.toLowerCase().contains(_searchQuery) ||
                             o.storeName.toLowerCase().contains(_searchQuery);
 
-      if (!matchesSearch) return false;
+      if (!matchesSearch) {
+        return false;
+      }
 
-      if (_selectedFilterIndex == 0) return true;
+      if (_selectedFilterIndex == 0) {
+        return true;
+      }
       final selectedFilter = _filters[_selectedFilterIndex].toLowerCase();
       return o.status.toLowerCase().contains(selectedFilter);
     }).toList();
@@ -264,7 +292,6 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 ),
               ),
               const SizedBox(height: 16),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -272,7 +299,9 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.black),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       Text(
                         'Order Details',
@@ -301,9 +330,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 12),
-
               Text(
                 order.id,
                 style: GoogleFonts.poppins(
@@ -316,11 +343,9 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                 order.time,
                 style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
               ),
-
               const SizedBox(height: 16),
               const Divider(height: 1, color: Color(0xFFEEEEEE)),
               const SizedBox(height: 16),
-
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -365,11 +390,9 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 16),
               const Divider(height: 1, color: Color(0xFFEEEEEE)),
               const SizedBox(height: 16),
-
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -397,11 +420,9 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 16),
               const Divider(height: 1, color: Color(0xFFEEEEEE)),
               const SizedBox(height: 16),
-
               Row(
                 children: [
                   const CircleAvatar(
@@ -443,11 +464,13 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChatScreen(
-                                name: order.riderName,
-                                image: order.riderAvatar,
-                                role: 'Rider (${order.id})',
-                              ),
+                              builder: (context) {
+                                return ChatScreen(
+                                  name: order.riderName,
+                                  image: order.riderAvatar,
+                                  role: 'Rider (${order.id})',
+                                );
+                              },
                             ),
                           );
                         },
@@ -456,9 +479,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 24),
-
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -492,9 +513,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 12),
-
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -504,12 +523,14 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => AdminLiveTrackingScreen(
-                          rider: {
-                            'orderModel': order,
-                          },
-                          brandColor: widget.brandColor,
-                        ),
+                        builder: (_) {
+                          return AdminLiveTrackingScreen(
+                            rider: {
+                              'orderModel': order,
+                            },
+                            brandColor: widget.brandColor,
+                          );
+                        },
                       ),
                     );
                   },
@@ -546,7 +567,6 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
           style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
         ),
         const SizedBox(height: 14),
-
         Row(
           children: [
             Expanded(
@@ -587,9 +607,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
             ),
           ],
         ),
-
         const SizedBox(height: 16),
-
         SizedBox(
           height: 118,
           child: ListView(
@@ -606,9 +624,7 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
             ],
           ),
         ),
-
         const SizedBox(height: 18),
-
         SizedBox(
           height: 38,
           child: ListView.builder(
@@ -620,7 +636,11 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
               return Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: InkWell(
-                  onTap: () => setState(() => _selectedFilterIndex = idx),
+                  onTap: () {
+                    setState(() {
+                      _selectedFilterIndex = idx;
+                    });
+                  },
                   borderRadius: BorderRadius.circular(18),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -647,14 +667,14 @@ class _AdminOrdersTabState extends State<AdminOrdersTab> {
             },
           ),
         ),
-
         const SizedBox(height: 18),
-
         ..._filteredOrders.map((order) {
           return Container(
             margin: const EdgeInsets.only(bottom: 14),
             child: InkWell(
-              onTap: () => _showOrderDetailsModal(order),
+              onTap: () {
+                _showOrderDetailsModal(order);
+              },
               borderRadius: BorderRadius.circular(22),
               child: Container(
                 padding: const EdgeInsets.all(18),

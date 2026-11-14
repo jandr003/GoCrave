@@ -19,10 +19,12 @@ class FoodCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodDetailsScreen(
-              foodItem: foodItem,
-              heroTag: heroTag,
-            ),
+            builder: (context) {
+              return FoodDetailsScreen(
+                foodItem: foodItem,
+                heroTag: heroTag,
+              );
+            },
           ),
         );
       },
@@ -55,7 +57,9 @@ class FoodCard extends StatelessWidget {
                   width: double.infinity,
                   fit: BoxFit.cover,
                   frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                    if (wasSynchronouslyLoaded) return child;
+                    if (wasSynchronouslyLoaded) {
+                      return child;
+                    }
                     return AnimatedOpacity(
                       opacity: frame == null ? 0 : 1,
                       duration: const Duration(milliseconds: 350),
@@ -63,11 +67,13 @@ class FoodCard extends StatelessWidget {
                       child: child,
                     );
                   },
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    height: 160,
-                    color: Colors.grey[200],
-                    child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
-                  ),
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 160,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                    );
+                  },
                 ),
               ),
             ),

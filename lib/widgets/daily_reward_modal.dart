@@ -57,7 +57,6 @@ class _DailyRewardModalState extends State<DailyRewardModal> {
             ),
           ),
           const SizedBox(height: 32),
-          
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -77,9 +76,7 @@ class _DailyRewardModalState extends State<DailyRewardModal> {
               return _buildDayItem(index + 1, isPast, isToday, isFuture, isDay7);
             },
           ),
-          
           const SizedBox(height: 40),
-          
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -143,14 +140,18 @@ class _DailyRewardModalState extends State<DailyRewardModal> {
   }
 
   void _handleClaim() async {
-    setState(() => _isClaiming = true);
+    setState(() {
+      _isClaiming = true;
+    });
     
     await Future.delayed(const Duration(milliseconds: 1000));
     
     final reward = await CoinManager().claimDailyReward();
     
     if (mounted) {
-      setState(() => _isClaiming = false);
+      setState(() {
+        _isClaiming = false;
+      });
       Navigator.pop(context);
       
       ScaffoldMessenger.of(context).showSnackBar(
