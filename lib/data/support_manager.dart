@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class SupportManager extends ChangeNotifier {
   static final SupportManager _instance = SupportManager._internal();
-  factory SupportManager() => _instance;
+  factory SupportManager() {
+    return _instance;
+  }
   SupportManager._internal();
 
   final List<Map<String, dynamic>> _threads = [
@@ -47,10 +49,14 @@ class SupportManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get threads => List.unmodifiable(_threads);
+  List<Map<String, dynamic>> get threads {
+    return List.unmodifiable(_threads);
+  }
 
   void sendMessage(String threadId, String text, String sender) {
-    final threadIndex = _threads.indexWhere((t) => t['id'] == threadId);
+    final threadIndex = _threads.indexWhere((t) {
+      return t['id'] == threadId;
+    });
     if (threadIndex != -1) {
       final messages = List<Map<String, dynamic>>.from(_threads[threadIndex]['messages']);
       messages.add({
@@ -66,7 +72,9 @@ class SupportManager extends ChangeNotifier {
   }
 
   void resolveThread(String threadId) {
-    final threadIndex = _threads.indexWhere((t) => t['id'] == threadId);
+    final threadIndex = _threads.indexWhere((t) {
+      return t['id'] == threadId;
+    });
     if (threadIndex != -1) {
       _threads[threadIndex]['status'] = 'Resolved';
       notifyListeners();

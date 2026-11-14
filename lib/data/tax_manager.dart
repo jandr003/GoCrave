@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class TaxManager extends ChangeNotifier {
   static final TaxManager _instance = TaxManager._internal();
-  factory TaxManager() => _instance;
+  factory TaxManager() {
+    return _instance;
+  }
   TaxManager._internal();
 
   final List<Map<String, dynamic>> _statements = [
@@ -32,10 +34,14 @@ class TaxManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get statements => List.unmodifiable(_statements);
+  List<Map<String, dynamic>> get statements {
+    return List.unmodifiable(_statements);
+  }
 
   void fileTaxStatement(String id) {
-    final index = _statements.indexWhere((s) => s['id'] == id);
+    final index = _statements.indexWhere((s) {
+      return s['id'] == id;
+    });
     if (index != -1) {
       _statements[index]['status'] = 'Generated & Filed';
       notifyListeners();

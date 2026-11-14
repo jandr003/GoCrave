@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class SettlementManager extends ChangeNotifier {
   static final SettlementManager _instance = SettlementManager._internal();
-  factory SettlementManager() => _instance;
+  factory SettlementManager() {
+    return _instance;
+  }
   SettlementManager._internal();
 
   final List<Map<String, dynamic>> _settlements = [
@@ -32,10 +34,14 @@ class SettlementManager extends ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> get settlements => List.unmodifiable(_settlements);
+  List<Map<String, dynamic>> get settlements {
+    return List.unmodifiable(_settlements);
+  }
 
   void markAsSettled(String id) {
-    final index = _settlements.indexWhere((s) => s['id'] == id);
+    final index = _settlements.indexWhere((s) {
+      return s['id'] == id;
+    });
     if (index != -1) {
       _settlements[index]['status'] = 'Settled';
       notifyListeners();

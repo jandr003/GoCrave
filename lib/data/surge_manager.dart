@@ -2,16 +2,26 @@ import 'package:flutter/material.dart';
 
 class SurgeManager extends ChangeNotifier {
   static final SurgeManager _instance = SurgeManager._internal();
-  factory SurgeManager() => _instance;
+  factory SurgeManager() {
+    return _instance;
+  }
   SurgeManager._internal();
 
   double _baseDeliveryFee = 25.0;
   double _surgeMultiplier = 1.0;
   bool _isSurgeActive = false;
 
-  double get baseDeliveryFee => _baseDeliveryFee;
-  double get surgeMultiplier => _surgeMultiplier;
-  bool get isSurgeActive => _isSurgeActive;
+  double get baseDeliveryFee {
+    return _baseDeliveryFee;
+  }
+
+  double get surgeMultiplier {
+    return _surgeMultiplier;
+  }
+
+  bool get isSurgeActive {
+    return _isSurgeActive;
+  }
 
   void updateBaseFee(double fee) {
     _baseDeliveryFee = fee;
