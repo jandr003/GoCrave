@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class AppNotification {
   final String title;
   final String body;
@@ -23,7 +21,9 @@ class NotificationManager {
 
   final List<AppNotification> _notifications = [];
 
-  List<AppNotification> get notifications => List.unmodifiable(_notifications);
+  List<AppNotification> get notifications {
+    return List.unmodifiable(_notifications);
+  }
 
   String generateAndAddOtp() {
     final otp = (Random().nextInt(90000) + 10000).toString();
