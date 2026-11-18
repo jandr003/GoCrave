@@ -8,17 +8,50 @@ class AutoDispatchManager extends ChangeNotifier {
   factory AutoDispatchManager() {
     return _instance;
   }
-  AutoDispatchManager._internal();
+  AutoDispatchManager._internal() {
+    RiderFleetManager().addListener(_onFleetChanged);
+  }
 
   bool _isAutoDispatchEnabled = true;
+  final List<Map<String, dynamic>> _unassignedQueue = [];
 
   bool get isAutoDispatchEnabled {
     return _isAutoDispatchEnabled;
   }
 
+  List<Map<String, dynamic>> get unassignedQueue {
+    return List.unmodifiable(_unassignedQueue);
+  }
+
   void toggleAutoDispatch(bool enabled) {
     _isAutoDispatchEnabled = enabled;
     notifyListeners();
+  }
+
+  void _onFleetChanged() {
+    if (_isAutoDispatchEnabled && _unassignedQueue.isNotEmpty) {
+      processQueue();
+    }
+  }
+
+  void processQueue() {
+    if (_unassignedQueue.isEmpty) {
+      return;
+    }
+
+    final queueCopy = List<Map<String, dynamic>>.from(_unassignedQueue);
+    for (var orderData in queueCopy) {
+      final LatLng? storeLatLng = orderData['storeLatLng'] as LatLng?;
+      if (storeLatLng != null) {
+        final nearest = findNearestAvailableRider(storeLatLng);
+        if (nearest != null) {
+          RiderFleetManager().updateRiderStatus(nearest['id'], 'On Delivery');
+          _unassignedQueue.remove(orderData);
+          notifyListeners();
+          break;
+        }
+      }
+    }
   }
 
   Map<String, dynamic>? findNearestAvailableRider(LatLng storeLocation) {
@@ -69,7 +102,7 @@ class AutoDispatchManager extends ChangeNotifier {
     return degrees * (pi / 180.0);
   }
 
-  Map<String, dynamic>? dispatchOrder(LatLng storeLocation) {
+  Map<String, dynamic>? dispatchOrder(LatLng storeLocation, {String? orderId}) {
     if (!_isAutoDispatchEnabled) {
       return null;
     }
@@ -79,6 +112,15 @@ class AutoDispatchManager extends ChangeNotifier {
       RiderFleetManager().updateRiderStatus(nearest['id'], 'On Delivery');
       notifyListeners();
       return nearest;
+    } else {
+      if (orderId != null) {
+        _unassignedQueue.add({
+          'orderId': orderId,
+          'storeLatLng': storeLocation,
+          'timestamp': DateTime.now(),
+        });
+        notifyListeners();
+      }
     }
     return null;
   }
