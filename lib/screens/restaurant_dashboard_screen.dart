@@ -367,6 +367,20 @@ class _RestaurantDashboardScreenState extends State<RestaurantDashboardScreen> {
             },
           ),
           IconButton(
+            icon: const Icon(Icons.kitchen_rounded, color: Color(0xFF0F172A), size: 22),
+            tooltip: 'Kitchen Display System (KDS)',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return MerchantKdsScreen(brandColor: brandColor);
+                  },
+                ),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.settings_outlined, color: Color(0xFF0F172A), size: 22),
             tooltip: 'Settings',
             onPressed: () {
