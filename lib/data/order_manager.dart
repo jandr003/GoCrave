@@ -62,9 +62,21 @@ class OrderManager extends ChangeNotifier {
     double total = itemPrice + deliveryFee;
 
     final assignedRider = AutoDispatchManager().dispatchOrder(const LatLng(14.8527, 120.8160));
-    final String riderName = assignedRider != null ? assignedRider['name'] : 'Ricardo Dalisay';
-    final String riderAvatar = assignedRider != null ? assignedRider['avatar'] : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop';
-    final String orderStatus = assignedRider != null ? 'On the Way' : 'Processing';
+    
+    String riderName = 'Ricardo Dalisay';
+    if (assignedRider != null) {
+      riderName = assignedRider['name'];
+    }
+
+    String riderAvatar = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop';
+    if (assignedRider != null) {
+      riderAvatar = assignedRider['avatar'];
+    }
+
+    String orderStatus = 'Processing';
+    if (assignedRider != null) {
+      orderStatus = 'On the Way';
+    }
 
     final newOrder = Order(
       id: orderId,
