@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+import 'auto_dispatch_manager.dart';
 
 class Order {
   final String id;
@@ -59,6 +61,11 @@ class OrderManager extends ChangeNotifier {
     double deliveryFee = 20.0;
     double total = itemPrice + deliveryFee;
 
+    final assignedRider = AutoDispatchManager().dispatchOrder(const LatLng(14.8527, 120.8160));
+    final String riderName = assignedRider != null ? assignedRider['name'] : 'Ricardo Dalisay';
+    final String riderAvatar = assignedRider != null ? assignedRider['avatar'] : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop';
+    final String orderStatus = assignedRider != null ? 'On the Way' : 'Processing';
+
     final newOrder = Order(
       id: orderId,
       title: foodItem['title'] ?? 'Unknown Item',
@@ -69,6 +76,9 @@ class OrderManager extends ChangeNotifier {
       customerName: 'John Andrew',
       location: 'Brgy. San Miguel, Bulacan...',
       timestamp: DateTime.now(),
+      status: orderStatus,
+      riderName: riderName,
+      riderPhoto: riderAvatar,
     );
 
     _orders.insert(0, newOrder);
