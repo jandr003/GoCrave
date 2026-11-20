@@ -4,6 +4,7 @@ import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
 import '../data/location_manager.dart';
 import '../data/surge_manager.dart';
+import '../data/scheduled_order_manager.dart';
 import 'package:gocrave/screens/coupon_screen.dart';
 import 'package:gocrave/screens/payment_screen.dart';
 import 'package:gocrave/screens/location_picker_screen.dart';
@@ -28,6 +29,7 @@ class _CartScreenState extends State<CartScreen> {
     CartManager().addListener(_updateState);
     LocationManager().addListener(_updateState);
     SurgeManager().addListener(_updateState);
+    ScheduledOrderManager().addListener(_updateState);
   }
 
   @override
@@ -35,6 +37,7 @@ class _CartScreenState extends State<CartScreen> {
     CartManager().removeListener(_updateState);
     LocationManager().removeListener(_updateState);
     SurgeManager().removeListener(_updateState);
+    ScheduledOrderManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -46,9 +49,86 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  void _showSchedulePickerModal(BuildContext context) {
+    final List<String> timeSlots = [
+      'ASAP (Default 20-25 mins)',
+      'Today in 1 Hour (Approx 3:30 PM)',
+      'Today in 2 Hours (Approx 4:30 PM)',
+      'Dinner Time (6:30 PM - 7:00 PM)',
+      'Tomorrow Breakfast (8:00 AM - 8:30 AM)',
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Schedule Delivery Time',
+                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Choose when you would like your cravings delivered.',
+                style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+              ),
+              const SizedBox(height: 20),
+              ...timeSlots.map((slot) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: InkWell(
+                    onTap: () {
+                      if (slot.contains('ASAP')) {
+                        ScheduledOrderManager().clearSchedule();
+                      } else {
+                        ScheduledOrderManager().setSchedule(slot);
+                      }
+                      Navigator.pop(context);
+                    },
+                    borderRadius: BorderRadius.circular(14),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Text(
+                        slot,
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600, color: const Color(0xFF334155)),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cart = CartManager();
+    final storesMap = cart.itemsByStore;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
@@ -90,26 +170,16 @@ class _CartScreenState extends State<CartScreen> {
                   const SizedBox(height: 16),
                   if (SurgeManager().isSurgeActive)
                     Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF3E0),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFFFFE0B2),
-                          width: 1.5,
-                        ),
+                        border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
                       ),
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.bolt_rounded,
-                            color: brandColor,
-                            size: 22,
-                          ),
+                          Icon(Icons.bolt_rounded, color: brandColor, size: 22),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
@@ -126,11 +196,93 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
                     ),
-                  ...cart.items.map((item) {
-                    return _buildCartItemCard(item);
+
+                  ...storesMap.entries.map((entry) {
+                    final storeName = entry.key;
+                    final storeItems = entry.value;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 16, 24, 6),
+                          child: Row(
+                            children: [
+                              Icon(Icons.store_rounded, size: 16, color: brandColor),
+                              const SizedBox(width: 8),
+                              Text(
+                                storeName,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF0F172A),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ...storeItems.map((item) {
+                          return _buildCartItemCard(item);
+                        }).toList(),
+                      ],
+                    );
                   }).toList(),
 
                   const SizedBox(height: 8),
+
+                  _buildSectionCard(
+                    child: InkWell(
+                      onTap: () {
+                        _showSchedulePickerModal(context);
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.access_time_rounded, size: 20, color: brandColor),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Delivery Time',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: Colors.grey[500],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  ScheduledOrderManager().scheduledTimeLabel,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF0F172A),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            'Change',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: brandColor,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
+                        ],
+                      ),
+                    ),
+                  ),
 
                   _buildSectionCard(
                     child: InkWell(

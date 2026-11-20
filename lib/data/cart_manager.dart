@@ -40,6 +40,18 @@ class CartManager extends ChangeNotifier {
     return List.unmodifiable(_items);
   }
 
+  Map<String, List<CartItem>> get itemsByStore {
+    final Map<String, List<CartItem>> map = {};
+    for (var item in _items) {
+      final store = item.foodItem['storeName'] ?? item.foodItem['subtitle'] ?? 'GoCrave Partner Restaurant';
+      if (!map.containsKey(store)) {
+        map[store] = [];
+      }
+      map[store]!.add(item);
+    }
+    return map;
+  }
+
   String? get appliedCouponCode {
     return _appliedCouponCode;
   }
