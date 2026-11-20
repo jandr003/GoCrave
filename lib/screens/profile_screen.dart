@@ -391,6 +391,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 _buildMenuItem(
+                  icon: Icons.notifications_active_outlined,
+                  title: 'Notifications',
+                  subtitle: 'In-app notification inbox and updates',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const NotificationInboxScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
                   icon: Icons.workspace_premium_outlined,
                   title: 'View Rewards',
                   onTap: () {
