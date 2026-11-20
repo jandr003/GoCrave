@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/cart_manager.dart';
 import '../data/order_manager.dart';
 import '../data/location_manager.dart';
+import '../data/surge_manager.dart';
 import 'package:gocrave/screens/coupon_screen.dart';
 import 'package:gocrave/screens/payment_screen.dart';
 import 'package:gocrave/screens/location_picker_screen.dart';
@@ -13,7 +14,9 @@ class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartScreen> createState() {
+    return _CartScreenState();
+  }
 }
 
 class _CartScreenState extends State<CartScreen> {
@@ -24,12 +27,14 @@ class _CartScreenState extends State<CartScreen> {
     super.initState();
     CartManager().addListener(_updateState);
     LocationManager().addListener(_updateState);
+    SurgeManager().addListener(_updateState);
   }
 
   @override
   void dispose() {
     CartManager().removeListener(_updateState);
     LocationManager().removeListener(_updateState);
+    SurgeManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -83,6 +88,28 @@ class _CartScreenState extends State<CartScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
+                  if (SurgeManager().isSurgeActive)
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF3E0),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.bolt_rounded, color: brandColor, size: 22),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Peak Hour / Rain Surge Active (${SurgeManager().surgeMultiplier.toStringAsFixed(1)}x multiplier applied to delivery fee).',
+                              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ...cart.items.map((item) {
                     return _buildCartItemCard(item);
                   }).toList(),

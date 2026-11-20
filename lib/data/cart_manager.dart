@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'surge_manager.dart';
 
 class CartItem {
   final Map<String, String> foodItem;
@@ -23,11 +24,17 @@ class CartManager extends ChangeNotifier {
   factory CartManager() {
     return _instance;
   }
-  CartManager._internal();
+  CartManager._internal() {
+    SurgeManager().addListener(_onSurgeChanged);
+  }
 
   final List<CartItem> _items = [];
   String? _appliedCouponCode;
   double _discountPercentage = 0.0;
+
+  void _onSurgeChanged() {
+    notifyListeners();
+  }
 
   List<CartItem> get items {
     return List.unmodifiable(_items);
@@ -111,7 +118,9 @@ class CartManager extends ChangeNotifier {
     if (_items.isEmpty) {
       return 0;
     }
-    return 20.0;
+    final base = SurgeManager().baseDeliveryFee;
+    final mult = SurgeManager().surgeMultiplier;
+    return base * mult;
   }
 
   double get totalAmount {
