@@ -25,7 +25,12 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
   double _selectedTip = 20.0;
   final TextEditingController _commentCtrl = TextEditingController();
 
-  final List<double> _tipOptions = [0.0, 20.0, 50.0, 100.0];
+  final List<double> _tipOptions = [
+    0.0,
+    20.0,
+    50.0,
+    100.0,
+  ];
 
   @override
   void dispose() {
@@ -36,7 +41,12 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        20,
+        24,
+        MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,17 +55,27 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
             child: Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'Rate Your Delivery Experience',
-            style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF0F172A),
+            ),
           ),
           Text(
             'How was your delivery with ${widget.riderName} for order ${widget.orderId}?',
-            style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: const Color(0xFF64748B),
+            ),
           ),
           const SizedBox(height: 20),
 
@@ -72,8 +92,12 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
                     });
                   },
                   icon: Icon(
-                    isSelected ? Icons.star_rounded : Icons.star_outline_rounded,
-                    color: isSelected ? Colors.amber : Colors.grey[300],
+                    isSelected
+                        ? Icons.star_rounded
+                        : Icons.star_outline_rounded,
+                    color: isSelected
+                        ? Colors.amber
+                        : Colors.grey[300],
                     size: 40,
                   ),
                 );
@@ -84,7 +108,11 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
           const SizedBox(height: 16),
           Text(
             'Tip the Rider (Optional)',
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155)),
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF334155),
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -103,17 +131,27 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color: isSel ? widget.brandColor : const Color(0xFFF8FAFC),
+                        color: isSel
+                            ? widget.brandColor
+                            : const Color(0xFFF8FAFC),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: isSel ? widget.brandColor : const Color(0xFFE2E8F0)),
+                        border: Border.all(
+                          color: isSel
+                              ? widget.brandColor
+                              : const Color(0xFFE2E8F0),
+                        ),
                       ),
                       child: Center(
                         child: Text(
-                          tip == 0 ? 'No Tip' : '₱${tip.toInt()}',
+                          tip == 0
+                              ? 'No Tip'
+                              : '₱${tip.toInt()}',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: isSel ? Colors.white : const Color(0xFF334155),
+                            color: isSel
+                                ? Colors.white
+                                : const Color(0xFF334155),
                           ),
                         ),
                       ),
@@ -127,15 +165,24 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
           const SizedBox(height: 16),
           Text(
             'Leave a Review',
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155)),
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF334155),
+            ),
           ),
           const SizedBox(height: 6),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 4,
+            ),
             decoration: BoxDecoration(
               color: const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(
+                color: const Color(0xFFE2E8F0),
+              ),
             ),
             child: TextField(
               controller: _commentCtrl,
@@ -143,7 +190,10 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
               style: GoogleFonts.poppins(fontSize: 13),
               decoration: InputDecoration(
                 hintText: 'Write compliments or feedback for the rider...',
-                hintStyle: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF94A3B8)),
+                hintStyle: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: const Color(0xFF94A3B8),
+                ),
                 border: InputBorder.none,
               ),
             ),
@@ -165,7 +215,10 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Rating and tip successfully submitted. Thank you!', style: GoogleFonts.poppins()),
+                    content: Text(
+                      'Rating and tip successfully submitted. Thank you!',
+                      style: GoogleFonts.poppins(),
+                    ),
                     backgroundColor: widget.brandColor,
                     behavior: SnackBarBehavior.floating,
                   ),
@@ -173,12 +226,18 @@ class _RatingReviewModalState extends State<RatingReviewModal> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: widget.brandColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 elevation: 0,
               ),
               child: Text(
                 'Submit Review & Tip',
-                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
