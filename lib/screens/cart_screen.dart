@@ -90,21 +90,37 @@ class _CartScreenState extends State<CartScreen> {
                   const SizedBox(height: 16),
                   if (SurgeManager().isSurgeActive)
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF3E0),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
+                        border: Border.all(
+                          color: const Color(0xFFFFE0B2),
+                          width: 1.5,
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.bolt_rounded, color: brandColor, size: 22),
+                          Icon(
+                            Icons.bolt_rounded,
+                            color: brandColor,
+                            size: 22,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Peak Hour / Rain Surge Active (${SurgeManager().surgeMultiplier.toStringAsFixed(1)}x multiplier applied to delivery fee).',
-                              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                              'Peak Hour / Rain Surge Active '
+                              '(${SurgeManager().surgeMultiplier.toStringAsFixed(1)}x '
+                              'multiplier applied to delivery fee).',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF0F172A),
+                              ),
                             ),
                           ),
                         ],
