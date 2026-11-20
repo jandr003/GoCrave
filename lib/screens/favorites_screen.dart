@@ -2,27 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/favorite_manager.dart';
 import '../data/cart_manager.dart';
+import '../data/collection_manager.dart';
 import 'main_nav_wrapper.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
-  State<FavoritesScreen> createState() => _FavoritesScreenState();
+  State<FavoritesScreen> createState() {
+    return _FavoritesScreenState();
+  }
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   final Color brandColor = const Color(0xFFFF5622);
+  final CollectionManager _collectionManager = CollectionManager();
+  int _selectedCollectionIndex = 0;
 
   @override
   void initState() {
     super.initState();
     FavoriteManager().addListener(_updateState);
+    _collectionManager.addListener(_updateState);
   }
 
   @override
   void dispose() {
     FavoriteManager().removeListener(_updateState);
+    _collectionManager.removeListener(_updateState);
     super.dispose();
   }
 
@@ -36,7 +43,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final favorites = FavoriteManager().favorites;
+    final collections = _collectionManager.collections;
+    final selectedCollectionName = collections[_selectedCollectionIndex];
+    final allFavorites = FavoriteManager().favorites;
+    final displayedFavorites = selectedCollectionName == 'All Favorites'
+        ? allFavorites
+        : _collectionManager.getItemsForCollection(selectedCollectionName);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -46,7 +58,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
-             Navigator.pushAndRemoveUntil(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                 builder: (context) {
@@ -60,7 +72,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           },
         ),
         title: Text(
-          'Favorites',
+          'Favorites Collections',
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -69,15 +81,62 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ),
         centerTitle: false,
       ),
-      body: favorites.isEmpty
-          ? _buildEmptyState()
-          : ListView.builder(
-              padding: const EdgeInsets.all(20),
-              itemCount: favorites.length,
-              itemBuilder: (context, index) {
-                return _buildFavoriteCard(favorites[index]);
-              },
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemCount: collections.length,
+                itemBuilder: (context, index) {
+                  final isSelected = _selectedCollectionIndex == index;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedCollectionIndex = index;
+                        });
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isSelected ? brandColor : const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          collections[index],
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                            color: isSelected ? Colors.white : const Color(0xFF64748B),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: displayedFavorites.isEmpty
+                ? _buildEmptyState()
+                : ListView.builder(
+                    padding: const EdgeInsets.all(20),
+                    itemCount: displayedFavorites.length,
+                    itemBuilder: (context, index) {
+                      return _buildFavoriteCard(displayedFavorites[index]);
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -89,7 +148,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           Icon(Icons.favorite_border, size: 80, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            'Your favorites list is empty.',
+            'Your favorites collection is empty.',
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.grey,

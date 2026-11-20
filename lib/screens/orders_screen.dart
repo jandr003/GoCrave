@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/order_manager.dart';
 import '../data/food_data.dart';
+import '../data/cart_manager.dart';
+import '../data/rating_manager.dart';
+import '../widgets/rating_review_modal.dart';
 import 'order_tracking_screen.dart';
 import 'browse_menu_screen.dart';
 import 'notification_history_screen.dart';
@@ -10,7 +13,9 @@ class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
 
   @override
-  State<OrdersScreen> createState() => _OrdersScreenState();
+  State<OrdersScreen> createState() {
+    return _OrdersScreenState();
+  }
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
@@ -20,11 +25,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
   void initState() {
     super.initState();
     OrderManager().addListener(_updateState);
+    RatingManager().addListener(_updateState);
   }
 
   @override
   void dispose() {
     OrderManager().removeListener(_updateState);
+    RatingManager().removeListener(_updateState);
     super.dispose();
   }
 
@@ -220,6 +227,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget _buildOrderCard(BuildContext context, Order order) {
     final imageUrl = _getFoodImage(order.title);
     final isProcessing = order.status == 'Processing' || order.status == 'On the Way';
+    final bool hasRated = RatingManager().hasRated(order.id);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
@@ -436,41 +444,98 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
           ] else ...[
             const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Reordered ${order.title}!',
-                        style: GoogleFonts.poppins(),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 44,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        CartManager().addItem({
+                          'title': order.title,
+                          'subtitle': order.subtitle,
+                          'price': order.price,
+                          'rating': '4.9',
+                          'image': imageUrl,
+                        }, 1);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Reordered ${order.title} into your bag!',
+                              style: GoogleFonts.poppins(),
+                            ),
+                            backgroundColor: const Color(0xFFFF5622),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.replay_rounded, size: 18, color: Color(0xFFFF5622)),
+                      label: Text(
+                        'Reorder',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFFFF5622),
+                        ),
                       ),
-                      backgroundColor: const Color(0xFFFF5622),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFFFF5622), width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                     ),
-                  );
-                },
-                icon: const Icon(Icons.replay_rounded, size: 18, color: Color(0xFFFF5622)),
-                label: Text(
-                  'Reorder Again',
-                  style: GoogleFonts.poppins(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFFFF5622),
                   ),
                 ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color(0xFFFF5622), width: 1.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: SizedBox(
+                    height: 44,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                          ),
+                          builder: (context) {
+                            return RatingReviewModal(
+                              orderId: order.id,
+                              riderName: order.riderName,
+                              brandColor: const Color(0xFFFF5622),
+                            );
+                          },
+                        );
+                      },
+                      icon: Icon(
+                        hasRated ? Icons.star_rounded : Icons.star_outline_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        hasRated ? 'Rated & Tipped' : 'Rate & Tip',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: hasRated ? Colors.green : const Color(0xFFFF5622),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ],
