@@ -66,7 +66,9 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            border: Border.all(
+              color: const Color(0xFFEEEEEE),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.04),
@@ -95,7 +97,11 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                             color: Colors.green,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.verified_rounded, color: Colors.white, size: 16),
+                          child: const Icon(
+                            Icons.verified_rounded,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -117,14 +123,21 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                             ),
                             const SizedBox(width: 8),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.amber[50],
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 '${_shiftManager.customerRating} ⭐',
-                                style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.amber[900]),
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber[900],
+                                ),
                               ),
                             ),
                           ],
@@ -132,11 +145,18 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                         const SizedBox(height: 2),
                         Text(
                           widget.riderPhone,
-                          style: GoogleFonts.poppins(fontSize: 13, color: widget.brandColor, fontWeight: FontWeight.bold),
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: widget.brandColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           widget.vehiclePlate,
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
@@ -145,20 +165,45 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
               ),
               const SizedBox(height: 18),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF8F9FC),
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFEEEEEE)),
+                  border: Border.all(
+                    color: const Color(0xFFEEEEEE),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildMiniMetric('Rating', '${_shiftManager.customerRating} ⭐', Colors.amber[900]!),
-                    Container(height: 24, width: 1, color: Colors.grey[300]),
-                    _buildMiniMetric('Acceptance', '${_shiftManager.acceptanceRate}%', const Color(0xFF2E7D32)),
-                    Container(height: 24, width: 1, color: Colors.grey[300]),
-                    _buildMiniMetric('Total Trips', '${_shiftManager.totalDeliveriesCompleted} Trips', Colors.blueAccent),
+                    _buildMiniMetric(
+                      'Rating',
+                      '${_shiftManager.customerRating} ⭐',
+                      Colors.amber[900]!,
+                    ),
+                    Container(
+                      height: 24,
+                      width: 1,
+                      color: Colors.grey[300],
+                    ),
+                    _buildMiniMetric(
+                      'Acceptance',
+                      '${_shiftManager.acceptanceRate}%',
+                      const Color(0xFF2E7D32),
+                    ),
+                    Container(
+                      height: 24,
+                      width: 1,
+                      color: Colors.grey[300],
+                    ),
+                    _buildMiniMetric(
+                      'Total Trips',
+                      '${_shiftManager.totalDeliveriesCompleted} Trips',
+                      Colors.blueAccent,
+                    ),
                   ],
                 ),
               ),
@@ -170,14 +215,24 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                       height: 48,
                       child: ElevatedButton.icon(
                         onPressed: widget.onTapEditProfile,
-                        icon: const Icon(Icons.edit_rounded, size: 18, color: Colors.white),
+                        icon: const Icon(
+                          Icons.edit_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                         label: Text(
                           'Edit Profile',
-                          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: widget.brandColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
                       ),
@@ -194,21 +249,35 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                             isScrollControlled: true,
                             backgroundColor: Colors.white,
                             shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(28),
+                              ),
                             ),
                             builder: (context) {
-                              return RiderSupportModal(brandColor: widget.brandColor);
+                              return RiderSupportModal(
+                                brandColor: widget.brandColor,
+                              );
                             },
                           );
                         },
-                        icon: const Icon(Icons.warning_amber_rounded, size: 18, color: Colors.white),
+                        icon: const Icon(
+                          Icons.warning_amber_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                         label: Text(
                           'Emergency SOS',
-                          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
                       ),
@@ -222,7 +291,11 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
         const SizedBox(height: 20),
         Text(
           'Shift Attendance & Status',
-          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF0F172A),
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -230,7 +303,9 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            border: Border.all(
+              color: const Color(0xFFEEEEEE),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.03),
@@ -250,14 +325,22 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                     children: [
                       Text(
                         _shiftManager.currentShift,
-                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF0F172A),
+                        ),
                       ),
                       Text(
-                        _shiftManager.isClockedIn ? 'Clocked In & Active' : 'Clocked Out (Off Duty)',
+                        _shiftManager.isClockedIn
+                            ? 'Clocked In & Active'
+                            : 'Clocked Out (Off Duty)',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: _shiftManager.isClockedIn ? Colors.green : Colors.grey,
+                          color: _shiftManager.isClockedIn
+                              ? Colors.green
+                              : Colors.grey,
                         ),
                       ),
                     ],
@@ -277,7 +360,11 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
         const SizedBox(height: 20),
         Text(
           'Courier Settings & Verifications',
-          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF0F172A),
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -285,7 +372,9 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            border: Border.all(
+              color: const Color(0xFFEEEEEE),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.03),
@@ -304,7 +393,10 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildProfileSettingRow(
                 icon: Icons.two_wheeler_rounded,
@@ -314,7 +406,10 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildProfileSettingRow(
                 icon: Icons.military_tech_rounded,
@@ -330,14 +425,27 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
           height: 52,
           child: OutlinedButton.icon(
             onPressed: widget.onLogOut,
-            icon: const Icon(Icons.logout_rounded, size: 20, color: Colors.redAccent),
+            icon: const Icon(
+              Icons.logout_rounded,
+              size: 20,
+              color: Colors.redAccent,
+            ),
             label: Text(
               'Log Out of Rider Portal',
-              style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.redAccent),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
             ),
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.redAccent, width: 1.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              side: const BorderSide(
+                color: Colors.redAccent,
+                width: 1.5,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
           ),
         ),
@@ -350,11 +458,18 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
       children: [
         Text(
           value,
-          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: color),
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
         Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[600]),
+          style: GoogleFonts.poppins(
+            fontSize: 10,
+            color: Colors.grey[600],
+          ),
         ),
       ],
     );
@@ -379,20 +494,41 @@ class _RiderProfileTabState extends State<RiderProfileTab> {
                 color: widget.brandColor.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 20, color: widget.brandColor),
+              child: Icon(
+                icon,
+                size: 20,
+                color: widget.brandColor,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
-                  Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                  Text(
+                    value,
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ],
               ),
             ),
             if (onTap != null)
-              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: Colors.grey,
+              ),
           ],
         ),
       ),

@@ -35,7 +35,12 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        20,
+        24,
+        MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,29 +49,47 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
             child: Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 24),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+                size: 24,
+              ),
               const SizedBox(width: 8),
               Text(
                 'Rider Emergency SOS & Support',
-                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0F172A),
+                ),
               ),
             ],
           ),
           Text(
             'Report an emergency or request immediate dispatch assistance.',
-            style: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF64748B)),
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: const Color(0xFF64748B),
+            ),
           ),
           const SizedBox(height: 20),
 
           Text(
             'Select Issue Type',
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155)),
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF334155),
+            ),
           ),
           const SizedBox(height: 8),
           ..._issues.map((issue) {
@@ -84,16 +107,24 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: isSel ? Colors.red.withOpacity(0.08) : const Color(0xFFF8FAFC),
+                    color: isSel
+                        ? Colors.red.withOpacity(0.08)
+                        : const Color(0xFFF8FAFC),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: isSel ? Colors.red : const Color(0xFFE2E8F0)),
+                    border: Border.all(
+                      color: isSel
+                          ? Colors.red
+                          : const Color(0xFFE2E8F0),
+                    ),
                   ),
                   child: Text(
                     issue,
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
-                      color: isSel ? Colors.red : const Color(0xFF334155),
+                      color: isSel
+                          ? Colors.red
+                          : const Color(0xFF334155),
                     ),
                   ),
                 ),
@@ -104,15 +135,24 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
           const SizedBox(height: 16),
           Text(
             'Incident Details',
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF334155)),
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF334155),
+            ),
           ),
           const SizedBox(height: 6),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 4,
+            ),
             decoration: BoxDecoration(
               color: const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(
+                color: const Color(0xFFE2E8F0),
+              ),
             ),
             child: TextField(
               controller: _descCtrl,
@@ -120,7 +160,10 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
               style: GoogleFonts.poppins(fontSize: 13),
               decoration: InputDecoration(
                 hintText: 'Describe your emergency or location details...',
-                hintStyle: GoogleFonts.poppins(fontSize: 12, color: const Color(0xFF94A3B8)),
+                hintStyle: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: const Color(0xFF94A3B8),
+                ),
                 border: InputBorder.none,
               ),
             ),
@@ -136,7 +179,10 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Emergency SOS dispatched to GoCrave Central Dispatch!', style: GoogleFonts.poppins()),
+                    content: Text(
+                      'Emergency SOS dispatched to GoCrave Central Dispatch!',
+                      style: GoogleFonts.poppins(),
+                    ),
                     backgroundColor: Colors.red,
                     behavior: SnackBarBehavior.floating,
                   ),
@@ -144,12 +190,18 @@ class _RiderSupportModalState extends State<RiderSupportModal> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 elevation: 0,
               ),
               child: Text(
                 'Dispatch Emergency SOS',
-                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
