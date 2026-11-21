@@ -7,35 +7,7 @@ class BranchManager extends ChangeNotifier {
   }
   BranchManager._internal();
 
-  final List<Map<String, dynamic>> _branches = [
-    {
-      'id': 'BR-01',
-      'storeName': 'Bulacan Goto King',
-      'branchName': 'Malolos Main Branch',
-      'city': 'Malolos',
-      'status': 'Active',
-      'manager': 'Juan Santos',
-      'sales': '₱142,500.00',
-    },
-    {
-      'id': 'BR-02',
-      'storeName': 'Bulacan Goto King',
-      'branchName': 'Baliuag Highway Branch',
-      'city': 'Baliuag',
-      'status': 'Active',
-      'manager': 'Pedro Penduko',
-      'sales': '₱98,200.00',
-    },
-    {
-      'id': 'BR-03',
-      'storeName': 'Malolos Litson Manok',
-      'branchName': 'Guinhawa Central Kitchen',
-      'city': 'Malolos',
-      'status': 'Active',
-      'manager': 'Maria Clara',
-      'sales': '₱215,800.00',
-    },
-  ];
+  final List<Map<String, dynamic>> _branches = [];
 
   List<Map<String, dynamic>> get branches {
     return List.unmodifiable(_branches);

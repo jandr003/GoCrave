@@ -7,38 +7,7 @@ class DisputeManager extends ChangeNotifier {
   }
   DisputeManager._internal();
 
-  final List<Map<String, dynamic>> _disputes = [
-    {
-      'id': 'DISP-8842',
-      'orderId': '#GOC10482',
-      'customerName': 'Juan Dela Cruz',
-      'storeName': 'Bulacan Goto King',
-      'issue': 'Wrong drink delivered (Iced Tea instead of Soda)',
-      'amount': '₱245.00',
-      'status': 'Open',
-      'timestamp': '10 mins ago',
-    },
-    {
-      'id': 'DISP-9912',
-      'orderId': '#GOC10450',
-      'customerName': 'Maria Santos',
-      'storeName': 'Malolos Litson Manok',
-      'issue': 'Missing extra rice order item',
-      'amount': '₱480.00',
-      'status': 'Open',
-      'timestamp': '45 mins ago',
-    },
-    {
-      'id': 'DISP-7721',
-      'orderId': '#GOC10398',
-      'customerName': 'Pedro Penduko',
-      'storeName': 'Kapitolyo Sisig House',
-      'issue': 'Delayed delivery past estimated time',
-      'amount': '₱195.00',
-      'status': 'Resolved',
-      'timestamp': '2 hours ago',
-    },
-  ];
+  final List<Map<String, dynamic>> _disputes = [];
 
   List<Map<String, dynamic>> get disputes {
     return List.unmodifiable(_disputes);

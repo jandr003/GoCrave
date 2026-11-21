@@ -7,35 +7,7 @@ class PromoManager extends ChangeNotifier {
   }
   PromoManager._internal();
 
-  final List<Map<String, dynamic>> _vouchers = [
-    {
-      'code': 'CRAVE30DEAL',
-      'discount': '30% OFF',
-      'save': 'Save 30% on this order',
-      'desc': 'Maximum discount up to ₱125 on orders above ₱500',
-      'expiry': 'Valid till 31 Dec 2027',
-      'percentage': 0.3,
-      'isActive': true,
-    },
-    {
-      'code': 'GOCRAVE50',
-      'discount': '₱50 OFF',
-      'save': 'Save ₱50 on food delivery',
-      'desc': 'Minimum spend of ₱300 required',
-      'expiry': 'Valid till 31 Dec 2026',
-      'percentage': 0.15,
-      'isActive': true,
-    },
-    {
-      'code': 'FREEDELIVERY',
-      'discount': 'FREE',
-      'save': 'Free Delivery on any order',
-      'desc': 'Valid for all restaurants in Malolos',
-      'expiry': 'Valid till 30 Nov 2026',
-      'percentage': 0.05,
-      'isActive': false,
-    },
-  ];
+  final List<Map<String, dynamic>> _vouchers = [];
 
   List<Map<String, dynamic>> get vouchers {
     return List.unmodifiable(_vouchers);

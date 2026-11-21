@@ -7,36 +7,7 @@ class InventoryManager extends ChangeNotifier {
   }
   InventoryManager._internal();
 
-  final List<Map<String, dynamic>> _inventoryItems = [
-    {
-      'id': 'INV-01',
-      'store': 'Bulacan Goto King',
-      'itemName': 'Special Goto with Chicharon',
-      'price': '₱120.00',
-      'inStock': true,
-    },
-    {
-      'id': 'INV-02',
-      'store': 'Malolos Litson Manok',
-      'itemName': 'Lechon Manok (Whole)',
-      'price': '₱450.00',
-      'inStock': true,
-    },
-    {
-      'id': 'INV-03',
-      'store': 'Kapitolyo Sisig House',
-      'itemName': 'Crispy Pork Sisig Meal',
-      'price': '₱185.00',
-      'inStock': false,
-    },
-    {
-      'id': 'INV-04',
-      'store': 'Bulacan Goto King',
-      'itemName': 'Tokwa’t Baboy',
-      'price': '₱95.00',
-      'inStock': true,
-    },
-  ];
+  final List<Map<String, dynamic>> _inventoryItems = [];
 
   List<Map<String, dynamic>> get inventoryItems {
     return List.unmodifiable(_inventoryItems);

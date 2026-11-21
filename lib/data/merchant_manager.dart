@@ -7,47 +7,7 @@ class MerchantManager extends ChangeNotifier {
   }
   MerchantManager._internal();
 
-  final List<Map<String, dynamic>> _merchants = [
-    {
-      'id': 'M001',
-      'storeName': 'Malolos Litson Manok',
-      'ownerName': 'Roberto Santos',
-      'cuisine': 'Filipino / Roasted',
-      'permitId': 'PERMIT-2026-8842',
-      'phone': '09171234567',
-      'email': 'litsonmalolos@gocrave.ph',
-      'status': 'Pending',
-      'commission': 15.0,
-      'appliedDate': 'Nov 5, 2026',
-      'logo': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': 'M002',
-      'storeName': 'Kapitolyo Sisig House',
-      'ownerName': 'Arnel Pineda',
-      'cuisine': 'Sisig & Grills',
-      'permitId': 'PERMIT-2026-9912',
-      'phone': '09189876543',
-      'email': 'kapitolyosisig@gocrave.ph',
-      'status': 'Pending',
-      'commission': 15.0,
-      'appliedDate': 'Nov 6, 2026',
-      'logo': 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      'id': 'M003',
-      'storeName': 'Bulacan Goto King',
-      'ownerName': 'Maria Clara',
-      'cuisine': 'Lugaw & Goto',
-      'permitId': 'PERMIT-2026-1104',
-      'phone': '09191112233',
-      'email': 'gotoking@gocrave.ph',
-      'status': 'Approved',
-      'commission': 12.5,
-      'appliedDate': 'Nov 1, 2026',
-      'logo': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=200&auto=format&fit=crop',
-    },
-  ];
+  final List<Map<String, dynamic>> _merchants = [];
 
   List<Map<String, dynamic>> get merchants {
     return List.unmodifiable(_merchants);

@@ -7,24 +7,7 @@ class FraudManager extends ChangeNotifier {
   }
   FraudManager._internal();
 
-  final List<Map<String, dynamic>> _flags = [
-    {
-      'id': 'FRD-881',
-      'user': 'Customer: TestUser99',
-      'reason': 'Multiple cancelled COD orders within 1 hour',
-      'riskLevel': 'High Risk',
-      'status': 'Flagged',
-      'timestamp': '15 mins ago',
-    },
-    {
-      'id': 'FRD-882',
-      'user': 'Merchant: FakeStore PH',
-      'reason': 'Suspicious menu pricing anomaly detected',
-      'riskLevel': 'Medium Risk',
-      'status': 'Under Review',
-      'timestamp': '2 hours ago',
-    },
-  ];
+  final List<Map<String, dynamic>> _flags = [];
 
   List<Map<String, dynamic>> get flags {
     return List.unmodifiable(_flags);
