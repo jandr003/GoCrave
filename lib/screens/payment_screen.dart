@@ -22,21 +22,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final List<Map<String, dynamic>> _methods = [
     {
       'name': 'GoCrave Digital Wallet',
-      'icon': '👛',
       'details': 'Available Balance: ₱1,250.00',
       'isCard': false,
       'color': const Color(0xFFFF5622),
     },
     {
       'name': 'GoCrave Loyalty Coins',
-      'icon': '🪙',
       'details': 'Redeem 500 Coins (-₱50.00)',
       'isCard': false,
       'color': Colors.amber,
     },
     {
       'name': 'Mastercard',
-      'icon': '💳',
       'details': '•••• •••• •••• 3241',
       'isCard': true,
     },
@@ -236,23 +233,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 border: Border.all(color: Colors.grey[100]!),
               ),
               alignment: Alignment.center,
-              child: method['icon'] != null
-                  ? Center(
-                      child: Text(
-                        method['icon'],
-                        style: const TextStyle(fontSize: 18),
+              child: method['isCard']
+                  ? const Icon(Icons.credit_card, size: 20, color: Colors.orange)
+                  : Text(
+                      method['name'][0],
+                      style: TextStyle(
+                        color: method['color'] ?? brandColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                    )
-                  : method['isCard']
-                      ? const Icon(Icons.credit_card, size: 20, color: Colors.orange)
-                      : Text(
-                          method['name'][0],
-                          style: TextStyle(
-                            color: method['color'],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
+                    ),
             ),
             const SizedBox(width: 16),
             Expanded(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class RiderActiveTaskTab extends StatelessWidget {
   final Map<String, dynamic>? activeTask;
@@ -23,16 +25,26 @@ class RiderActiveTaskTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 40.0),
           child: Column(
             children: [
-              Icon(Icons.near_me_disabled_rounded, size: 60, color: Colors.grey[300]),
+              Icon(
+                Icons.near_me_disabled_rounded,
+                size: 60,
+                color: Colors.grey[300],
+              ),
               const SizedBox(height: 12),
               Text(
                 'No Active Delivery Task',
-                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Accept a request from the Deliveries tab to start a delivery workflow.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[500]),
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: Colors.grey[500],
+                ),
               ),
             ],
           ),
@@ -50,6 +62,10 @@ class RiderActiveTaskTab extends StatelessWidget {
       actionBtnLabel = 'Complete Delivery & Collect ${activeTask!['payout']}';
       actionIcon = Icons.check_circle_rounded;
     }
+
+    final LatLng storeCoord = const LatLng(14.8527, 120.8160);
+    final LatLng customerCoord = const LatLng(14.8581, 120.8242);
+    final LatLng riderCoord = const LatLng(14.8565, 120.8164);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,14 +87,22 @@ class RiderActiveTaskTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [brandColor, const Color(0xFFFF7043)],
+                    colors: [
+                      brandColor,
+                      const Color(0xFFFF7043),
+                    ],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(24),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +119,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Active Delivery',
+                          'Active Delivery & Turn-by-Turn GPS',
                           style: GoogleFonts.poppins(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -105,7 +129,7 @@ class RiderActiveTaskTab extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      'View Details >',
+                      'Live Tracking',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -132,7 +156,10 @@ class RiderActiveTaskTab extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFFE8F5E9),
                             borderRadius: BorderRadius.circular(10),
@@ -166,7 +193,11 @@ class RiderActiveTaskTab extends StatelessWidget {
                                       color: Color(0xFFFF3D00),
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Icon(Icons.restaurant_rounded, color: Colors.white, size: 12),
+                                    child: const Icon(
+                                      Icons.restaurant_rounded,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(
@@ -175,11 +206,18 @@ class RiderActiveTaskTab extends StatelessWidget {
                                       children: [
                                         Text(
                                           activeTask!['restaurant'],
-                                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                         Text(
                                           activeTask!['restoAddress'],
-                                          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 11,
+                                            color: Colors.grey[500],
+                                          ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -189,7 +227,11 @@ class RiderActiveTaskTab extends StatelessWidget {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 11.0, top: 2, bottom: 2),
+                                padding: const EdgeInsets.only(
+                                  left: 11.0,
+                                  top: 2,
+                                  bottom: 2,
+                                ),
                                 child: Container(
                                   width: 2,
                                   height: 16,
@@ -205,7 +247,11 @@ class RiderActiveTaskTab extends StatelessWidget {
                                       color: Color(0xFFFF5622),
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Icon(Icons.location_on_rounded, color: Colors.white, size: 12),
+                                    child: const Icon(
+                                      Icons.location_on_rounded,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(
@@ -214,11 +260,18 @@ class RiderActiveTaskTab extends StatelessWidget {
                                       children: [
                                         Text(
                                           activeTask!['customer'],
-                                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                         Text(
                                           activeTask!['customerAddress'],
-                                          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500]),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 11,
+                                            color: Colors.grey[500],
+                                          ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -230,61 +283,74 @@ class RiderActiveTaskTab extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE8F2FE),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFBBDEFB)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Image.network(
-                                      'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=400&auto=format&fit=crop',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: Container(
-                                      color: Colors.black.withOpacity(0.18),
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: CustomPaint(
-                                      painter: _MapRoutePainter(),
-                                    ),
-                                  ),
-                                  const Positioned(
-                                    left: 20,
-                                    top: 15,
-                                    child: CircleAvatar(
-                                      radius: 12,
-                                      backgroundColor: Color(0xFFFF5622),
-                                      child: Icon(Icons.two_wheeler_rounded, color: Colors.white, size: 14),
-                                    ),
-                                  ),
-                                  const Positioned(
-                                    right: 15,
-                                    bottom: 15,
-                                    child: CircleAvatar(
-                                      radius: 10,
-                                      backgroundColor: Colors.redAccent,
-                                      child: Icon(Icons.location_on_rounded, color: Colors.white, size: 12),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+
+                    Container(
+                      height: 220,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFFCBD5E1),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: FlutterMap(
+                          options: MapOptions(
+                            initialCenter: riderCoord,
+                            initialZoom: 15.2,
+                          ),
+                          children: [
+                            TileLayer(
+                              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              userAgentPackageName: 'com.gocrave.app',
+                            ),
+                            PolylineLayer(
+                              polylines: [
+                                Polyline(
+                                  points: [
+                                    storeCoord,
+                                    riderCoord,
+                                    customerCoord,
+                                  ],
+                                  strokeWidth: 5.0,
+                                  color: brandColor,
+                                ),
+                              ],
+                            ),
+                            MarkerLayer(
+                              markers: [
+                                Marker(
+                                  point: riderCoord,
+                                  width: 40,
+                                  height: 40,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: brandColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.two_wheeler_rounded,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 14),
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -295,12 +361,20 @@ class RiderActiveTaskTab extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.restaurant_menu_rounded, size: 16, color: Colors.grey),
+                          const Icon(
+                            Icons.restaurant_menu_rounded,
+                            size: 16,
+                            color: Colors.grey,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               activeTask!['items'],
-                              style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[800], fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w500,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -313,22 +387,38 @@ class RiderActiveTaskTab extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.near_me_rounded, size: 14, color: Color(0xFFFF5622)),
+                            const Icon(
+                              Icons.near_me_rounded,
+                              size: 14,
+                              color: Color(0xFFFF5622),
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               activeTask!['distance'],
-                              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                             ),
                           ],
                         ),
                         const SizedBox(width: 16),
                         Row(
                           children: [
-                            const Icon(Icons.access_time_rounded, size: 14, color: Colors.grey),
+                            const Icon(
+                              Icons.access_time_rounded,
+                              size: 14,
+                              color: Colors.grey,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               'ETA 12 mins',
-                              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey[600]),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[600],
+                              ),
                             ),
                           ],
                         ),
@@ -340,14 +430,24 @@ class RiderActiveTaskTab extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton.icon(
                         onPressed: onAdvanceTaskStep,
-                        icon: Icon(actionIcon, size: 18, color: Colors.white),
+                        icon: Icon(
+                          actionIcon,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                         label: Text(
                           actionBtnLabel,
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: brandColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           elevation: 0,
                         ),
                       ),
@@ -360,29 +460,5 @@ class RiderActiveTaskTab extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _MapRoutePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paintLine = Paint()
-      ..color = const Color(0xFF1E88E5)
-      ..strokeWidth = 3.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final path = Path();
-    path.moveTo(25, 20);
-    path.lineTo(size.width * 0.45, 20);
-    path.lineTo(size.width * 0.45, size.height * 0.7);
-    path.lineTo(size.width - 20, size.height * 0.7);
-
-    canvas.drawPath(path, paintLine);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
