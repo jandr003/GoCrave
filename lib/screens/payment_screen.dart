@@ -10,14 +10,30 @@ class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<PaymentScreen> createState() {
+    return _PaymentScreenState();
+  }
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  String _selectedMethod = 'Mastercard';
+  String _selectedMethod = 'GoCrave Digital Wallet';
   final Color brandColor = const Color(0xFFFF5622);
 
   final List<Map<String, dynamic>> _methods = [
+    {
+      'name': 'GoCrave Digital Wallet',
+      'icon': '👛',
+      'details': 'Available Balance: ₱1,250.00',
+      'isCard': false,
+      'color': const Color(0xFFFF5622),
+    },
+    {
+      'name': 'GoCrave Loyalty Coins',
+      'icon': '🪙',
+      'details': 'Redeem 500 Coins (-₱50.00)',
+      'isCard': false,
+      'color': Colors.amber,
+    },
     {
       'name': 'Mastercard',
       'icon': '💳',
@@ -123,6 +139,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       '- ₱${cart.discountAmount.toStringAsFixed(2)}',
                       isDiscount: true,
                     ),
+                  if (_selectedMethod == 'GoCrave Loyalty Coins')
+                    _buildSummaryRow('Loyalty Coins Redemption', '- ₱50.00', isDiscount: true),
                   _buildSummaryRow('Delivery Fee', '₱${cart.deliveryFee.toStringAsFixed(2)}'),
                   _buildSummaryRow('Tax', '₱${cart.tax.toStringAsFixed(2)}'),
                   const Padding(
@@ -140,7 +158,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ),
                       Text(
-                        '₱${cart.totalAmount.toStringAsFixed(2)}',
+                        _selectedMethod == 'GoCrave Loyalty Coins'
+                            ? '₱${(cart.totalAmount - 50 > 0 ? cart.totalAmount - 50 : 0).toStringAsFixed(2)}'
+                            : '₱${cart.totalAmount.toStringAsFixed(2)}',
                         style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
@@ -216,16 +236,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 border: Border.all(color: Colors.grey[100]!),
               ),
               alignment: Alignment.center,
-              child: method['isCard']
-                  ? const Icon(Icons.credit_card, size: 20, color: Colors.orange)
-                  : Text(
-                      method['name'][0],
-                      style: TextStyle(
-                        color: method['color'],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+              child: method['icon'] != null
+                  ? Center(
+                      child: Text(
+                        method['icon'],
+                        style: const TextStyle(fontSize: 18),
                       ),
-                    ),
+                    )
+                  : method['isCard']
+                      ? const Icon(Icons.credit_card, size: 20, color: Colors.orange)
+                      : Text(
+                          method['name'][0],
+                          style: TextStyle(
+                            color: method['color'],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -245,7 +272,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 11,
                         color: Colors.grey[400],
-                        letterSpacing: 1.5,
+                        letterSpacing: 0.5,
                       ),
                     ),
                 ],
@@ -296,6 +323,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Widget _buildBottomBar(CartManager cart) {
+    final finalAmount = _selectedMethod == 'GoCrave Loyalty Coins'
+        ? (cart.totalAmount - 50 > 0 ? cart.totalAmount - 50 : 0)
+        : cart.totalAmount;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
       decoration: BoxDecoration(
@@ -324,7 +355,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               Text(
-                '₱${cart.totalAmount.toStringAsFixed(2)}',
+                '₱${finalAmount.toStringAsFixed(2)}',
                 style: GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
