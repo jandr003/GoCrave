@@ -23,22 +23,7 @@ class InventoryAlertManager extends ChangeNotifier {
   }
   InventoryAlertManager._internal();
 
-  final List<InventoryAlertItem> _alerts = [
-    InventoryAlertItem(
-      itemId: 'INV-01',
-      storeName: 'Bulacan Goto King',
-      itemName: 'Special Goto with Chicharon',
-      currentStock: 3,
-      threshold: 5,
-    ),
-    InventoryAlertItem(
-      itemId: 'INV-02',
-      storeName: 'Malolos Litson Manok',
-      itemName: 'Lechon Manok (Whole)',
-      currentStock: 1,
-      threshold: 4,
-    ),
-  ];
+  final List<InventoryAlertItem> _alerts = [];
 
   List<InventoryAlertItem> get alerts {
     return List.unmodifiable(_alerts);
@@ -49,9 +34,7 @@ class InventoryAlertManager extends ChangeNotifier {
       return a.itemId == itemId;
     });
     if (index != -1) {
-      if (newStock <= _alerts[index].threshold) {
-        
-      } else {
+      if (newStock > _alerts[index].threshold) {
         _alerts.removeAt(index);
       }
       notifyListeners();

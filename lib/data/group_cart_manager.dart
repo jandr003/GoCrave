@@ -8,11 +8,8 @@ class GroupCartManager extends ChangeNotifier {
   GroupCartManager._internal();
 
   bool _isGroupActive = false;
-  String _groupSessionCode = 'GOC-SALOSALO-88';
-  final List<Map<String, dynamic>> _sharedMembers = [
-    {'name': 'John Andrew (Host)', 'itemsCount': 2, 'subtotal': '₱340.00'},
-    {'name': 'Maria Clara', 'itemsCount': 1, 'subtotal': '₱185.00'},
-  ];
+  String _groupSessionCode = '';
+  final List<Map<String, dynamic>> _sharedMembers = [];
 
   bool get isGroupActive {
     return _isGroupActive;
@@ -31,6 +28,11 @@ class GroupCartManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSessionCode(String code) {
+    _groupSessionCode = code;
+    notifyListeners();
+  }
+
   void addMember(String name, int itemsCount, double subtotal) {
     _sharedMembers.add({
       'name': name,
@@ -43,9 +45,6 @@ class GroupCartManager extends ChangeNotifier {
   void resetGroupSession() {
     _isGroupActive = false;
     _sharedMembers.clear();
-    _sharedMembers.addAll([
-      {'name': 'John Andrew (Host)', 'itemsCount': 2, 'subtotal': '₱340.00'},
-    ]);
     notifyListeners();
   }
 }
