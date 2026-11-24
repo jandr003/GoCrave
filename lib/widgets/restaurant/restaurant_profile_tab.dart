@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'merchant_promo_modal.dart';
 
 class RestaurantProfileTab extends StatelessWidget {
   final String storeName;
@@ -50,7 +51,10 @@ class RestaurantProfileTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFFFFF5F2),
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: const Color(0xFFFFE0B2), width: 1.5),
+            border: Border.all(
+              color: const Color(0xFFFFE0B2),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: brandColor.withOpacity(0.08),
@@ -79,7 +83,11 @@ class RestaurantProfileTab extends StatelessWidget {
                             color: Colors.green,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.store_rounded, color: Colors.white, size: 16),
+                          child: const Icon(
+                            Icons.store_rounded,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -105,14 +113,21 @@ class RestaurantProfileTab extends StatelessWidget {
                             ),
                             const SizedBox(width: 6),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.amber[50],
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 '4.8 ⭐',
-                                style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.amber[900]),
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber[900],
+                                ),
                               ),
                             ),
                           ],
@@ -120,11 +135,18 @@ class RestaurantProfileTab extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           storePhone,
-                          style: GoogleFonts.poppins(fontSize: 13, color: brandColor, fontWeight: FontWeight.bold),
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: brandColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           'Merchant ID: #MERCHANT-501 • Open',
-                          style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[600]),
+                          style: GoogleFonts.poppins(
+                            fontSize: 11,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
@@ -133,40 +155,125 @@ class RestaurantProfileTab extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFFFE0B2)),
+                  border: Border.all(
+                    color: const Color(0xFFFFE0B2),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildMiniMetric('Today Sales', '₱$formattedSales', const Color(0xFF2E7D32)),
-                    Container(height: 24, width: 1, color: Colors.grey[300]),
-                    _buildMiniMetric('Prepared', '$preparedOrdersCount Orders', brandColor),
-                    Container(height: 24, width: 1, color: Colors.grey[300]),
-                    _buildMiniMetric('Store Rating', '4.8 ⭐', Colors.amber[900]!),
+                    _buildMiniMetric(
+                      'Today Sales',
+                      '₱$formattedSales',
+                      const Color(0xFF2E7D32),
+                    ),
+                    Container(
+                      height: 24,
+                      width: 1,
+                      color: Colors.grey[300],
+                    ),
+                    _buildMiniMetric(
+                      'Prepared',
+                      '$preparedOrdersCount Orders',
+                      brandColor,
+                    ),
+                    Container(
+                      height: 24,
+                      width: 1,
+                      color: Colors.grey[300],
+                    ),
+                    _buildMiniMetric(
+                      'Store Rating',
+                      '4.8 ⭐',
+                      Colors.amber[900]!,
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 18),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton.icon(
-                  onPressed: onTapEditProfile,
-                  icon: const Icon(Icons.edit_rounded, size: 18, color: Colors.white),
-                  label: Text(
-                    'Edit Store Profile & Operating Hours',
-                    style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton.icon(
+                        onPressed: onTapEditProfile,
+                        icon: const Icon(
+                          Icons.edit_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Edit Profile',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: brandColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          elevation: 0,
+                        ),
+                      ),
+                    ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: brandColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    elevation: 0,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.white,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(28),
+                              ),
+                            ),
+                            builder: (context) {
+                              return MerchantPromoModal(
+                                brandCardColor: brandColor,
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.local_offer_rounded,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Flash Deals',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2563EB),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          elevation: 0,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -174,7 +281,11 @@ class RestaurantProfileTab extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           'Store Verifications & Settings',
-          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold, color: const Color(0xFF0F172A)),
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF0F172A),
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -182,7 +293,9 @@ class RestaurantProfileTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: const Color(0xFFEEEEEE)),
+            border: Border.all(
+              color: const Color(0xFFEEEEEE),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.03),
@@ -195,13 +308,16 @@ class RestaurantProfileTab extends StatelessWidget {
             children: [
               _buildSettingRow(
                 icon: Icons.verified_rounded,
-                title: 'DTI Business Permit Status (Tap to Upload)',
+                title: 'DTI Business Permit Status',
                 value: 'DTI Registered #BP-2026-99210 (Verified)',
                 onTap: onTapBusinessPermit,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildSettingRow(
                 icon: Icons.location_on_rounded,
@@ -211,7 +327,10 @@ class RestaurantProfileTab extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildSettingRow(
                 icon: Icons.access_time_rounded,
@@ -221,7 +340,10 @@ class RestaurantProfileTab extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildSettingRow(
                 icon: Icons.settings_rounded,
@@ -231,7 +353,10 @@ class RestaurantProfileTab extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
               ),
               _buildSettingRow(
                 icon: Icons.notifications_active_rounded,
@@ -248,14 +373,27 @@ class RestaurantProfileTab extends StatelessWidget {
           height: 52,
           child: OutlinedButton.icon(
             onPressed: onLogOut,
-            icon: const Icon(Icons.logout_rounded, size: 20, color: Colors.redAccent),
+            icon: const Icon(
+              Icons.logout_rounded,
+              size: 20,
+              color: Colors.redAccent,
+            ),
             label: Text(
               'Log Out of Merchant Portal',
-              style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.redAccent),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
             ),
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.redAccent, width: 1.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              side: const BorderSide(
+                color: Colors.redAccent,
+                width: 1.5,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
           ),
         ),
@@ -270,12 +408,19 @@ class RestaurantProfileTab extends StatelessWidget {
           fit: BoxFit.scaleDown,
           child: Text(
             value,
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: color),
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
         ),
         Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[600]),
+          style: GoogleFonts.poppins(
+            fontSize: 10,
+            color: Colors.grey[600],
+          ),
         ),
       ],
     );
@@ -300,21 +445,41 @@ class RestaurantProfileTab extends StatelessWidget {
                 color: brandColor.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 20, color: brandColor),
+              child: Icon(
+                icon,
+                size: 20,
+                color: brandColor,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey[500])),
-                  Text(value, style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                  Text(
+                    value,
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ],
               ),
             ),
-            if (onTap != null) {
-              const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey);
-            },
+            if (onTap != null)
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: Colors.grey,
+              ),
           ],
         ),
       ),
