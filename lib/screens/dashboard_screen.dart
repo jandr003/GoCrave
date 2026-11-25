@@ -350,6 +350,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             style: GoogleFonts.poppins(color: Colors.grey),
                           ),
                         ),
+                        IconButton(
+                          icon: const Icon(Icons.mic_rounded, color: Color(0xFFFF5622)),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.white,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                              ),
+                              builder: (context) {
+                                return const VoiceSearchModal(brandColor: Color(0xFFFF5622));
+                              },
+                            );
+                          },
+                        ),
                         const Icon(Icons.tune, color: Colors.deepOrangeAccent),
                       ],
                     ),
