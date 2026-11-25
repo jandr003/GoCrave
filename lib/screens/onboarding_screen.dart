@@ -7,7 +7,9 @@ class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<OnboardingScreen> createState() {
+    return _OnboardingScreenState();
+  }
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
@@ -44,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, dynamic>> _onboardingData = [
     {
-      'category': '🍔 FAST FOOD',
+      'category': 'FAST FOOD',
       'title': 'Juicy Burgers & Crispy Pizzas',
       'subtitle': 'Savor flame-grilled beef burgers, New York pizzas, and hot golden fries.',
       'images': [
@@ -54,7 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     },
     {
-      'category': '🍲 HOME-STYLE',
+      'category': 'HOME-STYLE',
       'title': 'Hearty Filipino Home Favorites',
       'subtitle': 'Tender chicken adobo, sour pork sinigang, and warm comfort meals.',
       'images': [
@@ -64,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     },
     {
-      'category': '🥗 VEGETARIAN',
+      'category': 'VEGETARIAN',
       'title': 'Fresh & Nutritious Green Bowls',
       'subtitle': 'Organic quinoa salad bowls and fresh garden greens made for a healthier you.',
       'images': [
@@ -74,7 +76,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     },
     {
-      'category': '🍟 SNACKS',
+      'category': 'SNACKS',
       'title': 'Crispy Nachos & Street Bites',
       'subtitle': 'Loaded cheesy nachos supreme, street bites, and mid-day snacks.',
       'images': [
@@ -84,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     },
     {
-      'category': '🍰 DESSERTS',
+      'category': 'DESSERTS',
       'title': 'Sweet Cravings & Decadent Cakes',
       'subtitle': 'Molten chocolate lava cakes, berry ice cream gelato, and gourmet sweets.',
       'images': [
@@ -94,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     },
     {
-      'category': '🥤 DRINKS & SHAKES',
+      'category': 'DRINKS & SHAKES',
       'title': 'Refreshingly Cool Shakes & Teas',
       'subtitle': 'Sweet mango graham shakes, chilled fruit juices, and boba milk teas.',
       'images': [

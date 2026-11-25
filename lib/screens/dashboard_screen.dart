@@ -535,22 +535,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       _buildCategoryItem(
                         'Fast Food',
-                        '🍔',
+                        Icons.fastfood_rounded,
                         'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
                       ),
                       _buildCategoryItem(
                         'Home-Style',
-                        '🍲',
+                        Icons.restaurant_rounded,
                         'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=600&auto=format&fit=crop',
                       ),
                       _buildCategoryItem(
                         'Vegetarian',
-                        '🥗',
+                        Icons.eco_rounded,
                         'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop',
                       ),
                       _buildCategoryItem(
                         'Drinks',
-                        '🥤',
+                        Icons.local_drink_rounded,
                         'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop',
                       ),
                     ],
@@ -578,7 +578,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildCategoryItem(String label, String emoji, String imageUrl) {
+  Widget _buildCategoryItem(String label, IconData iconData, String imageUrl) {
     return InkWell(
       onTap: () {
         final filteredItems = allFoodItems.where((item) {
@@ -622,9 +622,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Text(
-                  emoji,
-                  style: const TextStyle(fontSize: 14),
+                child: Icon(
+                  iconData,
+                  size: 14,
+                  color: const Color(0xFFFF5622),
                 ),
               ),
               const SizedBox(width: 8),

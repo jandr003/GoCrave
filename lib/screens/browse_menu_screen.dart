@@ -7,42 +7,42 @@ class BrowseMenuScreen extends StatelessWidget {
   final bool showBackButton;
   const BrowseMenuScreen({super.key, this.showBackButton = true});
 
-  final List<Map<String, String>> categories = const [
+  final List<Map<String, dynamic>> categories = const [
     {
       'title': 'Fast Food',
       'subtitle': 'Quick bites and crispy favorites',
       'image': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop',
-      'icon': '🍔',
+      'materialIcon': Icons.fastfood_rounded,
     },
     {
       'title': 'Home-Style',
       'subtitle': 'Warm meals and more',
       'image': 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=600&auto=format&fit=crop',
-      'icon': '🍲',
+      'materialIcon': Icons.restaurant_rounded,
     },
     {
       'title': 'Vegetarian',
       'subtitle': 'Fresh plant-based meals',
       'image': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop',
-      'icon': '🥗',
+      'materialIcon': Icons.eco_rounded,
     },
     {
       'title': 'Snacks',
       'subtitle': 'Quick snacks and treats',
       'image': 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=600&auto=format&fit=crop',
-      'icon': '🍟',
+      'materialIcon': Icons.local_pizza_rounded,
     },
     {
       'title': 'Desserts',
       'subtitle': 'Sweet cravings and more',
       'image': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=600&auto=format&fit=crop',
-      'icon': '🍰',
+      'materialIcon': Icons.cake_rounded,
     },
     {
       'title': 'Drinks',
       'subtitle': 'Refreshing drinks and treats',
       'image': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop',
-      'icon': '🥤',
+      'materialIcon': Icons.local_drink_rounded,
     },
   ];
 
@@ -122,7 +122,7 @@ class BrowseMenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context, Map<String, String> category) {
+  Widget _buildCategoryCard(BuildContext context, Map<String, dynamic> category) {
     return InkWell(
       onTap: () {
         final filteredItems = allFoodItems.where((item) {
@@ -166,9 +166,10 @@ class BrowseMenuScreen extends StatelessWidget {
                       color: Colors.white,
                       shape: BoxShape.circle,
                     ),
-                    child: Text(
-                      category['icon']!,
-                      style: const TextStyle(fontSize: 18),
+                    child: Icon(
+                      category['materialIcon'] as IconData,
+                      size: 18,
+                      color: const Color(0xFFFF5622),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -190,8 +191,7 @@ class BrowseMenuScreen extends StatelessWidget {
                           category['subtitle']!,
                           style: GoogleFonts.poppins(
                             fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white70,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
