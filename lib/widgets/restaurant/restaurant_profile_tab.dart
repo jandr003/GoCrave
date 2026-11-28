@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'merchant_promo_modal.dart';
+import '../../screens/merchant_reservations_screen.dart';
+import '../../screens/merchant_analytics_screen.dart';
 
 class RestaurantProfileTab extends StatelessWidget {
   final String storeName;
@@ -306,6 +308,54 @@ class RestaurantProfileTab extends StatelessWidget {
           ),
           child: Column(
             children: [
+              _buildSettingRow(
+                icon: Icons.table_restaurant_rounded,
+                title: 'Dine-In Table Reservations',
+                value: 'Manage customer table bookings & pre-orders',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return MerchantReservationsScreen(
+                          brandColor: brandColor,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
+              ),
+              _buildSettingRow(
+                icon: Icons.bar_chart_rounded,
+                title: 'Sales & Revenue Analytics',
+                value: 'View gross revenue reports and trends',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return MerchantAnalyticsScreen(
+                          brandColor: brandColor,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Divider(
+                  height: 1,
+                  color: Color(0xFFEEEEEE),
+                ),
+              ),
               _buildSettingRow(
                 icon: Icons.verified_rounded,
                 title: 'DTI Business Permit Status',

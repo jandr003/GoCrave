@@ -22,13 +22,13 @@ class _VoiceSearchModalState extends State<VoiceSearchModal> with SingleTickerPr
   bool _isListening = true;
   String _recognizedText = 'Listening for your cravings...';
 
-  final List<String> _sampleVoiceCravings = [
-    'Juicy Beef Burger',
-    'Pepperoni Pizza',
-    'Chicken Adobo',
-    'Special Goto',
-    'Mango Shake',
-  ];
+  List<String> get _dynamicCravings {
+    return allFoodItems.map((item) {
+      return item['title'] ?? '';
+    }).where((title) {
+      return title.isNotEmpty;
+    }).take(6).toList();
+  }
 
   @override
   void initState() {
@@ -41,9 +41,11 @@ class _VoiceSearchModalState extends State<VoiceSearchModal> with SingleTickerPr
 
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
+        final dynamicList = _dynamicCravings;
+        final selectedTitle = dynamicList.isNotEmpty ? dynamicList.first : 'Food';
         setState(() {
           _isListening = false;
-          _recognizedText = '“Juicy Beef Burger”';
+          _recognizedText = '“$selectedTitle”';
         });
       }
     });
@@ -57,6 +59,8 @@ class _VoiceSearchModalState extends State<VoiceSearchModal> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    final dynamicCravings = _dynamicCravings;
+
     return Padding(
       padding: EdgeInsets.fromLTRB(
         24,
@@ -150,7 +154,7 @@ class _VoiceSearchModalState extends State<VoiceSearchModal> with SingleTickerPr
             spacing: 8,
             runSpacing: 8,
             alignment: WrapAlignment.center,
-            children: _sampleVoiceCravings.map((craving) {
+            children: dynamicCravings.map((craving) {
               return InkWell(
                 onTap: () {
                   final filtered = allFoodItems.where((item) {

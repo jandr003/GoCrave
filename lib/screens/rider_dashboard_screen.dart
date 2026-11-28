@@ -13,10 +13,14 @@ import '../widgets/rider/rider_wallet_tab.dart';
 import '../widgets/rider/rider_profile_tab.dart';
 import '../widgets/rider/rider_edit_profile_modal.dart';
 import '../widgets/rider/rider_government_id_modal.dart';
+import '../widgets/rider/rider_weather_advisory_widget.dart';
 
 class RiderDashboardScreen extends StatefulWidget {
   final String riderEmail;
-  const RiderDashboardScreen({super.key, this.riderEmail = 'rider@gocrave.app'});
+  const RiderDashboardScreen({
+    super.key,
+    this.riderEmail = 'rider@gocrave.app',
+  });
 
   @override
   State<RiderDashboardScreen> createState() {
@@ -59,162 +63,101 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
       'customerAddress': 'Brgy. San Vicente, Malolos City',
       'distance': '2.4 km',
       'payout': '₱85.00',
-      'items': '2x Chickenjoy Meal, 1x Jolly Spaghetti',
-      'phone': '0917 888 9900',
+      'items': 'ChickenJoy Bucket Meal (x1)',
     },
     {
-      'id': '#GOC88123',
-      'restaurant': 'Mang Inasal - Guiguinto',
-      'restoAddress': 'Tabang Crossing, Guiguinto, Bulacan',
-      'customer': 'Juan Tamad',
-      'customerAddress': 'Brgy. Sta. Cruz, Guiguinto',
+      'id': '#GOC98232',
+      'restaurant': 'McDonald\'s - Malolos Crossing',
+      'restoAddress': 'Crossing, Malolos, Bulacan',
+      'customer': 'Crisostomo Ibarra',
+      'customerAddress': 'Brgy. San Juan, Malolos City',
       'distance': '1.8 km',
-      'payout': '₱65.00',
-      'items': '1x PM1 PM2 Combo, 2x Extra Rice',
-      'phone': '0918 777 6655',
-    },
-    {
-      'id': '#GOC76120',
-      'restaurant': 'GoCrave Central Kitchen',
-      'restoAddress': 'San Miguel, Bulacan',
-      'customer': 'John Andrew',
-      'customerAddress': 'Brgy. San Miguel, Bulacan...',
-      'distance': '3.1 km',
-      'payout': '₱95.00',
-      'items': '1x Juicy Beef Burger, 1x Fries',
-      'phone': '0919 555 4433',
+      'payout': '₱70.00',
+      'items': 'Big Mac Extra Value Meal (x2)',
     },
   ];
 
   final List<Map<String, dynamic>> _completedHistory = [
     {
-      'id': '#GOC65112',
-      'customer': 'Liza Soberano',
-      'resto': 'Burger King - Balagtas',
-      'payout': '₱90.00',
-      'tip': '₱20.00',
-      'time': '12:30 PM Today',
+      'id': '#GOC98200',
+      'restaurant': 'Bulacan Goto King',
+      'customer': 'Simoun P.',
+      'payout': '₱95.00',
+      'date': 'Today • 11:30 AM',
+      'status': 'Delivered',
     },
     {
-      'id': '#GOC54311',
-      'customer': 'Enrique Gil',
-      'resto': 'Pizza Hut - Marilao',
-      'payout': '₱110.00',
-      'tip': '₱30.00',
-      'time': '11:15 AM Today',
-    },
-    {
-      'id': '#GOC43210',
-      'customer': 'Kathryn Bernardo',
-      'resto': 'Chowking - Meycauayan',
-      'payout': '₱75.00',
-      'tip': '₱15.00',
-      'time': '10:00 AM Today',
+      'id': ' #GOC98185',
+      'restaurant': 'Malolos Litson Manok',
+      'customer': 'Basilio S.',
+      'payout': '₱120.00',
+      'date': 'Yesterday • 6:45 PM',
+      'status': 'Delivered',
     },
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    OrderManager().addListener(_updateState);
-  }
-
-  @override
-  void dispose() {
-    OrderManager().removeListener(_updateState);
-    super.dispose();
-  }
-
-  void _updateState() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   void _acceptDelivery(Map<String, dynamic> request) {
     setState(() {
-      _activeTask = Map<String, dynamic>.from(request);
+      _activeTask = request;
       _taskStep = 1;
-      _selectedTab = 1;
-      _availableRequests.removeWhere((r) {
-        return r['id'] == request['id'];
-      });
+      _availableRequests.remove(request);
     });
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Accepted delivery ${request['id']}! Heading to ${request['restaurant']}.'),
+        content: Text('Accepted delivery task ${request['id']}!', style: GoogleFonts.poppins()),
         backgroundColor: brandColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 
   void _advanceTaskStep() {
+    if (_taskStep < 3) {
+      setState(() {
+        _taskStep++;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Delivery step updated to milestone #$_taskStep', style: GoogleFonts.poppins()),
+          backgroundColor: brandColor,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } else {
+      _completeActiveTask();
+    }
+  }
+
+  void _completeActiveTask() {
     if (_activeTask == null) {
       return;
     }
 
-    if (_taskStep == 1) {
-      setState(() {
-        _taskStep = 2;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Arrived at ${_activeTask!['restaurant']}. Waiting for food pickup...'),
-          backgroundColor: Colors.orangeAccent,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    } else if (_taskStep == 2) {
-      setState(() {
-        _taskStep = 3;
-      });
-      final liveOrders = OrderManager().orders;
-      if (liveOrders.isNotEmpty) {
-        liveOrders.first.status = 'On the Way';
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Food picked up! Status updated to OUT FOR DELIVERY.'),
-          backgroundColor: Colors.blueAccent,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    } else if (_taskStep == 3) {
-      double payoutNum = double.tryParse(_activeTask!['payout'].toString().replaceAll('₱', '')) ?? 80.0;
-      setState(() {
-        _todayEarnings += payoutNum;
-        _completedTripsCount += 1;
-        _completedHistory.insert(0, {
-          'id': _activeTask!['id'],
-          'customer': _activeTask!['customer'],
-          'resto': _activeTask!['restaurant'],
-          'payout': _activeTask!['payout'],
-          'tip': '₱15.00',
-          'time': 'Just now',
-        });
-        _activeTask = null;
-        _taskStep = 1;
-        _selectedTab = 2;
-      });
+    final double payoutVal = double.tryParse(_activeTask!['payout'].replaceAll('₱', '')) ?? 85.0;
 
-      final liveOrders = OrderManager().orders;
-      if (liveOrders.isNotEmpty) {
-        liveOrders.first.status = 'Delivered';
-      }
+    setState(() {
+      _completedHistory.insert(0, {
+        'id': _activeTask!['id'],
+        'restaurant': _activeTask!['restaurant'],
+        'customer': _activeTask!['customer'],
+        'payout': _activeTask!['payout'],
+        'date': 'Just now • Completed',
+        'status': 'Delivered',
+      });
+      _todayEarnings += payoutVal;
+      _completedTripsCount++;
+      _activeTask = null;
+      _taskStep = 1;
+    });
 
-      _showDeliverySuccessModal(payoutNum);
-    }
-  }
-
-  void _showDeliverySuccessModal(double payout) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
       builder: (context) {
-        return Container(
+        return Padding(
           padding: const EdgeInsets.all(28),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -234,7 +177,7 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                'You earned ₱${payout.toStringAsFixed(2)} + ₱15 Tip on this trip!',
+                'You earned ₱${payoutVal.toStringAsFixed(2)} + ₱15 Tip on this trip!',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[600]),
               ),
@@ -543,25 +486,29 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
   }
 
   Widget _buildSelectedTabContent() {
+    Widget tabWidget;
     switch (_selectedTab) {
       case 1:
-        return RiderActiveTaskTab(
+        tabWidget = RiderActiveTaskTab(
           activeTask: _activeTask,
           taskStep: _taskStep,
           brandColor: brandColor,
           onAdvanceTaskStep: _advanceTaskStep,
         );
+        break;
       case 2:
-        return RiderHistoryTab(
+        tabWidget = RiderHistoryTab(
           completedHistory: _completedHistory,
           brandColor: brandColor,
         );
+        break;
       case 3:
-        return RiderWalletTab(
+        tabWidget = RiderWalletTab(
           todayEarnings: _todayEarnings,
         );
+        break;
       case 4:
-        return RiderProfileTab(
+        tabWidget = RiderProfileTab(
           riderName: _riderName,
           riderPhone: _riderPhone,
           vehiclePlate: _vehiclePlate,
@@ -576,14 +523,27 @@ class _RiderDashboardScreenState extends State<RiderDashboardScreen> {
           },
           onLogOut: _onLogOut,
         );
+        break;
       case 0:
       default:
-        return RiderAvailableOrdersTab(
+        tabWidget = RiderAvailableOrdersTab(
           isOnline: _isOnline,
           availableRequests: _availableRequests,
           brandColor: brandColor,
           onAcceptDelivery: _acceptDelivery,
         );
+        break;
     }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RiderWeatherAdvisoryWidget(
+          brandColor: brandColor,
+        ),
+        const SizedBox(height: 12),
+        tabWidget,
+      ],
+    );
   }
 }

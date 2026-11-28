@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'rider_delivery_illustration_widget.dart';
 
 class RiderActiveTaskTab extends StatelessWidget {
   final Map<String, dynamic>? activeTask;
@@ -25,25 +26,23 @@ class RiderActiveTaskTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 40.0),
           child: Column(
             children: [
-              Icon(
-                Icons.near_me_disabled_rounded,
-                size: 60,
-                color: Colors.grey[300],
-              ),
-              const SizedBox(height: 12),
+              const RiderDeliveryIllustrationWidget(size: 120),
+              const SizedBox(height: 18),
               Text(
                 'No Active Delivery Task',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0F172A),
                 ),
               ),
+              const SizedBox(height: 4),
               Text(
                 'Accept a request from the Deliveries tab to start a delivery workflow.',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   fontSize: 12,
-                  color: Colors.grey[500],
+                  color: const Color(0xFF64748B),
                 ),
               ),
             ],

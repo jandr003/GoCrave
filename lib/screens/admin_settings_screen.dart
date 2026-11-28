@@ -25,6 +25,9 @@ import 'admin_branch_manager_screen.dart';
 import 'admin_rider_performance_screen.dart';
 import 'admin_tax_compliance_screen.dart';
 import 'admin_fraud_detection_screen.dart';
+import 'admin_global_broadcast_screen.dart';
+import 'admin_commission_config_screen.dart';
+import 'admin_system_health_screen.dart';
 
 class AdminSettingsScreen extends StatefulWidget {
   final String adminEmail;
@@ -642,6 +645,54 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                       MaterialPageRoute(
                         builder: (context) {
                           return const AdminStaffPermissionsScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.campaign_rounded,
+                  title: 'Global System Broadcast',
+                  subtitle: 'Send app-wide push announcements to users and riders',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const AdminGlobalBroadcastScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.percent_rounded,
+                  title: 'Platform Commission Customizer',
+                  subtitle: 'Configure global merchant commission percentage cuts',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const AdminCommissionConfigScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                _buildSettingTile(
+                  icon: Icons.dns_rounded,
+                  title: 'System Health & Server Monitor',
+                  subtitle: 'Database latency, active WebSockets & uptime diagnostics',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const AdminSystemHealthScreen();
                         },
                       ),
                     );
